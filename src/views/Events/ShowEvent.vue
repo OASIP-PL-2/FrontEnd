@@ -354,7 +354,7 @@ const filterUpcoming = () => {
             </a>
           </div>
         </div>
-        <!-- ------------- end filter time navbar ------------------->
+<!-- ------------- end filter time navbar ------------------->
 
         <!-- filter date -->
         <div class="justify-end block col-3">
