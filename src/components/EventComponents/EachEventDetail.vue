@@ -32,6 +32,7 @@ const extractDate = (date) => {
 const extractTime = (time) => {
   const t = new Date(time)
   const minute = computed(() => {
+    console.log(t.getMinutes());
     if (t.getMinutes() < 10) return "0" + t.getMinutes();
     else return t.getMinutes();
   });
@@ -47,7 +48,7 @@ const showDetail = ref(true);
       <div class="{`col-12 group overflow-auto h-5/6 top-24 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
         <div class="col-12 max-h-content max-w-md bg-gradient-to-r from-zinc-100 to-white shadow-2xl rounded-lg">
           <button @click="$emit('closeMe')" id="closeDetail" class="col-1 items-center h-12 justify-end">
-            <img src="../assets/close.png" />
+            <img src="../../assets/close.png" />
           </button>
 
           <img class="col-12 w-full h-40 object-cover object-center" src="https://www.jeban.com/uploads/2020/11/800/520953_2543e40c73.webp" alt="avatar"/>
@@ -72,26 +73,26 @@ const showDetail = ref(true);
             </div>
 
             <div class="col-12 flex mt-4 text-gray-700">
-              <img src="../assets/date.png" class="img col-2" />
+              <img src="../../assets/date.png" class="img col-2" />
               <span class="col-9">
                 Date : {{ extractDate(event.eventStartTime) }}
               </span>
             </div>
 
             <div class="col-12 flex mt-4 text-gray-700">
-              <img src="../assets/time.png" class="img col-2" />
+              <img src="../../assets/time.png" class="img col-2" />
               <span class="col-9">
                 Time : {{ extractTime(event.eventStartTime) }}
               </span>
             </div>
 
             <div class="col-12 flex mt-4 text-gray-700">
-              <img src="../assets/email.png" class="img col-2" />
+              <img src="../../assets/email.png" class="img col-2" />
               <span class="col-12">Email : {{ event.bookingEmail }}</span>
             </div>
 
             <div class="col-12 flex mt-4 text-gray-700">
-              <img src="../assets/notes.png" class="img col-2" /> Note :
+              <img src="../../assets/notes.png" class="img col-2" /> Note :
               <span class="col-9 text-gray-700">
                 <span class="w-full mx-1">
                   <span class="inline-flex"> {{ event.eventNote }}</span></span>

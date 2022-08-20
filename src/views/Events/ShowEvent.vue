@@ -1,8 +1,8 @@
 
 <script setup>
 import { ref, onBeforeMount,onMounted,computed} from "vue"
-import EachEventDetail from "../components/EachEventDetail.vue"
-import EditEvent from "../components/EditEvent.vue"
+import EachEventDetail from "../../components/EventComponents/EachEventDetail.vue"
+import EditEvent from "../../components/EventComponents/EditEvent.vue"
 import { useRoute } from "vue-router"
 let { params } = useRoute()
 const filterEvent = ref([])
@@ -391,30 +391,30 @@ const filterUpcoming = () => {
       <div v-for="(event,index) in filterEvent" :key="index">  
             <div id="eachEventList" class="relative max-w-sm overflow-hidden transition-shadow duration-300 ease-in-out rounded-lg shadow-md col-11 hover:shadow-xl hover:scale-110">
               <p class="detail col-12">
-                <img src="../assets/date.png" class="img col-3">
+                <img src="../../assets/date.png" class="img col-3">
                 <span class="heading col-6">Date :</span> {{extractDate(event.eventStartTime) }} 
                 <span id="eventDuration" class="font-bold col-3">{{ event.eventDuration }} min </span>
               </p>
               
               <p class="detail col-12">
-                <img src="../assets/time.png" class="img col-3">
+                <img src="../../assets/time.png" class="img col-3">
                 <span class="heading col-6">Start Time :</span> {{ extractTime(event.eventStartTime) }}
               </p>
 
               <p class="detail col-12">
-                <img src="../assets/category.png" class="img col-3">
+                <img src="../../assets/category.png" class="img col-3">
                 <span class="heading col-6">EventCategory :</span> {{ event.eventCategoryId.eventCategoryName }}
               </p>
 
               <p class="detail col-12">
-                <img src="../assets/user.png" class="img col-3">
+                <img src="../../assets/user.png" class="img col-3">
                 <span class="heading col-6">Booking name :</span> {{ event.bookingName }}
               </p>        
               
               <div id="allButton" class="float-right col-6">
-                <img @click="showDetail(event)" src="../assets/detail.png" class="cursor-pointer img-button col-1">
-                <img @click="showEditForm(event)" src="../assets/edit.png" class="cursor-pointer img-button col-1"> 
-                <img @click="removeEvent(event.id)" src="../assets/trash-bin.png" class="cursor-pointer img-button col-1">
+                <img @click="showDetail(event)" src="../../assets/detail.png" class="cursor-pointer img-button col-1">
+                <img @click="showEditForm(event)" src="../../assets/edit.png" class="cursor-pointer img-button col-1"> 
+                <img @click="removeEvent(event.id)" src="../../assets/trash-bin.png" class="cursor-pointer img-button col-1">
               </div>
             </div>
         </div>

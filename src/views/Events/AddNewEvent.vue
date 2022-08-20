@@ -302,7 +302,7 @@ console.log(minDatetimeLocal.value);
                   <label class="leading-loose">Clinic :</label>
                   <div>
                     <select v-model="eventCategoryId">
-                      <option value="" disabled selected> *** Select Clinic ***</option>
+                      <option value="" disabled selected> *** Select Clinic *** </option>
                       <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.eventCategoryName }}
                       </option>

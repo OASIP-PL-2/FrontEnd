@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount, onMounted } from "vue";
-import EditCategory from "../components/EditCategory.vue";
+import EditCategory from "../../components/CategoryComponents/EditCategory.vue";
 
 const categories = ref([]);
 
