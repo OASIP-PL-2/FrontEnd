@@ -248,7 +248,7 @@ console.log(minDatetimeLocal.value);
         <span class="text-2xl font-bold text-justify ml-7 text-zinc-100 col-7" > Edit Event : </span>
           <button @click="$emit('closeEditEvent')" id="closeDetail" class="mt-1 col-12">
              <!-- <button @click="goBack" id="closeDetail" class="mt-1 col-12"> -->
-            <img src="../assets/close.png" />
+            <img src="../../assets/close.png" />
           </button>
         </nav>
 
