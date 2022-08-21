@@ -16,14 +16,15 @@ onMounted(async () => {
 const deleteUsers = async (id) => {
   const isConfirm = confirm("Do you want to delete this user?")
   if (isConfirm == true) {
-    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`,{method: "DELETE"})
+    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {method: "DELETE"})
     if (res.status == 200) {
       users.value = users.value.filter((user)=>{
         return user.id != id;
-      }) 
+    }) 
     } else { console.log ("error, cannot delete") }
   }
 }
+
 </script>
 
 <template>
@@ -39,7 +40,7 @@ const deleteUsers = async (id) => {
      
 
       <div class="col-12">
-      <router-link :to="{ name: ''}" >
+      <router-link :to="{ name: 'signin'}" >
           <div class="flex flex-col items-center max-w-xs px-4 py-20 space-y-2 text-center rounded-md cursor-pointer bg-gray-500/50 hover:bg-amber-600 hover:scale-105 hover:smooth-hover">
             <a class="flex items-center justify-center w-20 h-20 rounded-full bg-amber-500 text-white/50 group-hover:text-white group-hover:smooth-hover" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +77,7 @@ const deleteUsers = async (id) => {
                 <img  @click="deleteUsers(user.id)" src="../../assets/trash-bin.png" class="cursor-pointer img-button col-1">
               </div>
             </div>
-        </div>
+      </div>
       </div>
 
     </div>
@@ -85,7 +86,7 @@ const deleteUsers = async (id) => {
     <div v-else >
       <span class="flex flex-col items-center px-4 py-20 mt-4 space-y-2 text-xl font-semibold text-center bg-orange-500 rounded-md cursor-pointer group">No User</span>
       <span>
-      <router-link :to="{ name: ''}" >
+      <router-link :to="{ name: 'signin'}" >
           <div class="flex flex-col items-center px-4 py-10 space-y-2 text-center rounded-md cursor-pointer bg-gray-900/50 hover:bg-amber-500 hover:smooth-hover">
             <a class="flex items-center justify-center w-20 h-20 rounded-full bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
