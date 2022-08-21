@@ -22,6 +22,7 @@ const getcategories = async () => {
     console.log(categories.value)
   } else console.log("error, cannot get data")
 }
+
 const chooseTime = () => {
   console.log("เข้า chooseTime")
   if (param.value == "Past") {

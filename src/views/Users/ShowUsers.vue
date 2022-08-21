@@ -1,11 +1,24 @@
 <script setup>
 import { ref, onMounted} from "vue";
+import UserDetail from "../../components/UserComponents/EachUserDetail.vue";
 
 const users = ref([]);
 const getUsers = async () => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users`);
   if (res.status === 200) {
     users.value = await res.json();
+    console.log(users.value);
+  } else console.log("error, cannot get data");
+};
+
+onMounted(async () => {
+  await getUsers();
+});
+
+const getUserDetail = async (id) => {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`);
+  if (res.status === 200) {
+    detailCurrentUser.value = await res.json();
   } else console.log("error, cannot get data");
 };
 
@@ -16,13 +29,27 @@ onMounted(async () => {
 const deleteUsers = async (id) => {
   const isConfirm = confirm("Do you want to delete this user?")
   if (isConfirm == true) {
-    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {method: "DELETE"})
+    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`,{method: "DELETE"})
     if (res.status == 200) {
       users.value = users.value.filter((user)=>{
         return user.id != id;
-    }) 
+      }) 
     } else { console.log ("error, cannot delete") }
   }
+}
+
+// ส่วนของ user detail เเละ Edit
+const isShowDetail = ref(0)
+const isShowEdit = ref(0)
+const detailCurrentUser = ref({})
+const showDetail = (userId) => {
+  // detailCurrentUser.value = user
+  getUserDetail(userId)
+  isShowDetail.value = 1
+}
+const closeShowDetail = () => {
+  isShowDetail.value = 0
+  isShowEdit.value = 0
 }
 
 </script>
@@ -70,13 +97,14 @@ const deleteUsers = async (id) => {
                 <span class="heading col-6">Role :</span> {{ user.role }}
               </p>
 
+              
               <div id="allButton" class="float-right col-6">
-                <img  src="../../assets/detail.png" class="cursor-pointer img-button col-1">
+                <img  @click="showDetail(user.id)" src="../../assets/detail.png" class="cursor-pointer img-button col-1">
                 <img  src="../../assets/edit.png" class="cursor-pointer img-button col-1"> 
                 <img  @click="deleteUsers(user.id)" src="../../assets/trash-bin.png" class="cursor-pointer img-button col-1">
               </div>
             </div>
-      </div>
+        </div>
       </div>
 
     </div>
@@ -85,7 +113,7 @@ const deleteUsers = async (id) => {
     <div v-else >
       <span class="flex flex-col items-center px-4 py-20 mt-4 space-y-2 text-xl font-semibold text-center bg-orange-500 rounded-md cursor-pointer group">No User</span>
       <span>
-      <router-link :to="{ name: 'signin'}" >
+      <router-link :to="{ name: ''}" >
           <div class="flex flex-col items-center px-4 py-10 space-y-2 text-center rounded-md cursor-pointer bg-gray-900/50 hover:bg-amber-500 hover:smooth-hover">
             <a class="flex items-center justify-center w-20 h-20 rounded-full bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,6 +125,9 @@ const deleteUsers = async (id) => {
       </router-link>
       </span>
     </div>
+
+    <UserDetail v-if="isShowDetail == true" @closeMe="closeShowDetail" :user="detailCurrentUser" />
+
     </div>
   </main>
 </template>

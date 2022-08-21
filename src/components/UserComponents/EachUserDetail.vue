@@ -1,0 +1,153 @@
+<script setup>
+import { ref,computed } from "vue";
+const props = defineProps({
+  user: {
+    type: Object,
+    require: true,
+  },
+});
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+// extract Date from eventStartTime
+const extractDate = (date) => {
+  const d = new Date(date + " UTC")
+  console.log(d);
+//   console.log(new Date("2022-08-08 15:00:00 UTC").toLocaleString());
+//   console.log(new Date(d.toLocaleString() + " UTC"));
+//   console.log(new Date(date + " UTC"));
+  return `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+};
+
+// extract Time from eventStartTime
+const extractTime = (time) => {
+  const t = new Date(time + " UTC")
+  const minute = computed(() => {
+    console.log(t.getMinutes());
+    if (t.getMinutes() < 10) return "0" + t.getMinutes();
+    else return t.getMinutes();
+  });
+  return `${t.getHours()}:${minute.value} น.`
+}
+
+const showDetail = ref(true);
+
+</script>
+
+<template>
+  <main class="my-8">
+    <div class="px-6 col-12 detail-container">
+      <div class="{`col-12 group overflow-auto h-5/6 top-24 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
+        <div class="max-w-md rounded-lg shadow-2xl col-12 max-h-content bg-gradient-to-r from-zinc-100 to-white">
+          <button @click="$emit('closeMe')" id="closeDetail" class="items-center justify-end h-12 col-1">
+            <img src="../../assets/close.png" />
+          </button>
+
+          <img class="object-cover object-center w-full h-40 col-12" src="https://www.jeban.com/uploads/2020/11/800/520953_2543e40c73.webp" alt="avatar"/>
+
+          <div class="flex items-center px-6 py-3 bg-gray-900 col-12">
+            <h1 class="mx-3 text-lg font-semibold text-white col-9">
+              <!-- {{ event.eventCategoryId.eventCategoryName }} -->
+            </h1>
+            <span class="items-end px-1 py-1 text-xl text-center bg-purple-300 rounded-md col-2 text-soft-brown heading">
+              {{ user.role }}
+            </span>
+          </div>
+
+          <div class="px-12 pt-5 pb-10 col-12">
+            <div class="text-center col-12">
+              <h1 class="text-2xl font-semibold text-gray-800 col-12">
+                {{ user.name }}
+              </h1>
+              <p class="py-2 text-lg text-gray-700 col-12">
+                {{ user.email }}
+              </p>
+            </div>
+
+            <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/date.png" class="img col-2" />
+              <span class="col-9">
+                Account creation date : 
+                
+              </span>
+              <p>{{ extractDate(user.createdOn) }}  {{ extractTime(user.createdOn) }}</p>
+            </div>
+
+            <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/date.png" class="img col-2" />
+              <span class="col-9">
+                Latest account update : 
+                
+              </span>
+              <p class="">{{ extractDate(user.updatedOn) }}  {{ extractTime(user.updatedOn) }}</p>
+            </div>
+
+            <!-- <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/time.png" class="img col-2" />
+              <span class="col-9">
+                Time : {{ extractTime(event.eventStartTime) }}
+              </span>
+            </div>
+
+            <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/email.png" class="img col-2" />
+              <span class="col-12">Email : {{ event.bookingEmail }}</span>
+            </div>
+
+            <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/notes.png" class="img col-2" /> Note :
+              <span class="text-gray-700 col-9">
+                <span class="w-full mx-1">
+                  <span class="inline-flex"> {{ event.eventNote }}</span></span>
+              </span>
+            </div> -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+
+<style scoped>
+.heading {
+  font-weight: bold;
+  font-size: 80%;
+}
+#detail-container {
+  margin-left: 30%;
+  width: 100%;
+}
+
+#closeDetail {
+  width: 5%;
+  margin-right: 3%;
+  float: right;
+  display: inline;
+}
+
+.img {
+  width: 7%;
+  height: 7%;
+  margin-right: 2%;
+  display: inline;
+}
+
+.detail-container {
+  position: absolute;
+  left: 30%;
+}
+</style>

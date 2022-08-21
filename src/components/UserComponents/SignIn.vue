@@ -103,7 +103,7 @@ let showError = () => {
                                     <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmail">
                                         Email is already used
                                     </p>
-                                    <label class="leading-loose mt-3">Confrim Email :</label>
+                                    <label class="mt-3 leading-loose">Confrim Email :</label>
                                     <input type="text"
                                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
                                         placeholder="Confrim your email" 
