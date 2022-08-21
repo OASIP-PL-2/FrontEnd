@@ -96,7 +96,7 @@ onMounted(async () => {
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'Upcoming' }}" >Upcoming Events</router-link></p>
                     <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0"><router-link :to="{ name: 'AboutUs'}"> Users </router-link> </p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowUsers'}" >All Users</router-link></p>
-                    <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: ''}" >Add User</router-link></p>
+                    <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'signin'}" >Add User</router-link></p>
                     <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0"><router-link :to="{ name: 'AboutUs'}"> About </router-link> </p>
                 </div>      
             </aside>
