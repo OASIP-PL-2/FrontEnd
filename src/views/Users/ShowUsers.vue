@@ -70,7 +70,6 @@ const deleteUsers = async (id) => {
                 <span class="heading col-6">Role :</span> {{ user.role }}
               </p>
 
-              
               <div id="allButton" class="float-right col-6">
                 <img  src="../../assets/detail.png" class="cursor-pointer img-button col-1">
                 <img  src="../../assets/edit.png" class="cursor-pointer img-button col-1"> 

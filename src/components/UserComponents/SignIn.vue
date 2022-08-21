@@ -41,7 +41,6 @@ let createUser = computed(() =>{
     }
     else{ 
         goBack();
-        console.log(role.value);
         return {name : username.value , email : email.value , role : role.value} 
     }
 })
