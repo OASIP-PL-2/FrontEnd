@@ -83,7 +83,7 @@ const editUserToDB = async editUser => {
       body: JSON.stringify(editUser)
     }
   );
-    // goBack()
+    alert('editing user successfully')
     closeEditForm()
 };
 
