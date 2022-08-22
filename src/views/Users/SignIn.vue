@@ -9,7 +9,6 @@ const SignInUser = async (user) =>{
                 "content-type": "application/json",
             },
             body: JSON.stringify({name : user.name , email : user.email , role : user.role})
-            // body: JSON.stringify({name : 'game21' , email : 'game21@gmail.com' , role : 'student'})
         });
         console.log(res.status);
     }

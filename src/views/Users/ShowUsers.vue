@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted} from "vue";
+import { ref, onBeforeMount} from "vue";
 import UserDetail from "../../components/UserComponents/EachUserDetail.vue";
 
 const users = ref([]);
@@ -11,7 +11,7 @@ const getUsers = async () => {
   } else console.log("error, cannot get data");
 };
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await getUsers();
 });
 
@@ -21,10 +21,6 @@ const getUserDetail = async (id) => {
     detailCurrentUser.value = await res.json();
   } else console.log("error, cannot get data");
 };
-
-onMounted(async () => {
-  await getUsers();
-});
 
 const deleteUsers = async (id) => {
   const isConfirm = confirm("Do you want to delete this user?")
@@ -43,7 +39,6 @@ const isShowDetail = ref(0)
 const isShowEdit = ref(0)
 const detailCurrentUser = ref({})
 const showDetail = (userId) => {
-  // detailCurrentUser.value = user
   getUserDetail(userId)
   isShowDetail.value = 1
 }
