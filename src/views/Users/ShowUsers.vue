@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount} from "vue";
 import UserDetail from "../../components/UserComponents/EachUserDetail.vue";
+import EditUser from "../../components/UserComponents/EditUser.vue";
 
 const users = ref([]);
 const getUsers = async () => {
@@ -46,7 +47,15 @@ const closeShowDetail = () => {
   isShowDetail.value = 0
   isShowEdit.value = 0
 }
-
+const showEditForm = (user) => {
+  isShowEdit.value = 1
+  detailCurrentUser.value = user
+  console.log(isShowEdit.value)
+}
+const closeEditForm = () => {
+  isShowEdit.value = 0
+  console.log(isShowEdit.value)
+}
 </script>
 
 <template>
@@ -95,7 +104,7 @@ const closeShowDetail = () => {
               
               <div id="allButton" class="float-right col-6">
                 <img  @click="showDetail(user.id)" src="../../assets/detail.png" class="cursor-pointer img-button col-1">
-                <img  src="../../assets/edit.png" class="cursor-pointer img-button col-1"> 
+                <img  @click="showEditForm(user)" src="../../assets/edit.png" class="cursor-pointer img-button col-1"> 
                 <img  @click="deleteUsers(user.id)" src="../../assets/trash-bin.png" class="cursor-pointer img-button col-1">
               </div>
             </div>
@@ -121,7 +130,9 @@ const closeShowDetail = () => {
       </span>
     </div>
 
-    <UserDetail v-if="isShowDetail == true" @closeMe="closeShowDetail" :user="detailCurrentUser" />
+    <UserDetail v-if="isShowDetail == 1" @closeMe="closeShowDetail" :user="detailCurrentUser" />
+    <EditUser class="edit" v-if="isShowEdit == 1" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser"
+      :showEditForm="isShowEdit" />
 
     </div>
   </main>
@@ -192,5 +203,9 @@ const closeShowDetail = () => {
 .scrollBar {
   overflow-y: scroll;
   height: 70vh;
+}
+
+.edit {
+  width: 100%;
 }
 </style>
