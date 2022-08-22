@@ -37,6 +37,7 @@ const ErrorNameNull = ref(false);
 const ErrorNameUnique = ref(false)
 const ErrorEmailNull = ref(false);
 const ErrorEmailUnique = ref(false)
+const ErrorEmailFormat = ref(false)
 const validationName = () => {
     ErrorNameNull.value = username.value == null || username.value == ''
     ErrorNameUnique.value = filterUsers.value.map((user) =>{return user.name}).includes(username.value)
@@ -44,8 +45,17 @@ const validationName = () => {
 
 const validationEmail = () => {
     ErrorEmailNull.value = email.value == null || email.value == ''
+    // console.log(validateEmailFormat(email.value));
+    ErrorEmailFormat.value = validateEmailFormat(email.value)
+    console.log(ErrorEmailFormat.value);
     ErrorEmailUnique.value = filterUsers.value.map((user) => {return user.email}).includes(email.value)
 
+}
+
+const validateEmailFormat = (email) => {
+  const re =
+    /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(String(email).toLocaleLowerCase())
 }
 
 // EDIT
@@ -113,6 +123,7 @@ const closeEditForm = () => {
                 placeholder="Enter your name/group name"
                 @keyup="validationName"
                 v-model="username"
+                maxlength="100"
               />
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorNameNull"> Please enter username </p>
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorNameUnique"> Username is already used </p>
@@ -126,9 +137,11 @@ const closeEditForm = () => {
                 placeholder="Enter your email"
                 @keyup="validationEmail"
                 v-model="email"
+                maxlength="50"
               />
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailNull"> Please enter email </p>
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailUnique"> Email is already used </p>
+              <p class="ml-2 text-xs text-right text-red-700" v-if="!ErrorEmailFormat"> Please enter the correct email </p>
             </div>
             <div>
               <h2 class="mb-2 text-base font-semibold text-gray-900 dark:text-gray-300">

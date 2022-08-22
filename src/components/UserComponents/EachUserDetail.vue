@@ -51,12 +51,12 @@ const showDetail = ref(true);
   <main class="my-8">
     <div class="px-6 col-12 detail-container">
       <div class="{`col-12 group overflow-auto h-5/6 top-24 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
-        <div class="max-w-md rounded-lg shadow-2xl col-12 max-h-content bg-gradient-to-r from-zinc-100 to-white">
+        <div class="max-w-lg rounded-lg shadow-2xl col-12 max-h-content bg-gradient-to-r from-zinc-100 to-white">
           <button @click="$emit('closeMe')" id="closeDetail" class="items-center justify-end h-12 col-1">
             <img src="../../assets/close.png" />
           </button>
 
-          <img class="object-cover object-center w-full h-40 col-12" src="https://www.jeban.com/uploads/2020/11/800/520953_2543e40c73.webp" alt="avatar"/>
+          <img class="object-cover object-center w-full h-40 " src="../../assets/profile.jpg" alt="avatar"/>
 
           <div class="flex items-center px-6 py-3 bg-gray-900 col-12">
             <h1 class="mx-3 text-lg font-semibold text-white col-9">
@@ -77,42 +77,32 @@ const showDetail = ref(true);
               </p>
             </div>
 
-            <div class="flex mt-4 text-gray-700 col-12">
-              <img src="../../assets/date.png" class="img col-2" />
-              <span class="col-9">
-                Account creation date : 
-                
-              </span>
-              <p>{{ extractDate(user.createdOn) }}  {{ extractTime(user.createdOn) }}</p>
+            <div class="rounded-lg time">
+              <div class="my-3 text-center text-gray-700">
+                <p>Register date : {{ extractDate(user.createdOn) }} {{ extractTime(user.createdOn) }}</p>
+              </div>
+
+              <div class="my-3 text-center text-gray-700">
+                <p>Latest account update :  {{ extractDate(user.updatedOn) }}  {{ extractTime(user.updatedOn) }}</p>
+              </div>
             </div>
 
-            <div class="flex mt-4 text-gray-700 col-12">
+            <!-- <div class="flex mt-4 text-gray-700">
               <img src="../../assets/date.png" class="img col-2" />
-              <span class="col-9">
+              <p class="col-9">
                 Latest account update : 
                 
-              </span>
+              </p>
+              <p>{{ extractDate(user.createdOn) }} {{ extractTime(user.createdOn) }}</p>
+            </div>
+
+            <div class="flex mt-4 text-gray-700 col-12">
+              <img src="../../assets/date.png" class="img col-2" />
+              <p class="col-9">
+                Latest account update : 
+                
+              </p>
               <p class="">{{ extractDate(user.updatedOn) }}  {{ extractTime(user.updatedOn) }}</p>
-            </div>
-
-            <!-- <div class="flex mt-4 text-gray-700 col-12">
-              <img src="../../assets/time.png" class="img col-2" />
-              <span class="col-9">
-                Time : {{ extractTime(event.eventStartTime) }}
-              </span>
-            </div>
-
-            <div class="flex mt-4 text-gray-700 col-12">
-              <img src="../../assets/email.png" class="img col-2" />
-              <span class="col-12">Email : {{ event.bookingEmail }}</span>
-            </div>
-
-            <div class="flex mt-4 text-gray-700 col-12">
-              <img src="../../assets/notes.png" class="img col-2" /> Note :
-              <span class="text-gray-700 col-9">
-                <span class="w-full mx-1">
-                  <span class="inline-flex"> {{ event.eventNote }}</span></span>
-              </span>
             </div> -->
             
           </div>
@@ -149,5 +139,15 @@ const showDetail = ref(true);
 .detail-container {
   position: absolute;
   left: 30%;
+}
+
+.profile {
+  margin-top: -20%;
+}
+
+.time {
+  border: 1px solid gray;
+  font-size: smaller;
+  margin-top: 3%;
 }
 </style>
