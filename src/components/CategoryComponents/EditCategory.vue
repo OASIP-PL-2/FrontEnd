@@ -110,7 +110,7 @@ const validateEventCategoryDuration = computed(() => {
             Edit Clinic :
           </span>
           <button @click="$emit('closeEditCategory')" id="closeDetail" class="mt-1 col-12">
-            <img src="../assets/close.png" />
+            <img src="../../assets/close.png" />
           </button>
         </nav>
         <!-- edit clinic -->
