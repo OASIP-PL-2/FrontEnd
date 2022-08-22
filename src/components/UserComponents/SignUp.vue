@@ -40,7 +40,7 @@ let createUser = computed(() =>{
         return 0
     }else if(validation()){
         return 0
-    }else if(email.value != confirm_email.value){
+    }else if(email.value.trim() != confirm_email.value.trim()){
         ErrorConfirmEmail.value = true
         return 0
     }else{
@@ -56,8 +56,8 @@ let createUser = computed(() =>{
 let format = /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 let validation = () =>{
-    if(users.value.map((user) =>{return user.name}).includes(username.value.trim())
-        || users.value.map((user) =>{return user.email}).includes(email.value.trim()) 
+    if(users.value.map((user) =>{return user.name.trim()}).includes(username.value.trim())
+        || users.value.map((user) =>{return user.email.trim()}).includes(email.value.trim()) 
         || !(format.test(email.value))){
             return true;
         }else if(!(format.test(email.value))){
@@ -74,10 +74,10 @@ let ErrorName_message = ref('')
 let ErrorEmail_message = ref('')
 
 let showError = () => {
-    ErrorName.value = users.value.map((user) =>{return user.name}).includes(username.value)
+    ErrorName.value = users.value.map((user) =>{return user.name.trim()}).includes(username.value.trim())
     if(ErrorName.value){ ErrorName_message.value = 'Username is already used'}
-    ErrorEmail.value = users.value.map((user) =>{return user.email}).includes(email.value)
-    if(format.test(email.value)){
+    ErrorEmail.value = users.value.map((user) =>{return user.email.trim()}).includes(email.value.trim())
+    if(format.test(email.value.trim())){
         if(ErrorEmail.value){ ErrorEmail_message.value = 'Email is already used'}
     }else if(email.value == ''){
         ErrorEmail.value = false; 

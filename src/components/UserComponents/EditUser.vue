@@ -40,15 +40,15 @@ const ErrorEmailUnique = ref(false)
 const ErrorEmailFormat = ref(false)
 const validationName = () => {
     ErrorNameNull.value = username.value == null || username.value == ''
-    ErrorNameUnique.value = filterUsers.value.map((user) =>{return user.name}).includes(username.value)
+    ErrorNameUnique.value = filterUsers.value.map((user) =>{return user.nam.trim()}).includes(username.value.trim())
 }
 
 const validationEmail = () => {
     ErrorEmailNull.value = email.value == null || email.value == ''
     // console.log(validateEmailFormat(email.value));
-    ErrorEmailFormat.value = validateEmailFormat(email.value)
+    ErrorEmailFormat.value = validateEmailFormat(email.value.trim())
     console.log(ErrorEmailFormat.value);
-    ErrorEmailUnique.value = filterUsers.value.map((user) => {return user.email}).includes(email.value)
+    ErrorEmailUnique.value = filterUsers.value.map((user) => {return user.email.trim()}).includes(email.value.trim())
 
 }
 
