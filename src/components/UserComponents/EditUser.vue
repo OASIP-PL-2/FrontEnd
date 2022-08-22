@@ -60,20 +60,22 @@ const validateEmailFormat = (email) => {
 
 // EDIT
 const userToEdit = ref({});
+
 const editingUser = () => {
-  userToEdit.value = {
-    name: username.value,
-    email: email.value,
-    role: role.value
-  };
-//   console.log(userToEdit.value);
-  editUserToDB(userToEdit.value);
-  // showEditForm.value = 0;
+  if(username.value == props.user.name && email.value == props.user.email && role.value == props.user.role){
+    closeEditForm()
+  }else{
+    userToEdit.value = {
+      name: username.value,
+      email: email.value,
+      role: role.value
+    };
+    editUserToDB(userToEdit.value);
+  }
 };
 
 const editUserToDB = async editUser => {
-    console.log("เข้า method")
-  const res = await fetch(
+    const res = await fetch(
     `${import.meta.env.VITE_BACK_URL}/users/${props.user.id}`,
     {
       method: "PUT",
