@@ -56,8 +56,8 @@ let createUser = computed(() =>{
 let format = /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 let validation = () =>{
-    if(users.value.map((user) =>{return user.name}).includes(username.value)
-        || users.value.map((user) =>{return user.email}).includes(email.value) 
+    if(users.value.map((user) =>{return user.name}).includes(username.value.trim())
+        || users.value.map((user) =>{return user.email}).includes(email.value.trim()) 
         || !(format.test(email.value))){
             return true;
         }else if(!(format.test(email.value))){
