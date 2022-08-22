@@ -55,7 +55,7 @@ const validationEmail = () => {
 const validateEmailFormat = (email) => {
   const re =
     /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(email).toLocaleLowerCase())
+  return !re.test(String(email))
 }
 
 // EDIT
@@ -141,7 +141,7 @@ const closeEditForm = () => {
               />
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailNull"> Please enter email </p>
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailUnique"> Email is already used </p>
-              <p class="ml-2 text-xs text-right text-red-700" v-if="!ErrorEmailFormat"> Please enter the correct email </p>
+              <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailFormat"> Please enter the correct email </p>
             </div>
             <div>
               <h2 class="mb-2 text-base font-semibold text-gray-900 dark:text-gray-300">
