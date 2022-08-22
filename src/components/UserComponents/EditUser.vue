@@ -144,7 +144,7 @@ const closeEditForm = () => {
               <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmailFormat"> Please enter the correct email </p>
             </div>
             <div>
-              <h2 class="mb-2 text-base font-semibold text-gray-900 dark:text-gray-300">
+              <h2 class="mb-2 text-base font-semibold text-gray-900">
                 Role :
                 <select v-model="role" class="rounded-lg">
                   <option value disabled selected>Select Role</option>

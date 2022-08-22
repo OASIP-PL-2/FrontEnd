@@ -1,6 +1,6 @@
 <script setup>
-import SignIn from '../../components/UserComponents/SignIn.vue';
-const SignInUser = async (user) =>{
+import SignUp from '../../components/UserComponents/SignUp.vue';
+const SignUpUser = async (user) =>{
     if(user != 0){
         console.log('Sign in..');
         const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users`, {
@@ -16,7 +16,7 @@ const SignInUser = async (user) =>{
 </script>
  
 <template>
-<SignIn @SignInUser="SignInUser"></SignIn>
+<SignUp @SignUpUser="SignUpUser"></SignUp>
 </template>
  
 <style>

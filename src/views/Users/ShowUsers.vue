@@ -71,14 +71,14 @@ const closeEditForm = () => {
      
 
       <div class="col-12">
-      <router-link :to="{ name: 'signin'}" >
+      <router-link :to="{ name: 'SignUp'}" >
           <div class="flex flex-col items-center max-w-xs px-4 py-20 space-y-2 text-center rounded-md cursor-pointer bg-gray-500/50 hover:bg-amber-600 hover:scale-105 hover:smooth-hover">
             <a class="flex items-center justify-center w-20 h-20 rounded-full bg-amber-500 text-white/50 group-hover:text-white group-hover:smooth-hover" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             </a>
-          <p class="text-center text-white/50 group-hover:text-gray-900 group-hover:smooth-hover"> Sign In User </p>
+          <p class="text-center text-white/50 group-hover:text-gray-900 group-hover:smooth-hover"> Sign Up </p>
           </div>
       </router-link>
       </div> 
@@ -117,14 +117,14 @@ const closeEditForm = () => {
     <div v-else >
       <span class="flex flex-col items-center px-4 py-20 mt-4 space-y-2 text-xl font-semibold text-center bg-orange-500 rounded-md cursor-pointer group">No User</span>
       <span>
-      <router-link :to="{ name: ''}" >
+      <router-link :to="{ name: 'SignUp'}" >
           <div class="flex flex-col items-center px-4 py-10 space-y-2 text-center rounded-md cursor-pointer bg-gray-900/50 hover:bg-amber-500 hover:smooth-hover">
             <a class="flex items-center justify-center w-20 h-20 rounded-full bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             </a>
-          <p class="text-center text-white/50 group-hover:text-gray-900 group-hover:smooth-hover"> User Sign In </p>
+          <p class="text-center text-white/50 group-hover:text-gray-900 group-hover:smooth-hover"> User SignUp </p>
           </div>
       </router-link>
       </span>
