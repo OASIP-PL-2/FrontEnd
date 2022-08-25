@@ -6,6 +6,7 @@ import ShowCategory from '../views/Categories/ShowCategory.vue'
 import AboutUs from '../views/AboutUs.vue'
 import ShowUsers from '../views/Users/ShowUsers.vue'
 import SignUp from '../views/Users/SignUp.vue'
+import Login from '../views/Users/Login.vue'
 
 const history=createWebHistory(import.meta.env.BASE_URL)
 const routes = [{ 
@@ -42,6 +43,11 @@ const routes = [{
         path : '/users/signup',
         name : 'SignUp',
         component : SignUp
+    },
+    {
+        path : '/users/login',
+        name : 'Login',
+        component : Login
     }
 ]
 
