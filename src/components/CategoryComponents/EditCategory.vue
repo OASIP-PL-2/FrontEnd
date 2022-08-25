@@ -15,14 +15,10 @@ const props = defineProps({
   },
 });
 
-console.log(props.category);
-
 const categoryName = ref(props.category.eventCategoryName);
 const duration = ref(props.category.eventDuration);
 const description = ref(props.category.eventCategoryDescription);
 const showEditForm = ref(props.showEditForm);
-
-console.log(categoryName.value.trim());
 
 // EDIT
 const categoryToEdit = ref({});
@@ -32,9 +28,7 @@ const editingCategory = () => {
     eventDuration: duration.value,
     eventCategoryDescription: description.value,
   };
-  console.log(categoryToEdit.value);
   editCategoryToDB(categoryToEdit.value);
-  // showEditForm.value = 0;
 };
 
 const editCategoryToDB = async (editCategory) => {

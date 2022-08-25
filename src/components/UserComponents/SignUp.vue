@@ -7,7 +7,7 @@ defineEmits(['SignUpUser']);
 
 //Button Back
 const appRouter = useRouter();
-const goBack = () => appRouter.push({name : 'ShowUsers'})
+const goBack = () => appRouter.push({name : 'ShowUsers' , params : {roles : 'all'}})
 
 //Attribute
 let username = ref('')
@@ -17,6 +17,7 @@ let role = ref('student')
 
 //Roles
 let roles = ref(['student' , 'lecturer' , 'admin'])
+let roless = ref()
 
 //Get User
 const users = ref([])
@@ -44,6 +45,7 @@ let createUser = computed(() =>{
         ErrorConfirmEmail.value = true
         return 0
     }else{
+        console.log("correct");
         ErrorConfirmEmail.value = false
         setTimeout(() => {
             goBack();

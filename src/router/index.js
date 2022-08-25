@@ -34,7 +34,7 @@ const routes = [{
         component: AboutUs
     },
     {
-        path : '/users',
+        path : '/users/:roles',
         name : 'ShowUsers',
         component : ShowUsers 
     },

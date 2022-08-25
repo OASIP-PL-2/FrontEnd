@@ -6,6 +6,8 @@ import router from './router';
 
 console.clear;
 const isOpen = ref(false)
+const isOpenRoles = ref(false)
+
 const reloadPage = () => {
   window.location.reload()
 }
@@ -16,40 +18,11 @@ const getcategories = async () => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`) 
   if (res.status === 200) {
     categories.value = await res.json()
-    console.log(categories.value)
   } else console.log("error, cannot get data")
 }
 onMounted(async () => {
   await getcategories()
 })
-
-// const filtertime = ref("")
-// const change = computed(()=>{
-//   console.log("เข้า change");
-//   if(filtertime.value=='all'){
-//     console.log("all");
-//     // window.location.reload()
-//     router.push({ name: 'ShowEvent' , params: { time: 'All' }})
-
-//   }else if(filtertime.value=='past'){
-
-//     console.log("past");
-//     // window.location.reload()
-//     router.push({ name: 'ShowEvent' , params: { time: 'Past' }})
-
-//   }else if(filtertime.value=='upcoming'){
-//     console.log("up");
-//     // window.location.reload()
-//     router.push({ name: 'ShowEvent' , params: { time: 'Upcoming' }})
-    
-//   }
-// })
-
-// onUpdated(()=>{
-//   console.log("onUpdate");
-//   change.value
-//   reloadPage.value
-// })
 
 </script>
 
@@ -83,8 +56,8 @@ onMounted(async () => {
             </div>
 
             <aside :class="isOpen ? '' : 'hidden'" class="px-10 py-4 bg-black rounded-md sm:flex sm:justify-center sm:items-center">
+            <div class="scrollBar">
                 <div class="flex flex-col justify-end sm:flex-row">
-                    <!-- <p class="mt-3 text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'Home' }">Home</router-link></p> -->
                     <p class="mt-3 font-bold text-zinc-300 sm:mx-3 sm:mt-0">Clinic</p>
                     <div v-for="(category,index) in categories" :key="index">
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: category.eventCategoryName }}" >{{category.eventCategoryName}}</router-link></p>
@@ -94,11 +67,16 @@ onMounted(async () => {
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'All' }}" >All Events</router-link></p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'Past' }}" >Past Events</router-link></p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'Upcoming' }}" >Upcoming Events</router-link></p>
-                    <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0"><router-link :to="{ name: 'AboutUs'}"> Users </router-link> </p>
-                    <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowUsers'}" >All Users</router-link></p>
+                    <p class="mt-3 font-bold text-zinc-300 sm:mx-3 sm:mt-0">Users</p>
+                    <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowUsers' , params: {roles : 'all'}}" >All Users</router-link></p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'SignUp'}" >Add User</router-link></p>
+                    <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="isOpenRoles = !isOpenRoles">Roles</p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'student'}}" >Student</router-link></p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'lecturer'}}" >Lecturer</router-link></p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'admin'}}" >Admin</router-link></p>
                     <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0"><router-link :to="{ name: 'AboutUs'}"> About </router-link> </p>
-                </div>      
+                </div>   
+                </div>   
             </aside>
             
                     <!-- <span>
@@ -122,13 +100,17 @@ onMounted(async () => {
 
     </header>
     <div>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </div>
 
 </template>
 
 <style scoped>
-
+.scrollBar {
+  overflow-y: scroll;
+  height: 80vh;
+  display: block;
+}
 aside {
   background-color: #3B3B3B;
   position: fixed;
@@ -138,8 +120,6 @@ aside {
   width: 20%;
   z-index: 1;
 }
-
-
 .fixedtop{
   position: fixed;
   margin-left: auto;
