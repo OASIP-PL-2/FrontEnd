@@ -2,18 +2,23 @@
 import { ref, onBeforeMount} from "vue";
 import UserDetail from "../../components/UserComponents/EachUserDetail.vue";
 import EditUser from "../../components/UserComponents/EditUser.vue";
+import { useRoute } from "vue-router"
 
+let { params } = useRoute()
+const reloadPage = () => {
+  window.location.reload()
+}
 const users = ref([]);
 const getUsers = async () => {
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users`);
   if (res.status === 200) {
-    users.value = await res.json();
-    console.log(users.value);
+      users.value = await res.json();
   } else console.log("error, cannot get data");
 };
 
 onBeforeMount(async () => {
   await getUsers();
+  return fillers();
 });
 
 const getUserDetail = async (id) => {
@@ -56,6 +61,13 @@ const closeEditForm = () => {
   isShowEdit.value = 0
   console.log(isShowEdit.value)
 }
+
+const fillers = () =>{
+  if(params.roles != 'all'){
+      users.value = users.value.filter(user => user.role == params.roles)
+  }
+}
+
 </script>
 
 <template>
@@ -63,7 +75,50 @@ const closeEditForm = () => {
     <div class="container px-6 mx-auto">
     <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Users : </h2>
     <p class="mb-5 text-xl font-semibold text-zinc-100 col-10">The total of user are {{ users.length }} users</p>    
-    
+    <div class="flex items-center justify-between mb-3">
+      <div class="relative flex px-4 text-center shadow-lg col-4 bg-amber-400 rounded-2xl">
+          <router-link :to="{ name: 'ShowUsers' , params: {roles : 'all'}}">
+            <div class="flex-1 group">
+              <a class="flex items-end justify-center w-full px-4 mx-auto text-center text-zinc-900 group-hover:text-indigo-500">
+                <span class="block py-3 text-lg">
+                  <button class="active" >All</button>
+                  <span class="block w-5 h-1 mx-auto rounded-full group-hover:bg-indigo-500"></span>
+                </span>
+              </a>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'ShowUsers' , params: {roles : 'admin'}}" >
+            <div class="flex-1 group">
+              <a class="flex items-end justify-center w-full px-4 mx-auto text-center text-zinc-900 group-hover:text-indigo-500">
+                <span class="block py-3 text-lg">
+                  <button class="active" >Admin</button>
+                  <span class="block w-5 h-1 mx-auto rounded-full group-hover:bg-indigo-500"></span>
+                </span>
+              </a>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'ShowUsers' , params: {roles : 'lecturer'}}" >
+            <div class="flex-1 group">
+              <a class="flex items-end justify-center w-full px-4 mx-auto text-center text-zinc-900 group-hover:text-indigo-500">
+                <span class="block py-3 text-lg">
+                  <button class="active" >Lecturer</button>
+                  <span class="block w-5 h-1 mx-auto rounded-full group-hover:bg-indigo-500"></span>
+                </span>
+              </a>
+            </div>
+          </router-link>
+          <router-link :to="{ name: 'ShowUsers' , params: {roles : 'student'}}" >
+          <div class="flex-1 group">
+            <a class="flex items-end justify-center w-full px-4 mx-auto text-center text-zinc-900 group-hover:text-indigo-500">
+              <span class="block py-3 text-lg">
+                <button class="active" >Student</button>
+                <span class="block w-5 h-1 mx-auto rounded-full group-hover:bg-indigo-500"></span>
+              </span>
+            </a>
+          </div>
+          </router-link>
+      </div>
+    </div>
     
     <div  v-if="users.length!==0"> 
     <div class="scrollBar col-12">
