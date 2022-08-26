@@ -8,7 +8,7 @@ const SignUpUser = async (user) =>{
             headers: {
                 "content-type": "application/json",
             },
-            body: JSON.stringify({name : user.name , email : user.email , role : user.role})
+            body: JSON.stringify({name : user.name , email : user.email, password : user.password , role : user.role})
         });
         console.log(res.status);
     }
