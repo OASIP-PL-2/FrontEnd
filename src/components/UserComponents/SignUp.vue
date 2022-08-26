@@ -13,7 +13,6 @@ const goBack = () =>
 //Attribute
 let username = ref("");
 let email = ref("");
-let confirm_email = ref("");
 let role = ref("student");
 let password = ref("");
 let confirm_password = ref("")
@@ -47,7 +46,6 @@ onMounted(async () => {
 
 //Create User
 let createUser = computed(() => {
-    ErrorConfirmEmail.value = false;
     ErrorConfirmPassword.value = false;
     if (
         username.value.length == 0 ||
@@ -63,17 +61,11 @@ let createUser = computed(() => {
         return 0;
     } else if (validation()) {
         return 0;
-    } else if (email.value.trim() != confirm_email.value.trim() || password.value.trim() != confirm_password.value.trim()) {
-        if (email.value.trim() != confirm_email.value.trim()) {
-            ErrorConfirmEmail.value = true;
-        }
-        if (password.value.trim() != confirm_password.value.trim()) {
-            ErrorConfirmPassword.value = true;
-        }
+    } else if (password.value.trim() != confirm_password.value.trim()) {
+        ErrorConfirmPassword.value = true;
         return 0;
     } else {
         console.log("correct");
-        ErrorConfirmEmail.value = false;
         setTimeout(() => {
             goBack();
         }, 500);
@@ -114,7 +106,6 @@ let validation = () => {
 //Show Error
 let ErrorName = ref(false);
 let ErrorEmail = ref(false);
-let ErrorConfirmEmail = ref(false);
 let ErrorPassword = ref(false);
 let ErrorConfirmPassword = ref(false)
 let ErrorName_message = ref("");
@@ -186,13 +177,6 @@ let showError = () => {
                                         maxlength="50" />
                                     <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorEmail">
                                         {{ ErrorEmail_message }}
-                                    </p>
-                                    <label class="mt-3 leading-loose">Confirm Email :</label>
-                                    <input type="text"
-                                        class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
-                                        placeholder="Confrim your email" v-model="confirm_email" />
-                                    <p class="ml-2 text-xs text-right text-red-700" v-if="ErrorConfirmEmail">
-                                        Email didn't matching
                                     </p>
                                 </div>
 
