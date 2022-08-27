@@ -73,8 +73,8 @@ const fillers = () =>{
 <template>
      <main class="my-8">
     <div class="container px-6 mx-auto">
-    <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Users : </h2>
-    <p class="mb-5 text-xl font-semibold text-zinc-100 col-10">The total of user are {{ users.length }} users</p>    
+    <h2 class="mt-3 mb-5 text-4xl font-bold text-black">Users : </h2>
+    <p class="mb-5 text-xl font-semibold text-stone-600 col-10">The total of user are {{ users.length }} users</p>    
     <div class="flex items-center justify-between mb-3">
       <div class="relative flex px-4 text-center shadow-lg col-4 bg-amber-400 rounded-2xl">
           <router-link :to="{ name: 'ShowUsers' , params: {roles : 'all'}}">

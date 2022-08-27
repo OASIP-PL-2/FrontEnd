@@ -323,8 +323,8 @@ const filterUpcoming = () => {
 <!-- {{this.$route.params.time}} -->
     <main class="my-8">
     <div class="container px-6 mx-auto">
-    <h2 class="mt-3 mb-5 text-4xl font-bold text-white">{{$route.params.time}} Events : </h2>
-    <p class="mb-5 text-xl font-semibold text-zinc-100 col-10">The total of bookings are {{ filterEvent.length }} events</p>    
+    <h2 class="mt-3 mb-5 text-4xl font-bold text-black">{{$route.params.time}} Events : </h2>
+    <p class="mb-5 text-xl font-semibold text-stone-600 col-10">The total of bookings are {{ filterEvent.length }} events</p>    
     
 <!-- filter navbar -->
       <div class="flex items-center justify-between mb-3">

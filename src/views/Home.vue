@@ -83,8 +83,8 @@ console.log(createdAtDisplay.value)
     </div>
 
 
-
-    <h2 class="mt-20 text-2xl font-semibold text-white"> CLINICS : </h2>
+    <div class="border border-1 p-10">
+    <h2 class="mt-10 ml-6 text-2xl font-semibold text-black"> CLINICS : </h2>
 
     <div class="grid grid-cols-3 gap-4 px-6 mx-auto mt-8 md:flex md:-mx-4">
         <!-- loop each clinic -->
@@ -119,6 +119,7 @@ console.log(createdAtDisplay.value)
     <span>
         <a href="#top"><img src="../assets/up-arrow.png" class="img"></a>
     </span>
+    </div>
     <!-- <h1 class="text-white"> {{ createdAtDisplay }}</h1> -->
     <!-- </div> -->
     <!-- </main> -->

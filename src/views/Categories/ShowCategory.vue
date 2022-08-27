@@ -39,8 +39,8 @@ const closeEditForm = () => {
   <div>
     <main class="my-8">
       <div class="container px-6 mx-auto">
-        <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Clinic :</h2>
-        <p class="mb-5 text-xl font-semibold text-zinc-100 col-10">
+        <h2 class="mt-3 mb-5 text-4xl font-bold text-black">Clinic :</h2>
+        <p class="mb-5 text-xl font-semibold text-stone-600 col-10">
           The total of Clinic are {{ categories.length }} categories
         </p>
         <div v-if="categories.length !== 0">

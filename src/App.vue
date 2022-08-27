@@ -31,12 +31,12 @@ onMounted(async () => {
         <div id="top" class="container px-6 py-3 mx-auto">
             <div class="flex items-center justify-between">
  
-                <div class="w-full text-2xl font-bold text-white md:text-center">
+                <div class="w-full text-2xl font-bold text-black md:text-center">
                 <router-link :to="{ name: 'Home'}" >
                   <img src="./assets/logo-1.png" class="logo">
                
                     OASIP : 
-                    <span class="mx-1 text-base text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-200">Online Appointment Scheduling System for Intregrated Project Clinic </span>
+                    <span class="mx-1 text-base text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 to-zinc-600">Online Appointment Scheduling System for Intregrated Project Clinic </span>
                  </router-link>
                 </div>
                 <div class="flex items-center justify-end">
@@ -44,7 +44,7 @@ onMounted(async () => {
                         <button @click="reloadPage" class="r-2">   
                             <router-link :to="{ name: 'Home' }"><img src="./assets/home2.png" class="w-8 mr-8 fill-current col-1 h-7 hover:h-8" aria-label="toggle menu"></router-link>
                         </button>
-                        <button @click="isOpen = !isOpen" type="button" class="text-white hover:text-amber-600 focus:outline-none" aria-label="toggle menu">
+                        <button @click="isOpen = !isOpen" type="button" class="text-black hover:text-amber-600 focus:outline-none" aria-label="toggle menu">
                             <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
                                 <path fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"></path>
                             </svg>
