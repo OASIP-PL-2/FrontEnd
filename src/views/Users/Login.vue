@@ -6,12 +6,11 @@ const appRouter = useRouter();
 const email = ref('')
 const password = ref('')
 
-const errorEmailNull = ref(false);
-const errorEmailFormat = ref(false)
-const errorPasswordNull = ref(false);
-const errorPasswordLength = ref(false)
+const emailIsEmpty = ref(false)
+const passwordIsEmpty = ref(false)
 const status = ref(0)
 const statusMessage = ref('')
+
 
 const goBack = () => {
     console.log('เข้า');
@@ -19,35 +18,21 @@ const goBack = () => {
 }
 
 const validationEmail = () => {
-    if (email.value == null || email.value == '') {
-        errorEmailNull.value = true
-        errorEmailFormat.value = false
-    } else {
-        errorEmailNull.value = false
-        errorEmailFormat.value = validateEmailFormat(email.value.trim())
-    }
+    emailIsEmpty.value = email.value == null || email.value == ''
 }
 
 const validationPassword = () => {
-    if (password.value == null || password.value == '') {
-        errorPasswordNull.value = true
-        errorPasswordLength.value = false
-    } else {
-        errorPasswordNull.value = false
-        errorPasswordLength.value = !(password.value.length >= 8 && password.value.length <= 14)
-    }
-}
-
-const validateEmailFormat = (email) => {
-    const re =
-        /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return !re.test(String(email))
+    passwordIsEmpty.value = password.value == null || password.value == ''
 }
 
 const LoginUser = () => {
-    if (!errorEmailNull.value && !errorEmailFormat.value && !errorPasswordNull.value && !errorPasswordLength.value) {
+    if(email.value == null || email.value == '' || password.value == null || password.value == '') {
+        emailIsEmpty.value = email.value == null || email.value == ''
+        passwordIsEmpty.value = password.value == null || password.value == ''
+    }else {
         checkMatchTODB(email.value, password.value)
     }
+    
 
 }
 const checkMatchTODB = async (email, password) => {
@@ -96,14 +81,10 @@ const checkMatchTODB = async (email, password) => {
                                     <label class="leading-loose">Email :</label>
                                     <input type="text"
                                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
-                                        placeholder="Enter your email" @keyup="validationEmail" v-model="email"
-                                        maxlength="100" />
-                                    <p class="ml-2 text-xs text-right text-red-700" v-if="errorEmailNull">
-                                        Please enter your email
-                                    </p>
-                                    <p class="ml-2 text-xs text-right text-red-700" v-if="errorEmailFormat">
-                                        Format email is Invaild
-                                    </p>
+                                        placeholder="Enter your email" v-model="email" 
+                                        @keyup="validationEmail"
+                                        :class="{'empty-field' : emailIsEmpty}"
+                                        maxlength="50" />
                                 </div>
 
                                 <!-- Email input -->
@@ -111,14 +92,9 @@ const checkMatchTODB = async (email, password) => {
                                     <label class="leading-loose">Password :</label>
                                     <input type="password"
                                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
-                                        placeholder="Enter your password" @keyup="validationPassword" v-model="password"
-                                        maxlength="50" />
-                                    <p class="ml-2 text-xs text-right text-red-700" v-if="errorPasswordNull">
-                                        Please enter your password
-                                    </p>
-                                    <p class="ml-2 text-xs text-right text-red-700" v-if="errorPasswordLength">
-                                        Password must between 8-14 character
-                                    </p>
+                                        placeholder="Enter your password" v-model="password" 
+                                        @keyup="validationPassword"
+                                        :class="{'empty-field' : passwordIsEmpty}" />
 
                                 </div>
 
@@ -155,11 +131,8 @@ const checkMatchTODB = async (email, password) => {
     width: 40%;
 }
 
-/* .close {
-    width: 97%;
-} */
+.empty-field {
+    border: red 2px solid;
+}
 
-/* .input {
-    width: 500%;
-} */
 </style>
