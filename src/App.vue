@@ -72,9 +72,9 @@ onMounted(async () => {
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'SignUp'}" >Add User</router-link></p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'Login'}" >Login</router-link></p>
                     <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="isOpenRoles = !isOpenRoles">Roles</p>
-                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'student'}}" >Student</router-link></p>
-                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'lecturer'}}" >Lecturer</router-link></p>
-                    <p :class="isOpenRoles ? '' : 'hidden'" class="mt-2 pl-16 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'admin'}}" >Admin</router-link></p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'student'}}" >Student</router-link></p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'lecturer'}}" >Lecturer</router-link></p>
+                    <p :class="isOpenRoles ? '' : 'hidden'" class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" ><router-link :to="{ name: 'ShowUsers' , params: {roles : 'admin'}}" >Admin</router-link></p>
                     <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0"><router-link :to="{ name: 'AboutUs'}"> About </router-link> </p>
                 </div>   
                 </div>   
