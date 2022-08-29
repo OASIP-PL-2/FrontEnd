@@ -255,11 +255,14 @@ console.log(minDatetimeLocal.value);
 </script>
 
 <template>
+
+
   <main class="my-8">
     <div class="container px-6 mx-auto">
       <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Add New Event :</h2>
 
       <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+  
         <div class="relative px-4 py-10 mx-8 bg-white shadow md:mx-0 rounded-3xl sm:p-10">
           <div class="max-w-lg mx-auto -mt-7">
             <div class="divide-y divide-gray-200">

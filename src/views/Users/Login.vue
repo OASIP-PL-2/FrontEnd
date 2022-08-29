@@ -61,39 +61,125 @@ const checkMatchTODB = async (email, password) => {
 </script>
 
 <template>
-    <main class="my-8">
-        <div class="container px-6 mx-auto">
-            <!-- <h2 class="mt-3 mb-5 ml-8 text-4xl font-bold text-white">Login :</h2> -->
-            <!-- Sign up box -->
 
-            <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-                <div class=" bg-white shadow md:mx-0 rounded-3xl sm:p-10">
-                    <div class="close flex justify-end">
-                        <div class="cursor-pointer p-6">
+    <!-- <div class="container px-6 mx-auto"> -->
+    <!-- <h2 class="mt-3 mb-5 ml-8 text-4xl font-bold text-white">Login :</h2> -->
+    <!-- Sign up box -->
+
+    <div id="loginPage">
+        <div class="ml-10 mr-10 bg-white shadow lg:mr-20 lg:ml-20 md:mr-20 sm:mr-20 md:ml-20 sm:ml-20 rounded-3xl">
+            <div class="float-right mr-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/992/992660.png" alt="" width="33" @click="goBack"
+                    class="mt-4" />
+            </div> <!-- close login form -->
+            <div class="flex">
+                <div class="ml-5 -mt-24 basis-6/12">
+                    <img src="../../assets/login1.png" class=" lg:mt-10 lg:h-auto md:h-95 md:mt-28 sm:mt-32">
+                </div>
+
+                <div class="p-10 mt-12 basis-6/12 input-login">
+                    <div class="text-2xl font-semibold text-center ">Login to <span class="text-yellow-600">OASIP
+                            !</span></div>
+                    <div class="py-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7">
+                        <!-- Email input -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose ">Email :</label>
+                            <input type="text"
+                                class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                                placeholder="Enter your email" v-model="email" @keyup="validationEmail"
+                                :class="{ 'empty-field': emailIsEmpty }" maxlength="50" />
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Password :</label>
+                            <div class="flex">
+                                <input v-if="!showPassword" type="password"
+                                    class="w-11/12 px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                                    placeholder="Enter your password" v-model="password" @keyup="validationPassword"
+                                    :class="{ 'empty-field': passwordIsEmpty }" />
+
+                                <input v-if="showPassword" type="text"
+                                    class="w-11/12 px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                                    placeholder="Enter your password" v-model="password" @keyup="validationPassword"
+                                    :class="{ 'empty-field': passwordIsEmpty }" />
+
+                                <button
+                                    class="flex-1 px-2 py-2 ml-1 text-gray-600 border border-gray-300 rounded-md w-9 focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                                    @click="toggleShow">
+                                    <span class="icon is-small is-right">
+                                        <i class="fas" :class="{
+                                            'fa-eye-slash': !showPassword,
+                                            'fa-eye': showPassword,
+                                        }"></i>
+                                    </span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- Login button -->
+                        <div class="flex pt-3">
+                            <button @click="LoginUser"
+                                class="flex items-center justify-center w-32 px-3 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none">
+                                Login
+                            </button>
+                        </div>
+
+                        <p class="text-sm font-medium text-green-600" v-if="status == 200">{{ statusMessage }}
+                        </p>
+                        <p class="text-sm font-medium text-red-600" v-else>{{ statusMessage }}</p>
+
+                        <p class="pt-3 text-xs text-gray-400">
+                            Don't have an account?
+                            <router-link :to="{ name: 'SignUp' }">
+                                <span class="text-blue-500">Sign Up</span>
+                            </router-link>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div> 
+    </div>
+
+
+
+
+    <!-- <main class="my-8">
+        <div class="container px-6 mx-auto"> -->
+    <!-- <h2 class="mt-3 mb-5 ml-8 text-4xl font-bold text-white">Login :</h2> -->
+    <!-- Sign up box -->
+
+    <!-- <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+                <div class="bg-white shadow md:mx-0 rounded-3xl sm:p-10">
+                    <div class="flex justify-end close">
+                        <div class="p-6 cursor-pointer">
                             <img src="https://cdn-icons-png.flaticon.com/512/992/992660.png" alt="" width="33"
                                 @click="goBack">
                         </div>
                     </div>
-                    <div class="flex relative px-4 mx-8 -mt-8">
+                    <div class="relative flex px-4 mx-8 -mt-8">
                         <div class="ml-5">
                             <img src="../../assets/login1.png" alt="login" width="500">
-                        </div>
+                        </div> -->
 
-                        <div class="input-login p-10 ml-5 mt-5">
-                            <h1 class="text-2xl text-center font-semibold">Login to <span class="text-yellow-600">OASIP
+    <!-- <div class="p-10 mt-5 ml-5 input-login">
+                            <h1 class="text-2xl font-semibold text-center">Login to <span class="text-yellow-600">OASIP
                                     !</span></h1>
                             <div class="py-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7">
-                                <!-- Email input -->
-                                <div class="flex flex-col pt-4">
+                                <Email input -->
+    <!-- <div class="flex flex-col pt-4">
                                     <label class="leading-loose">Email :</label>
                                     <input type="text"
                                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
                                         placeholder="Enter your email" v-model="email" @keyup="validationEmail"
                                         :class="{ 'empty-field': emailIsEmpty }" maxlength="50" />
-                                </div>
+                                </div>  -->
 
-                                <!-- Password input -->
-                                <div class="flex flex-col">
+    <!-- Password input -->
+    <!-- <div class="flex flex-col">
                                     <label class="leading-loose">Password :</label>
                                     <div class="">
                                     <input v-if="!showPassword" type="password"
@@ -107,7 +193,7 @@ const checkMatchTODB = async (email, password) => {
                                         :class="{ 'empty-field': passwordIsEmpty }" />
 
                                     <button
-                                        class="flex-1 w-9 px-2 py-2 ml-1 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                                        class="flex-1 px-2 py-2 ml-1 text-gray-600 border border-gray-300 rounded-md w-9 focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
                                         @click="toggleShow">
                                         <span class="icon is-small is-right">
                                             <i class="fas" :class="{
@@ -116,12 +202,12 @@ const checkMatchTODB = async (email, password) => {
                                             }"></i>
                                         </span>
                                     </button>
-                                    </div>
+                                    </div> -->
 
-                                </div>
+    <!-- </div> -->
 
-                                <!-- Login button -->
-                                <div class="pt-3 flex">
+    <!-- Login button -->
+    <!-- <div class="flex pt-3">
                                     <button @click="LoginUser"
                                         class="flex items-center justify-center w-32 px-3 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none">
                                         Login
@@ -132,8 +218,8 @@ const checkMatchTODB = async (email, password) => {
                                 </p>
                                 <p class="text-sm font-medium text-red-600" v-else>{{ statusMessage }}</p>
 
-                                <h1 class="text-xs text-gray-400 pt-10">
-                                    Don't have an account?
+                                <h1 class="pt-10 text-xs text-gray-400"> -->
+    <!-- Don't have an account?
                                     <router-link :to="{ name: 'SignUp' }">
                                         <span class="text-blue-500">Sign Up</span>
                                     </router-link>
@@ -146,7 +232,7 @@ const checkMatchTODB = async (email, password) => {
                 </div>
             </div>
         </div>
-    </main>
+    </main> -->
 </template>
 
 <style scoped>

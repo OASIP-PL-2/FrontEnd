@@ -1,5 +1,5 @@
 <script setup>
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 const props = defineProps({
   event: {
     type: Object,
@@ -44,56 +44,59 @@ const showDetail = ref(true);
 
 <template>
   <main class="my-8">
-    <div class="col-12 detail-container px-6">
-      <div class="{`col-12 group overflow-auto h-5/6 top-24 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
-        <div class="col-12 max-h-content max-w-md bg-gradient-to-r from-zinc-100 to-white shadow-2xl rounded-lg">
-          <button @click="$emit('closeMe')" id="closeDetail" class="col-1 items-center h-12 justify-end">
+    <div class="col-auto scroll-px-0 detail-container lg:-ml-300px md:ml-52 sm:m-24 ">
+      <div
+        class="{`col-12 group overflow-auto h-4/6 top-36 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
+        <div class="max-w-md rounded-lg shadow-2xl col-12 max-h-content bg-gradient-to-r from-gray-300 to-slate-50">
+          <button @click="$emit('closeMe')" id="closeDetail" class="items-center justify-end h-8 col-1">
             <img src="../../assets/close.png" />
           </button>
 
-          <img class="col-12 w-full h-40 object-cover object-center" src="https://www.jeban.com/uploads/2020/11/800/520953_2543e40c73.webp" alt="avatar"/>
+          <img class="object-cover object-center w-full h-20 col-12"
+            src="https://www.jeban.com/uploads/2020/11/800/520953_2543e40c73.webp" alt="avatar" />
 
-          <div class="col-12 flex items-center px-6 py-3 bg-gray-900">
-            <h1 class="col-9 mx-3 text-white font-semibold text-lg">
+          <div class="flex items-center px-6 py-1.5 bg-gray-900 col-12">
+            <h1 class="mx-3 text-base font-semibold text-white col-9">
               {{ event.eventCategoryId.eventCategoryName }}
             </h1>
-            <span class="col-2 px-1 py-1 items-end text-xl text-center bg-purple-300 rounded-md text-soft-brown heading">
+            <span
+              class="basis-1/3 items-end px-0.5 py-0.5 text-xl text-center bg-purple-300 rounded-md col-1.5 sm:basis-1/3 text-soft-brown heading ">
               {{ event.eventDuration }} min
             </span>
           </div>
 
-          <div class="col-12 pt-5 pb-10 px-12">
-            <div class="col-12 text-center">
-              <h1 class="col-12 text-2xl font-semibold text-gray-800">
+          <div class="px-12 pt-3 pb-10 col-12">
+            <div class="text-center col-12">
+              <h1 class="text-xl font-bold text-gray-800 col-12">
                 {{ event.bookingName }}
               </h1>
-              <p class="col-12 py-2 text-lg text-gray-700">
+              <p class="py-1 text-lg font-semibold text-gray-700 col-12">
                 {{ event.eventCategoryId.eventCategoryName }}
               </p>
             </div>
 
-            <div class="col-12 flex mt-4 text-gray-700">
+            <div class="flex mt-2 text-gray-700 col-12">
               <img src="../../assets/date.png" class="img col-2" />
               <span class="col-9">
                 Date : {{ extractDate(event.eventStartTime) }}
               </span>
             </div>
 
-            <div class="col-12 flex mt-4 text-gray-700">
+            <div class="flex mt-2 text-gray-700 col-12">
               <img src="../../assets/time.png" class="img col-2" />
               <span class="col-9">
                 Time : {{ extractTime(event.eventStartTime) }}
               </span>
             </div>
 
-            <div class="col-12 flex mt-4 text-gray-700">
+            <div class="flex mt-2 text-gray-700 col-12">
               <img src="../../assets/email.png" class="img col-2" />
               <span class="col-12">Email : {{ event.bookingEmail }}</span>
             </div>
 
-            <div class="col-12 flex mt-4 text-gray-700">
+            <div class="flex mt-2 text-gray-700 col-12">
               <img src="../../assets/notes.png" class="img col-2" /> Note :
-              <span class="col-9 text-gray-700">
+              <span class="text-gray-700 col-9">
                 <span class="w-full mx-1">
                   <span class="inline-flex"> {{ event.eventNote }}</span></span>
               </span>
@@ -110,6 +113,7 @@ const showDetail = ref(true);
   font-weight: bold;
   font-size: 80%;
 }
+
 #detail-container {
   margin-left: 30%;
 }
@@ -123,13 +127,13 @@ const showDetail = ref(true);
 
 .img {
   width: 7%;
-  height: 7%;
+  height: 4%;
   margin-right: 2%;
   display: inline;
 }
 
 .detail-container {
   position: absolute;
-  left: 30%;
+  /* left: 30%; */
 }
 </style>
