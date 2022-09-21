@@ -8,9 +8,15 @@ let { params } = useRoute()
 const reloadPage = () => {
   window.location.reload()
 }
+
+const token = ref(localStorage.getItem('user'))
 const users = ref([]);
 const getUsers = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users`);
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users` , {
+    headers : {
+      "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+    }
+  });
   if (res.status === 200) {
     users.value = await res.json();
   } else console.log("error, cannot get data");
@@ -21,8 +27,15 @@ onBeforeMount(async () => {
   return fillers();
 });
 
+
+
+
 const getUserDetail = async (id) => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`);
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {
+    headers : {
+      "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+    }
+  });
   if (res.status === 200) {
     detailCurrentUser.value = await res.json();
   } else console.log("error, cannot get data");
@@ -31,7 +44,12 @@ const getUserDetail = async (id) => {
 const deleteUsers = async (id) => {
   const isConfirm = confirm("Do you want to delete this user?")
   if (isConfirm == true) {
-    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, { method: "DELETE" })
+    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, { 
+      method: "DELETE" ,
+      headers: {
+        "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+      }
+    })
     if (res.status == 200) {
       users.value = users.value.filter((user) => {
         return user.id != id;

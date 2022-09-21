@@ -16,7 +16,11 @@ const param = ref()
 
 //GET Category
 const getcategories = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`)
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`  , {
+    headers : {
+      "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+    }
+  })
   if (res.status === 200) {
     categories.value = await res.json()
     console.log(categories.value)
@@ -178,7 +182,11 @@ onMounted(async () => {
 
 // GET Events
 const getEvents = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`)
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`  , {
+    headers : {
+      "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+    }
+  })
   if (res.status === 200) {
     allEvents.value = await res.json()
     // console.log(events.value)

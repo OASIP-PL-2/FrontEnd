@@ -40,17 +40,24 @@ const LoginUser = () => {
 
 
 }
+let tokenForFetch = ref('')
 const checkMatchTODB = async (email, password) => {
     console.log('Sign in..');
-    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/match`, {
+    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/login`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
         body: JSON.stringify({ email: email, password: password })
-    });
+    })
+    if(res.status == 200) {
+        const response = await res.json()
+        console.log(response);
+        localStorage.setItem('user', response.jwtToken)
+        console.log(localStorage.getItem('user'));
+    }
 
-    console.log(res.status);
+    // console.log(res.status);
     status.value = res.status
     statusMessage.value = res.status == 200 ? 'Password Matches !' :
         res.status == 401 ? 'Password Not Matches !' :

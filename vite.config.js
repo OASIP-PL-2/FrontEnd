@@ -8,14 +8,14 @@ export default defineConfig({
   // server:{
   //   proxy: {
   //     '/api': {
-  //       // target:'http://localhost:8080',
-  //       target:'http://10.4.56.101:8080',
+  //       target:'http://localhost:8080',
+  //       // target:'http://10.4.56.101:8080',
   //       changeOrigin: true,
   //       secure: false,
-  //       // rewrite: (path) => path.replace(/^\/api/, '')
+  //       rewrite: (path) => path.replace(/^\/api/, '')
   //     }
       
   //   },
-  //   port:80,
+  //   port:8080,
   // }
 })

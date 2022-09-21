@@ -13,15 +13,15 @@ const reloadPage = () => {
 
 const categories = ref([]);
 //GET Category
-const getcategories = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`);
-  if (res.status === 200) {
-    categories.value = await res.json();
-  } else console.log("error, cannot get data");
-};
-onMounted(async () => {
-  await getcategories();
-});
+// const getcategories = async () => {
+//   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`);
+//   if (res.status === 200) {
+//     categories.value = await res.json();
+//   } else console.log("error, cannot get data");
+// };
+// onMounted(async () => {
+//   await getcategories();
+// });
 
 let eventSelect = ref(false)
 const openSelectEvent = () => {
