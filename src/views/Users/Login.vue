@@ -50,17 +50,19 @@ const checkMatchTODB = async (email, password) => {
         },
         body: JSON.stringify({ email: email, password: password })
     })
+    
     if(res.status == 200) {
         const response = await res.json()
         console.log(response);
-        localStorage.setItem('user', response.jwtToken)
+        localStorage.setItem('user', response.accessToken)
+        localStorage.setItem('refreshToken', response.refreshToken)
         console.log(localStorage.getItem('user'));
     }
 
     // console.log(res.status);
     status.value = res.status
     statusMessage.value = res.status == 200 ? 'Password Matches !' :
-        res.status == 401 ? 'Password Not Matches !' :
+            res.status == 401 ? 'Password Not Matches !' :
             res.status == 404 ? 'A user with the specified email DOSE NOT exist !' : ''
 }
 

@@ -32,6 +32,16 @@ let mobileMenuOpen = ref(false)
 const openMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
+
+const logout = () => {
+  const confirms = confirm('Do you want to logout?')
+  if(confirms) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('refreshToken')
+    reloadPage()
+  }
+  
+}
 </script>
 
 <template>
@@ -116,6 +126,9 @@ const openMobileMenu = () => {
             <router-link :to="{ name: 'Login' }">
               <div class="navSelect">Login</div>
             </router-link>
+          </li>
+          <li>
+              <div class="navSelect" @click="logout">Logout</div>
           </li>
         </ul>
       </div>

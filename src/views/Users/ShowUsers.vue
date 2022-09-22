@@ -19,7 +19,19 @@ const getUsers = async () => {
   });
   if (res.status === 200) {
     users.value = await res.json();
-  } else console.log("error, cannot get data");
+  }else if (res.status === 401) {
+    const resf = await fetch(`${import.meta.env.VITE_BACK_URL}/refresh` , {
+    headers : {
+      "Authorization" : 'Bearer ' + localStorage.getItem('refreshToken') ,
+    }
+  })
+    if(resf.status === 200){
+      const responseRefresh = await resf.json()
+      localStorage.setItem('user', responseRefresh.accessToken)
+      getUsers()
+    }
+  }
+   else console.log("error, cannot get data");
 };
 
 onBeforeMount(async () => {

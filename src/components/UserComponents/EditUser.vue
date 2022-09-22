@@ -83,7 +83,8 @@ const editUserToDB = async editUser => {
     {
       method: "PUT",
       headers: {
-        "content-type": "application/json"
+        "content-type": "application/json" ,
+        "Authorization" : 'Bearer ' + localStorage.getItem('user')
       },
       body: JSON.stringify(editUser)
     }
