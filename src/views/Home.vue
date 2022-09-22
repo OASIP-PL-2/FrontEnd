@@ -33,7 +33,7 @@ console.log(createdAtDisplay.value)
  
 <template>
 
-
+<div>
 
   <div id="home" class="mx-8">
     <!-- <main class="my-8"> -->
@@ -371,6 +371,7 @@ console.log(createdAtDisplay.value)
       </p>
     </div>
   </footer>
+</div>
 </template>
 
 <style scoped>

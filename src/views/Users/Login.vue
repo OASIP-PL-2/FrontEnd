@@ -22,6 +22,13 @@ const goBack = () => {
     appRouter.go(-1)
 }
 
+const goHome = () => {
+    console.log('เข้า');
+    appRouter.push({ name: 'Home' })
+    window.location.reload()
+    
+}
+
 const validationEmail = () => {
     emailIsEmpty.value = email.value == null || email.value == ''
 }
@@ -57,6 +64,10 @@ const checkMatchTODB = async (email, password) => {
         localStorage.setItem('user', response.accessToken)
         localStorage.setItem('refreshToken', response.refreshToken)
         console.log(localStorage.getItem('user'));
+
+        goHome()
+        // appRouter.push({ name: 'Home' })
+
     }
 
     // console.log(res.status);

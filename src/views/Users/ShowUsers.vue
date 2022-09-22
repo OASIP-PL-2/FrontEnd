@@ -29,6 +29,8 @@ const getUsers = async () => {
       const responseRefresh = await resf.json()
       localStorage.setItem('user', responseRefresh.accessToken)
       getUsers()
+    }else if(resf.status === 401) {
+      console.log('Please Login');
     }
   }
    else console.log("error, cannot get data");

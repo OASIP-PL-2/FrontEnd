@@ -1,5 +1,4 @@
 <script setup>
-// import { computed } from '@vue/reactivity';
 import { ref, onMounted, onUpdated, computed } from "vue";
 import router from "./router";
 
@@ -40,11 +39,16 @@ const logout = () => {
     localStorage.removeItem('refreshToken')
     reloadPage()
   }
-  
 }
+
+const isLogin = computed(() => {
+  return localStorage.getItem('user') == null
+})
+
 </script>
 
 <template>
+  <div>
   <nav class="px-2 mx-10 my-5 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
       <a href="#" class="flex items-center">
@@ -122,12 +126,12 @@ const logout = () => {
               <div class="navSelect">Users</div>
             </router-link>
           </li>
-          <li>
+          <li v-if="isLogin">
             <router-link :to="{ name: 'Login' }">
               <div class="navSelect">Login</div>
             </router-link>
           </li>
-          <li>
+          <li v-else>
               <div class="navSelect" @click="logout">Logout</div>
           </li>
         </ul>
@@ -367,6 +371,7 @@ const logout = () => {
   <div>
     <router-view :key="$route.fullPath"></router-view>
   </div>
+</div>
 </template>
 
 <style scoped>
