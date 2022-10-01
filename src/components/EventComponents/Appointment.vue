@@ -16,7 +16,7 @@
     /* ------------------------------------------------------------------------------------ */
     //ตัวแปรจาก v-model
     const bookingName = ref("");
-    const bookingEmail = ref("");
+    const bookingEmail = ref(JSON.parse(localStorage.getItem('userDetail')).email);
     const eventCategoryId = ref("");
     const eventDuration = computed(() => {
       if (eventCategoryId.value == "") {
@@ -229,7 +229,8 @@
       const dateTime = `${date}T${hour}:${minute.value}`;
       return dateTime;
     });
-    console.log(minDatetimeLocal.value);
+
+    const isLogin = !(localStorage.getItem("accessToken") == null)
     </script>
     
     <template>
@@ -267,9 +268,21 @@
                       <input
                         type="text"
                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
+                        placeholder="Enter your emails"
+                        v-model="bookingEmail"
+                        v-if="isLogin"
+                        pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+                        disabled="true"
+                        @keyup="validateBookingEmail"
+                        @blue="validateBookingEmail"
+                      />
+                      <input
+                        type="text"
+                        class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
                         placeholder="Enter your email"
                         v-model="bookingEmail"
                         pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+                        v-else;
                         @keyup="validateBookingEmail"
                         @blue="validateBookingEmail"
                       />

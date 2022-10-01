@@ -37,15 +37,28 @@ const logout = () => {
     confirmButtonText: 'Done'
   }).then(res => {
     if(res.isConfirmed){
-      localStorage.removeItem('user')
-    localStorage.removeItem('refreshToken')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('userDetail')
     reloadPage()
     }
   })
 }
 
 const isLogin = computed(() => {
-  return localStorage.getItem('user') == null
+  return localStorage.getItem('accessToken') !== null
+})
+
+const isAdmin = computed(() => {
+  if(localStorage.getItem('accessToken') !== null){
+    return JSON.parse(localStorage.getItem('userDetail')).role == 'admin'
+  }
+})
+
+const isLecturer = computed(() =>{
+  if(localStorage.getItem('accessToken') !== null){
+    return JSON.parse(localStorage.getItem('userDetail')).role == 'lecturer'
+  }
 })
 
 </script>
@@ -80,38 +93,12 @@ const isLogin = computed(() => {
                 aria-current="page">Home</div>
             </router-link>
           </li>
-          <li>
-            <button @click="openSelectEvent" id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-              class="flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-gray-400 dark:hover:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Events
-              <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clip-rule="evenodd"></path>
-              </svg></button>
-            <!-- Dropdown menu -->
-            <div id="dropdownNavbar" :class="eventSelect ? '' : 'hidden'"
-              class="z-10 font-normal bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-              <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
-                <li>
-                  <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }">
-                    <div class="navSelect">All Events</div>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link :to="{ name: 'ShowEvent', params: { time: 'Past' } }">
-                    <div class="navSelect">Past Events</div>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link :to="{ name: 'ShowEvent', params: { time: 'Upcoming' } }">
-                    <div class="navSelect">Upcoming Events</div>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li>
+          <li v-if="isLogin">
+              <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }">
+                  <div class="navSelect">Events</div>
+              </router-link>
+            </li>
+          <li v-if="isLogin ">
             <router-link :to="{ name: 'ShowCategory' }">
               <div class="navSelect">Categories</div>
             </router-link>
@@ -121,12 +108,12 @@ const isLogin = computed(() => {
               <div class="navSelect">About</div>
             </router-link>
           </li>
-          <li>
+          <li v-if="isAdmin">
             <router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }">
               <div class="navSelect">Users</div>
             </router-link>
           </li>
-          <li v-if="isLogin">
+          <li v-if="!isLogin">
             <router-link :to="{ name: 'Login' }">
               <div class="navSelect">Login</div>
             </router-link>

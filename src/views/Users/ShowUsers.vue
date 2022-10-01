@@ -22,7 +22,7 @@ const fillers = () => {
     users.value = users.value.filter(user => user.role == params.roles)
   }
 }
-const render = !(localStorage.getItem("user") == null)
+const render = !(localStorage.getItem("accessToken") == null)
 
 </script>
 

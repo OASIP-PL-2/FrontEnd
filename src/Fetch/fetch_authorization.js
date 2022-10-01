@@ -40,15 +40,16 @@ const Login = async (user) => {
     })
     if(res.status == 200) {
         const response = await res.json()
-        localStorage.setItem('user', response.accessToken)
+        localStorage.setItem('accessToken', response.accessToken)
         localStorage.setItem('refreshToken', response.refreshToken)
+        localStorage.setItem("userDetail", JSON.stringify(response.user));
         console.log('Successfully executed! ' + res.status);
         Swal.fire(
             'Login Successfully',
             'You clicked the button!',
             'success'
         ).then((res) => {
-            window.location=document.referrer
+            window.location.replace("../");
         })
         return 200;
     }else{ 

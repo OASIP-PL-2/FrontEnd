@@ -12,7 +12,7 @@
     const getcategories = async () => {
       const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`  , {
         headers : {
-          "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+          "Authorization" : 'Bearer ' + localStorage.getItem('accessToken') ,
         }
       })
       if (res.status === 200) {
@@ -147,7 +147,7 @@
     const getEvents = async () => {
       const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`  , {
         headers : {
-          "Authorization" : 'Bearer ' + localStorage.getItem('user') ,
+          "Authorization" : 'Bearer ' + localStorage.getItem('accessToken') ,
         }
       })
       if (res.status === 200) {

@@ -5,7 +5,7 @@ const editEventDetail = async (event , id) => {
           method: "PUT",
           headers: {
             "content-type": "application/json",
-            "Authorization": 'Bearer ' + localStorage.getItem('user'),
+            "Authorization": 'Bearer ' + localStorage.getItem('accessToken'),
           },
           body: JSON.stringify(event),
         }
@@ -16,7 +16,7 @@ const editEventDetail = async (event , id) => {
 const getEvents = async () => {
     const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
         headers: {
-          "Authorization": 'Bearer ' + localStorage.getItem('user'),
+          "Authorization": 'Bearer ' + localStorage.getItem('accessToken'),
         }
       });
     if (res.status === 200) {

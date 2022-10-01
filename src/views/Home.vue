@@ -1,12 +1,22 @@
 <script setup>
 
-import { ref, onMounted} from 'vue'
+import { ref, onMounted , computed} from 'vue'
 import { getCategories } from '../Fetch/fetch_category';
 
 const categories = ref([])
 
 onMounted(async () => {
   categories.value = await getCategories()
+})
+
+const isLogin = computed(() => {
+  return localStorage.getItem('accessToken') !== null
+})
+
+const isLecturer = computed(() =>{
+  if(localStorage.getItem('accessToken') !== null){
+    return JSON.parse(localStorage.getItem('userDetail')).role == 'lecturer'
+  }
 })
 
 </script>
@@ -25,15 +35,24 @@ onMounted(async () => {
               Online Appointment
               Scheduling System for Intregrated Project Clinic</p>
           </div>
-          <div class="flex-col pt-6 pl-16 lg:pt-6 md:pt-3">
+          <div class="flex-col pt-6 pl-16 lg:pt-6 md:pt-3" v-if="!isLecturer">
             <div>
               <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }">
-                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue">View Events</button>
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-neutral-400" :disabled="!isLogin" v-if="!isLogin">View Events</button>
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue" v-else>View Events</button>
               </router-link>
             </div>
             <div class="pt-4">
               <router-link :to="{ name: 'Appointment' }">
-                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue">Booking now</button>
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-neutral-400 " :disabled="!isLogin" v-if="!isLogin">Booking now</button>
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue " v-else>Booking now</button>
+              </router-link>
+            </div>
+          </div>
+          <div class="flex-col pt-6 pl-16 lg:pt-6 md:pt-3" v-if="isLecturer">
+            <div>
+              <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }" >
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue" >View Events</button>
               </router-link>
             </div>
           </div>
@@ -44,11 +63,12 @@ onMounted(async () => {
       </div>
 
       <br />
+      <div v-if="!isLecturer">
       <h1 class="text-4xl font-bold text-center text-black">Clinic</h1>
       <p class="text-xl text-center text-gray-500 text-light">
         Here are our pricing plans
       </p>
-      <div class="flex items-center justify-center h-auto mt-16 my-28">
+      <div class="flex items-center justify-center h-auto mt-16 my-28" >
         <div v-if="categories.length !== 0"
           class="grid grid-cols-2 gap-8 px-16 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-3">
           <div v-for="(category, index) in categories" :key="index" class="flex flex-col gap-1">
@@ -67,6 +87,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
 

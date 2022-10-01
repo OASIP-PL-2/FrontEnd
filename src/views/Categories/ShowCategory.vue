@@ -26,7 +26,7 @@ const closeEditForm = () => {
   console.log(isShowEdit.value);
 };
 
-const render = !(localStorage.getItem("user") == null)
+const render = !(localStorage.getItem("accessToken") == null)
 
 </script>
 

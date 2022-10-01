@@ -2,7 +2,7 @@ const getUserDetail = async (id) => {
   console.log("In progress (Get UserDetail)");
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("user"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
   });
   if (res.status === 200) {
@@ -25,7 +25,7 @@ const editUserDetail = async (user, id) => {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("user"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
       body: JSON.stringify(user),
     }
@@ -57,7 +57,7 @@ const deleteUser = async (id) => {
     const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("user"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     });
     if (res.status === 200) {
@@ -80,17 +80,18 @@ const deleteUser = async (id) => {
 };
 
 const getUsers = async () => {
-  if (localStorage.getItem("user") == null) {
+  if (localStorage.getItem("accessToken") == null) {
     return 0;
   }
   console.log("In progress (Get Users)");
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users`, {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("user"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
   });
   if (res.status === 200) {
     console.log("Successfully executed! " + res.status);
+    console.log(localStorage.getItem('userDetail').id);
     return await res.json();
   } else if (res.status === 401) {
     refreshToken(localStorage.getItem("refreshToken"));
@@ -110,8 +111,9 @@ const refreshToken = async (refreshtoken) => {
   if (res.status === 200) {
     const response = await res.json();
     console.log("Successfully executed! " + res.status);
-    localStorage.setItem("user", response.accessToken);
+    localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
+    localStorage.setItem("userdetail", response.user);
   }
 };
 export { deleteUser, getUserDetail, editUserDetail, getUsers , refreshToken};

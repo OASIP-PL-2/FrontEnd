@@ -1,11 +1,11 @@
 import {refreshToken} from './fetch_user.js'
 
 const getCategories = async () => {
-  if(localStorage.getItem('user') == null){return 0}
+  if(localStorage.getItem('accessToken') == null){return 0}
     console.log('In progress (Get Categories)s');
     const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`, {
       headers: {
-        "Authorization": 'Bearer ' + localStorage.getItem('user'),
+        "Authorization": 'Bearer ' + localStorage.getItem('accessToken'),
       }
     })
     if (res.status === 200) {
