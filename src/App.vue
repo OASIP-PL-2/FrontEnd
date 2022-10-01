@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted, onUpdated, computed } from "vue";
-import router from "./router";
+import { ref, onMounted, computed } from "vue";
+import { getCategories } from './Fetch/fetch_category';
 
 console.clear;
 const isOpen = ref(false);
@@ -11,16 +11,10 @@ const reloadPage = () => {
 };
 
 const categories = ref([]);
-//GET Category
-// const getcategories = async () => {
-//   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`);
-//   if (res.status === 200) {
-//     categories.value = await res.json();
-//   } else console.log("error, cannot get data");
-// };
-// onMounted(async () => {
-//   await getcategories();
-// });
+// GET Category
+onMounted(async () => {
+  categories.value = await getCategories()
+})
 
 let eventSelect = ref(false)
 const openSelectEvent = () => {
@@ -33,12 +27,21 @@ const openMobileMenu = () => {
 }
 
 const logout = () => {
-  const confirms = confirm('Do you want to logout?')
-  if(confirms) {
-    localStorage.removeItem('user')
+  Swal.fire({
+    title: 'Do you want to Logout',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Done'
+  }).then(res => {
+    if(res.isConfirmed){
+      localStorage.removeItem('user')
     localStorage.removeItem('refreshToken')
     reloadPage()
-  }
+    }
+  })
 }
 
 const isLogin = computed(() => {
@@ -106,9 +109,6 @@ const isLogin = computed(() => {
                   </router-link>
                 </li>
               </ul>
-              <!-- <div class="py-1">
-                <a href="#" class="navSelect">Sign out</a>
-              </div> -->
             </div>
           </li>
           <li>
@@ -139,159 +139,6 @@ const isLogin = computed(() => {
     </div>
   </nav>
 
-
-  <!-- <div id="navbar" class="flex flex-row mt-5 mb-8">
-    <div class="ml-12 basis-3/6">
-      <router-link :to="{ name: 'Home' }">
-        <img src="./assets/logo-1.png" class="logo" />
-        <span class="text-xl font-bold">OASIP</span>
-      </router-link>
-    </div> -->
-  <!-- icon oasip -->
-  <!-- 
-    <div class="basis-3/6">
-      <div id="dofunction" class="flex flex-row justify-end mr-3">
-        <div class="w-1/5 text-center rounded-lg hover:text-blue-500 hover:bg-white" @click="reloadPage">
-          <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }">
-            Events
-          </router-link>
-        </div>
-        <div class="w-1/5 text-center rounded-lg hover:text-blue-500 hover:bg-white" @click="reloadPage">
-          <router-link :to="{ name: 'ShowCategory' }">
-            Categories
-          </router-link>
-        </div>
-        <div class="w-1/5 text-center rounded-lg hover:text-blue-500 hover:bg-white" @click="reloadPage">
-          <router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }">
-            Users
-          </router-link>
-        </div>
-        <div class="w-1/5 text-center rounded-lg hover:text-blue-400 hover:bg-white">
-          <router-link :to="{ name: 'AboutUs' }"> About </router-link>
-        </div>
-        <div class="w-1/5 text-center rounded-lg hover:text-blue-400 hover:bg-white" @click="reloadPage">
-          <router-link :to="{ name: 'Login' }">Login </router-link>
-        </div>
-      </div>
-    </div> -->
-  <!-- Events + Users + About + Login -->
-  <!-- 
-    <div class="flex items-center justify-end">
-      <div class="flex sm:hidden">
-        <button @click="reloadPage" class="r-2">
-          <router-link :to="{ name: 'Home' }"><img src="./assets/home2.png"
-              class="w-8 mr-8 fill-current col-1 h-7 hover:h-8" aria-label="toggle menu" /></router-link>
-        </button>
-        <button @click="isOpen = !isOpen" type="button" class="text-black hover:text-amber-600 focus:outline-none"
-          aria-label="toggle menu">
-          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-            <path fill-rule="evenodd"
-              d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
-            </path>
-          </svg>
-        </button>
-      </div>
-    </div> -->
-  <!-- menu and home show on mobile display -->
-  <!-- </div> -->
-  <!-- end navbar -->
-
-
-
-
-  <!-- <header>
-    <div id="top" class="container px-6 py-3 mx-auto">
-      <div class="flex items-center justify-between"> -->
-  <!-- 
-        <div class="w-full text-2xl font-bold text-black md:text-center">
-          <router-link :to="{ name: 'Home' }">
-            <img src="./assets/logo-1.png" class="logo">
-            OASIP : -->
-  <!-- <span class="mx-1 text-base text-transparent bg-clip-text bg-gradient-to-r from-zinc-800 to-zinc-600">Online Appointment Scheduling System for Intregrated Project Clinic </span> -->
-  <!-- </router-link>
-        </div> -->
-  <!-- <div class="flex items-center justify-end">
-          <div class="flex sm:hidden">
-            <button @click="reloadPage" class="r-2">
-              <router-link :to="{ name: 'Home' }"><img src="./assets/home2.png"
-                  class="w-8 mr-8 fill-current col-1 h-7 hover:h-8" aria-label="toggle menu"></router-link>
-            </button>
-            <button @click="isOpen = !isOpen" type="button" class="text-black hover:text-amber-600 focus:outline-none"
-              aria-label="toggle menu">
-              <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-                <path fill-rule="evenodd"
-                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
-                </path>
-              </svg>
-            </button>
-
-
-          </div> -->
-  <!-- </div>
-      </div> -->
-
-  <!-- <aside :class="isOpen ? '' : 'hidden'"
-    class="px-10 py-4 bg-black rounded-md sm:flex sm:justify-center sm:items-center">
-    <div class="scrollBar">
-      <div class="flex flex-col justify-end sm:flex-row">
-        <p class="mt-3 font-bold text-zinc-300 sm:mx-3 sm:mt-0">Clinic</p>
-        <div v-for="(category, index) in categories" :key="index">
-          <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-            @click="reloadPage">
-            <router-link :to="{ name: 'ShowEvent', params: { time: category.eventCategoryName } }">
-              {{ category.eventCategoryName }}</router-link>
-          </p>
-        </div>
-        <p class="mt-2 font-bold text-zinc-300 sm:mx-3 sm:mt-0">Events</p>
-        <p class="mt-3 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'ShowCategory' }">Event Categories</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }">All Events</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'ShowEvent', params: { time: 'Past' } }">Past Events</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'ShowEvent', params: { time: 'Upcoming' } }">Upcoming Events</router-link>
-        </p>
-        <p class="mt-3 font-bold text-zinc-300 sm:mx-3 sm:mt-0">Users</p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }">All Users</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'SignUp' }">Add User</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="reloadPage">
-          <router-link :to="{ name: 'Login' }">Login</router-link>
-        </p>
-        <p class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0"
-          @click="isOpenRoles = !isOpenRoles">Roles</p>
-        <p :class="isOpenRoles ? '' : 'hidden'"
-          class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0">
-          <router-link :to="{ name: 'ShowUsers', params: { roles: 'student' } }">Student</router-link>
-        </p>
-        <p :class="isOpenRoles ? '' : 'hidden'"
-          class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0">
-          <router-link :to="{ name: 'ShowUsers', params: { roles: 'lecturer' } }">Lecturer</router-link>
-        </p>
-        <p :class="isOpenRoles ? '' : 'hidden'"
-          class="pl-16 mt-2 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0">
-          <router-link :to="{ name: 'ShowUsers', params: { roles: 'admin' } }">Admin</router-link>
-        </p>
-        <p class="mt-3 font-bold text-zinc-300 hover:underline hover:font-bold hover:text-amber-600 sm:mx-3 sm:mt-0">
-          <router-link :to="{ name: 'AboutUs' }"> About </router-link>
-        </p>
-      </div>
-    </div>
-  </aside> -->
 
   <aside :class="isOpen ? '' : 'hidden'" class="translate-x-20 rounded-xl">
     <!-- <div class="scrollBar"> -->
@@ -345,29 +192,7 @@ const isLogin = computed(() => {
         <router-link :to="{ name: 'AboutUs' }"> About </router-link>
       </p>
     </div>
-    <!-- </div> -->
   </aside>
-
-  <!-- <span>
-                    <select v-model="filtertime">
-                      <option value="all" selected >All Event</option>
-                      <option value="past" >Past Events</option>
-                      <option value="upcoming">Upcoming Events</option>
-                    </select></span>
-                    <span clas="text-gray-600">{{filtertime}}</span> -->
-  <!-- <span class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'All' }}" >All Events</router-link></span>
-                    <span class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'Past' }}" >Past Events</router-link></span>
-                    <span class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage"><router-link :to="{ name: 'ShowEvent' , params: { time: 'Upcoming' }}" >Upcoming Events</router-link></span> -->
-  <!-- <span class="mt-2 pl-7 text-zinc-500 hover:underline hover:font-bold hover:text-amber-400 sm:mx-3 sm:mt-0" @click="reloadPage" v-for="(category,index) in categories" :key="index"><router-link :to="{ name: 'ShowEvent' , params: { time: category.eventCategoryName }}" >{{category.eventCategoryName}} |</router-link></span> -->
-  <!-- <span class="sm:flex sm:justify-center sm:items-center ">
-                    <form action="">
-                      <input type="search" required placeholder="search" class="col-6">
-                      <i class="fa fa-search col-6"></i>
-                    </form>
-            </span> -->
-  <!-- </div>
-
-  </header> -->
   <div>
     <router-view :key="$route.fullPath"></router-view>
   </div>

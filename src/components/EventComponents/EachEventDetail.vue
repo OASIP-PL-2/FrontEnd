@@ -39,7 +39,6 @@ const extractTime = (time) => {
   return `${t.getHours()}:${minute.value} น.`
 }
 
-const showDetail = ref(true);
 </script>
 
 <template>

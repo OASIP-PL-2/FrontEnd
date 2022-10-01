@@ -1,8 +1,6 @@
 <script setup>
 import { ref, computed, onUpdated } from "vue";
-import { useRouter } from "vue-router";
-const appRouter = useRouter();
-const goBack = () => appRouter.go(-1);
+import { editEventDetail } from '../../Fetch/fetch_event'
 const props = defineProps({
   events: {
     type: Array,
@@ -33,14 +31,11 @@ const monthNames = [
   "December",
 ];
 
-/* ------------------------------------------------------------------------------------ */
-// extract Date from eventStartTime
 const extractDate = (date) => {
   const d = new Date(date);
   return `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
 };
 
-// extract Time from eventStartTime
 const extractTime = (time) => {
   const t = new Date(time)
   const minute = computed(() => {
@@ -50,30 +45,18 @@ const extractTime = (time) => {
   return `${t.getHours()}:${minute.value} น.`
 }
 
-//ฟังก์ชันที่เปลี่ยนค่า dateTime ไปเป็น format ที่ backend สามารถอ่านค่าได้
 const changeFormat = (eventStartTime) => {
   const dateTime = new Date(eventStartTime);
   return `${dateTime.toLocaleString("en-GB")}`;
 };
 
-/* ------------------------------------------------------------------------------------ */
-const showInput = ref(false);
 const eventStartTime = ref(props.event.eventStartTime);
 const note = props.event.eventNote;
 const eventNote = ref(note);
 const showEditForm = ref(props.showEditForm);
 
-// ทำ end time
-const extractEndTime = (eventStartTime, eventDuration) => {
-  const t = new Date(eventStartTime);
-  return `${t.getHours()}:${t.getMinutes() + eventDuration}`;
-};
-
-/* -------------------------------------------------------------------------------------------- */
-//ถ้าเป็น true มันจะแสดง text สีแดงว่า time เป็นอดีต
 const validateFuture = ref(false);
 
-//เช็คว่าเป็นเวลาที่เป็นอนาคต
 const startTime = computed(() => {
   const currentDateTime = new Date();
   const dateTime = new Date(eventStartTime.value);
@@ -82,74 +65,41 @@ const startTime = computed(() => {
     : (validateFuture.value = false);
 });
 
-//ไปเรียกใช้ computed ทุกครั้งที่มีการ update
 onUpdated(() => {
-  // console.log("onUpdate working");
   startTime.value;
   overlapTime.value;
 });
 
+const showInput = ref(false);
 const openInput = () => {
   showInput.value = !showInput.value;
 };
 
-/* ------------------------------------------------------------------------------------ */
-
-//ฟังก์ชันที่เปลี่ยนค่า dateTime ไปเป็น format ที่เช็ค overlap
-const changeFormatOverlap = (eventStartTime) => {
-  const dateTime = new Date(eventStartTime);
-  return dateTime;
-};
-
-//หา eventEndTime
 const getEndTime = (eventStartTime, eventDuration) => {
   const startTime = new Date(eventStartTime);
   const endTime = new Date(eventStartTime);
   endTime.setMinutes(startTime.getMinutes() + eventDuration);
-  console.log(eventDuration);
   return endTime;
 };
 
 const overlap = ref(false);
 const overlapTime = computed(() => {
-  props.events.splice(
-    props.events.findIndex((event) => event.id == props.event.id),
-    1
-  );
-  const newStartTime = changeFormatOverlap(eventStartTime.value);
-  const newEndTime = getEndTime(
-    eventStartTime.value,
-    props.event.eventDuration
-  );
+  props.events.splice(props.events.findIndex((event) => event.id == props.event.id),1);
+  const newStartTime = new Date(eventStartTime.value);
+  const newEndTime = getEndTime(eventStartTime.value,props.event.eventDuration);
 
   for (const event of props.events) {
     if (event.eventCategoryId.id == props.event.eventCategoryId.id) {
-      const eventStartTime = changeFormatOverlap(event.eventStartTime);
-      const eventEndTime = getEndTime(
-        event.eventStartTime,
-        event.eventDuration
-      );
-
-      const check = eventStartTime < newEndTime && eventEndTime > newStartTime;
-      overlap.value = check;
+      const eventStartTime = new Date(event.eventStartTime);
+      const eventEndTime = getEndTime(event.eventStartTime,event.eventDuration);
+      overlap.value = eventStartTime < newEndTime && eventEndTime > newStartTime;
       if (overlap.value == true) {
-        console.log("time is overlap");
         break;
       }
     }
   }
   return overlap.value;
 });
-
-/* ------------------------------------------------------------------------------------- */
-const checkTime = () => {
-  if (
-    changeFormatToEdit(props.event.eventStartTime) ==
-    changeFormatToEdit(eventStartTime.value)
-  ) {
-    return true;
-  }
-};
 
 const changeFormatToEdit = (dateTime) => {
   const dt = new Date(dateTime);
@@ -165,9 +115,7 @@ const editingEvent = () => {
     eventStartTime: changeFormat(eventStartTime.value),
     eventDuration: props.event.eventDuration,
   };
-  console.log(eventToEdit.value);
   editEventToDB(eventToEdit.value);
-  // showEditForm.value = 0;
 };
 
 const editEventToDB = async (editEvent) => {
@@ -175,18 +123,10 @@ const editEventToDB = async (editEvent) => {
   const time2 = ref("");
   time1.value = changeFormatToEdit(props.event.eventStartTime);
   time2.value = changeFormatToEdit(eventStartTime.value);
-  startTime.value;
-  const res = await fetch(
-    `${import.meta.env.VITE_BACK_URL}/events/${props.event.id}`,
-    {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(editEvent),
-    }
-  );
+  startTime.value; //Error
+  const res = await editEventDetail (editEvent , props.event.id)
 
+  //Error
   if (props.event.eventNote == eventNote.value && time1.value == time2.value) {
     showEditForm.value = 1;
     return alert("sorry, please change date and note");
@@ -201,6 +141,7 @@ const editEventToDB = async (editEvent) => {
     return alert("check your edit");
   } else if (res.status === 200) {
      alert("editing event successfully");
+     showEditForm.value = 0;
     return emit('closeEditEvent')
   } else if (res.status === 400) {
     alert("sorry, cannot be edited : Enter New Information");
@@ -214,17 +155,10 @@ const errorEventNote = ref("");
 const validateEventStartTime = computed(() => {
   return eventStartTime.value === "" ? "Please Select StartTime" : "";
 });
-const validateEventNote = () => {
-  errorEventNote.value =
-    eventNote.value.length > 500
-      ? "EventNote cannot be more than 500 character"
-      : "";
-};
 
 // validate calendar
 const minDatetimeLocal = computed(() => {
   const today = new Date();
-  console.log(today);
   const date =
     today.getFullYear() + "-0" + (today.getMonth() + 1) + "-" + today.getDate();
   const hour = today.getHours();
@@ -232,11 +166,9 @@ const minDatetimeLocal = computed(() => {
     if (today.getMinutes() < 10) return "0" + today.getMinutes();
     else return today.getMinutes();
   });
-  console.log(minute.value);
   const dateTime = `${date}T${hour}:${minute.value}`;
   return dateTime;
 });
-console.log(minDatetimeLocal.value);
 </script>
 
 <template>
@@ -301,7 +233,7 @@ console.log(minDatetimeLocal.value);
                 </span>
                 <span class="ml-2 text-sm text-red-700 col-1" v-if="overlap">* Time is overlap</span>
                 <span class="ml-2 text-sm text-red-700 col-1" v-if="validateFuture">* Time is a past time</span>
-                <span class="ml-2 text-sm text-red-700 col-1" v-if="checkTime()">* change Time</span>
+                <!-- <span class="ml-2 text-sm text-red-700 col-1" v-if="checkTime()">* change Time</span> -->
               </span>
             </div>
             <!-- เปลี่ยน note -->
@@ -312,13 +244,10 @@ console.log(minDatetimeLocal.value);
                 rows="5"
                 cols="50"
                 v-model="eventNote"
-                @keyup="validateEventCategoryDescription"
-                @blue="validateEventCategoryDescription"
                 class="p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
                 placeholder="clinic descrition..."
                 required
               ></textarea>
-              <span class="ml-2 text-red-700 col-1" v-if="errorDescription">{{ errorDescription}}</span>
             </div>
           </div>
           <!-- save button -->

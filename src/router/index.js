@@ -1,11 +1,11 @@
 import {createRouter,createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
-import AddNewEvent from '../views/Events/AddNewEvent.vue'
+import Appointment from '../views/Events/Appointment.vue'
 import ShowEvent from '../views/Events/ShowEvent.vue'
 import ShowCategory from '../views/Categories/ShowCategory.vue'
 import AboutUs from '../views/AboutUs.vue'
 import ShowUsers from '../views/Users/ShowUsers.vue'
-import SignUp from '../views/Users/SignUp.vue'
+import Register from '../views/Users/Register.vue'
 import Login from '../views/Users/Login.vue'
 
 const history=createWebHistory(import.meta.env.BASE_URL)
@@ -15,9 +15,9 @@ const routes = [{
         component: Home
     },
     {
-        path : '/add-event',
-        name : 'AddNewEvent',
-        component: AddNewEvent
+        path : '/event/appointment',
+        name : 'Appointment',
+        component: Appointment
     },
     {
         path : '/events/:time',
@@ -40,9 +40,9 @@ const routes = [{
         component : ShowUsers 
     },
     {
-        path : '/users/signup',
+        path : '/users/register',
         name : 'SignUp',
-        component : SignUp
+        component : Register
     },
     {
         path : '/users/login',
