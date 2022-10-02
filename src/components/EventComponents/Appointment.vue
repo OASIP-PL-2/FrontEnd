@@ -144,7 +144,7 @@
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "Authorization": 'Bearer ' + localStorage.getItem('user'),
+          "Authorization": 'Bearer ' + localStorage.getItem('accessToken'),
         },
         body: JSON.stringify(newEvent),
       });
@@ -270,19 +270,8 @@
                         class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
                         placeholder="Enter your emails"
                         v-model="bookingEmail"
-                        v-if="isLogin"
                         pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
                         disabled="true"
-                        @keyup="validateBookingEmail"
-                        @blue="validateBookingEmail"
-                      />
-                      <input
-                        type="text"
-                        class="w-full px-4 py-2 text-gray-600 border border-gray-300 rounded-md focus:ring-gray-500 focus:border-gray-900 sm:text-sm focus:outline-none"
-                        placeholder="Enter your email"
-                        v-model="bookingEmail"
-                        pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-                        v-else;
                         @keyup="validateBookingEmail"
                         @blue="validateBookingEmail"
                       />

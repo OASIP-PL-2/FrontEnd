@@ -52,7 +52,20 @@ const Login = async (user) => {
             window.location.replace("../");
         })
         return 200;
-    }else{ 
+    }else if(res.status == 401){
+        Swal.fire(
+            'Password Wrong',
+            'Please Try again',
+            'error'
+        )
+    }else if(res.status == 404){
+        Swal.fire(
+            'ไม่มีเมล',
+            'Please Try again',
+            'warning'
+        )
+    }
+    else{ 
         console.log('Failed to execute! ' + res.status);
         return res.status
     }
