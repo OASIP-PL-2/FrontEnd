@@ -44,8 +44,8 @@ const isLecturer = computed(() =>{
             </div>
             <div class="pt-4">
               <router-link :to="{ name: 'Appointment' }">
-                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-neutral-400 " :disabled="!isLogin" v-if="!isLogin">Booking now</button>
-                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue " v-else>Booking now</button>
+
+                <button class="box-border w-9/12 h-full p-4 rounded-lg bg-home_blue " >Booking now</button>
               </router-link>
             </div>
           </div>

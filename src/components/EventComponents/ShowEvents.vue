@@ -289,6 +289,7 @@
       })
       console.log(filterEvent.value);
     }
+    const isLecturer = JSON.parse(localStorage.getItem('userDetail')).role == 'lecturer'
     </script>
     <template>
       <!-- {{this.$route.params.time}} -->
@@ -394,8 +395,8 @@
                     </div>
                     <span id="allButton " class="flex ml-32 -mt-6 xl:ml-40 lg:ml-20 md:ml-36 sm:ml-44">
                       <img @click="showDetail(event)" src="../../assets/detail.png" class="cursor-pointer img-button col-1">
-                      <img @click="showEditForm(event)" src="../../assets/edit.png" class="cursor-pointer img-button col-1">
-                      <img @click="removeEvent(event.id)" src="../../assets/trash-bin.png"
+                      <img v-if="!isLecturer" @click="showEditForm(event)" src="../../assets/edit.png" class="cursor-pointer img-button col-1">
+                      <img v-if="!isLecturer" @click="removeEvent(event.id)" src="../../assets/trash-bin.png"
                         class="cursor-pointer img-button col-1">
                     </span>
     

@@ -16,7 +16,7 @@
     /* ------------------------------------------------------------------------------------ */
     //ตัวแปรจาก v-model
     const bookingName = ref("");
-    const bookingEmail = ref(JSON.parse(localStorage.getItem('userDetail')).email);
+    const bookingEmail = ref("");
     const eventCategoryId = ref("");
     const eventDuration = computed(() => {
       if (eventCategoryId.value == "") {
