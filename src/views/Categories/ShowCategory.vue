@@ -31,11 +31,13 @@ const render = !(localStorage.getItem("accessToken") == null)
 </script>
 
 <template>
-  <ShowCategory :categories="categories" v-if="render"></ShowCategory>
-  <h1 id="pleaslogin" v-else>Please Login</h1>
+  <div>
+    <ShowCategory :categories="categories" v-if="render"></ShowCategory>
+    <h1 id="pleaslogin" v-else>Please Login</h1>
 
-  <EditCategory v-if="isShowEdit == 1" @closeEditCategory="closeEditForm" :categories="categories"
-    :category="detailCurrentCategory" :showEditForm="isShowEdit" />
+    <!-- <EditCategory v-if="isShowEdit == 1" @closeEditCategory="closeEditForm" :categories="categories"
+      :category="detailCurrentCategory" :showEditForm="isShowEdit" /> -->
+  </div>
 
 </template>
 

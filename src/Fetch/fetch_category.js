@@ -1,4 +1,4 @@
-import {refreshToken} from './fetch_user.js'
+import { refreshToken } from "./fetch_authorization";
 
 const getCategories = async () => {
   if(localStorage.getItem('accessToken') == null){return 0}
@@ -13,13 +13,41 @@ const getCategories = async () => {
       console.log("Successfully executed! " + res.status);
       return response;
     } else if (res.status === 401) {
-      refreshToken(localStorage.getItem("refreshToken"));
-      deleteUser(id);
+      await refreshToken(localStorage.getItem("refreshToken"));
+      await getCategories()
+      window.location.reload()
     } else {
       console.log("Failed to execute! " + res.status);
       return res.status;
     }
 }
 
-export {getCategories};
+const editCategory = async (id,editCategory) => {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        "Authorization": 'Bearer ' + localStorage.getItem('accessToken')
+      },
+      body: JSON.stringify(editCategory),
+    }
+  )
+
+  if (res.status === 200) {
+    console.log("Successfully executed! " + res.status);
+    return res.status;
+  } else if (res.status === 401) {
+    await refreshToken(localStorage.getItem("refreshToken"));
+    await editCategory(editCategory)
+    window.location.reload()
+  } else {
+    console.log("Failed to execute! " + res.status);
+    return res.status;
+  }
+
+};
+
+
+export {getCategories, editCategory};
 

@@ -1,3 +1,5 @@
+import { refreshToken } from "./fetch_authorization";
+
 const getUserDetail = async (id) => {
   console.log("In progress (Get UserDetail)");
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/users/${id}`, {
@@ -9,8 +11,9 @@ const getUserDetail = async (id) => {
     console.log("Successfully executed! " + res.status);
     return await res.json();
   } else if (res.status === 401) {
-    refreshToken(localStorage.getItem("refreshToken"));
-    getUserDetail(id);
+    await refreshToken(localStorage.getItem("refreshToken"));
+    await getUserDetail(id);
+    window.location.reload()
   } else {
     console.log("Failed to execute! " + res.status);
     return res.status;
@@ -34,8 +37,9 @@ const editUserDetail = async (user, id) => {
     console.log("Successfully executed! " + res.status);
     return res.status;
   } else if (res.status === 401) {
-    refreshToken(localStorage.getItem("refreshToken"));
-    editUserDetail(user, id);
+    await refreshToken(localStorage.getItem("refreshToken"));
+    await editUserDetail(user, id);
+    window.location.reload()
   } else {
     console.log("Failed to execute! " + res.status);
     return res.status;
@@ -91,29 +95,15 @@ const getUsers = async () => {
   });
   if (res.status === 200) {
     console.log("Successfully executed! " + res.status);
-    console.log(localStorage.getItem('userDetail').id);
     return await res.json();
   } else if (res.status === 401) {
-    refreshToken(localStorage.getItem("refreshToken"));
-    getUsers();
+    await refreshToken(localStorage.getItem("refreshToken"));
+    await getUsers();
+    window.location.reload()
   } else {
     console.log("Failed to execute! " + res.status);
   }
 };
 
-const refreshToken = async (refreshtoken) => {
-  console.log("In progress (Refresh Token)");
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/refresh`, {
-    headers: {
-      Authorization: "Bearer " + refreshtoken,
-    },
-  });
-  if (res.status === 200) {
-    const response = await res.json();
-    console.log("Successfully executed! " + res.status);
-    localStorage.setItem("accessToken", response.accessToken);
-    localStorage.setItem("refreshToken", response.refreshToken);
-    localStorage.setItem("userdetail", response.user);
-  }
-};
-export { deleteUser, getUserDetail, editUserDetail, getUsers , refreshToken};
+
+export { deleteUser, getUserDetail, editUserDetail, getUsers};

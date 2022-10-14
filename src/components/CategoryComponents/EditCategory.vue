@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed, onUpdated } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
+import { editCategory } from '../../Fetch/fetch_category'
 const props = defineProps({
   categories: {
     type: Array,
@@ -15,6 +16,14 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(['closeEditCategory'])
+
+const filterCategory = ref([])
+onBeforeMount(async () => {
+  filterCategory.value = props.categories.filter((category) => category.id != props.category.id)
+  console.log(filterCategory);
+});
+
 const categoryName = ref(props.category.eventCategoryName);
 const duration = ref(props.category.eventDuration);
 const description = ref(props.category.eventCategoryDescription);
@@ -23,12 +32,39 @@ const showEditForm = ref(props.showEditForm);
 // EDIT
 const categoryToEdit = ref({});
 const editingCategory = () => {
-  categoryToEdit.value = {
-    eventCategoryName: categoryName.value.trim(),
-    eventDuration: duration.value,
-    eventCategoryDescription: description.value,
-  };
-  editCategoryToDB(categoryToEdit.value);
+  if (
+    props.category.eventCategoryName == categoryName.value &&
+    props.category.eventDuration == duration.value &&
+    props.category.eventCategoryDescription == description.value
+  ) {
+    Swal.fire({
+      title: 'Sorry, there are no changes in this editing !',
+      text: "Do you want to continue or cancel this editing?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Continue editing !',
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return emit('closeEditCategory')
+    }
+  })
+  } else {
+    categoryToEdit.value = {
+      eventCategoryName: categoryName.value.trim(),
+      eventDuration: duration.value,
+      eventCategoryDescription: description.value,
+    };
+    editCategory(props.category.id, categoryToEdit.value)
+    .then( (res) => {
+        Swal.fire(
+            'Edit Successfully',
+            'You clicked the button!',
+            'success'
+        ).then(res => {emit('closeEditCategory')})
+      })
+  }
 };
 
 const editCategoryToDB = async (editCategory) => {
@@ -41,57 +77,24 @@ const editCategoryToDB = async (editCategory) => {
       body: JSON.stringify(editCategory),
     }
   )
-
-  if (
-    props.category.eventCategoryName == categoryName.value &&
-    props.category.eventDuration == duration.value &&
-    props.category.eventCategoryDescription == description.value
-  ) {
-    return alert("sorry, please change any field");
-  } else if (
-    errorCategoryName.value != "" ||
-    errorDuration.value != "" ||
-    errorDescription.value != ""
-  ) {
-     return alert("sorry, incorrect syntax");
-  } else if (res.status === 200) {
-     alert("editing event successfully");
-    //  return showEditForm.value = 0;
-    return emit('closeEditCategory')
-  } else if (res.status === 400) {
-     return alert("sorry, category name is not unique");
-  } else alert("sorry, cannot be edited");
 };
-const emit = defineEmits(['closeEditCategory'])
-//validation
-const errorCategoryName = ref("");
-const errorDescription = ref("");
-const errorDuration = ref("");
-const validateEventCategoryName = computed(() => {
-  errorCategoryName.value =
-    categoryName.value === ""
-      ? "Please fill CategoryName"
-      : "" || categoryName.value.length > 100
-      ? "category name can not be more than 100 character"
-      : "";
-});
-const validateEventCategoryDescription = computed(() => {
-  errorDescription.value =
-    description.value.length > 500
-      ? "EventNote cannot be more than 500 character"
-      : "";
-});
-const validateEventCategoryDuration = computed(() => {
-  errorDuration.value =
-    duration.value === ""
-      ? "Please fill Duration"
-      : "" || duration.value < 1
-      ? "Must be in range 1-480"
-      : "" || duration.value > 480
-      ? "Must be in range 1-480"
-      : "" || Number.isInteger(duration.value)
-      ? "" : "Must be a number"
-});
+
+//show-error
+const ErrorNameNull = ref(false);
+const ErrorNameUnique = ref(false);
+const ErrorDurationNull = ref(false);
+const ErrorDurationRange = ref(false);
+
+const validateEventCategoryName = () => {
+  ErrorNameNull.value = categoryName.value == null || categoryName.value == ''
+  ErrorNameUnique.value = filterCategory.value.map((category) =>{return category.eventCategoryName.trim()}).includes(categoryName.value.trim())
+}
+
+const validateDuration = () => {
+  ErrorDurationNull.value = duration.value == null || duration.value == ''
+  ErrorDurationRange.value = duration.value < 1 || duration.value > 480
+}
+
 </script>
 
 <template>
@@ -116,12 +119,13 @@ const validateEventCategoryDuration = computed(() => {
                 type="text"
                 v-model="categoryName"
                 @keyup="validateEventCategoryName"
-                @blue="validateEventCategoryName"
                 class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                :class="{ 'empty-field': ErrorNameNull }"
                 placeholder="categoryName"
+                maxlength="100"
                 required
               />
-              <span class="ml-2 text-red-700 col-1" v-if="errorCategoryName">{{errorCategoryName}}</span><br>
+              <span class="ml-2 text-red-700 col-1" v-if="ErrorNameUnique">This name is already used</span><br>
             </div>
 
             <div>
@@ -129,14 +133,15 @@ const validateEventCategoryDuration = computed(() => {
               <input
                 type="number"
                 v-model="duration"
-                @keyup="validateEventCategoryDuration"
-                @blue="validateEventCategoryDuration"
+                @keyup="validateDuration"
+                @change="validateDuration"
                 class="p-4 text-sm text-gray-900 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="duration"
+                :class="{ 'empty-field': ErrorDurationNull }"
                 required
               />
               <span class="ml-2 font-bold">min </span>
-              <span class="ml-2 text-red-700 col-1" v-if="errorDuration" >{{ errorDuration }} </span><br>
+              <span class="ml-2 text-red-700 col-1" v-if="ErrorDurationRange" >Must be in range 1-480</span><br>
             </div>
 
             <div>
@@ -146,13 +151,11 @@ const validateEventCategoryDuration = computed(() => {
                 rows="5"
                 cols="50"
                 v-model="description"
-                @keyup="validateEventCategoryDescription"
-                @blue="validateEventCategoryDescription"
                 class="p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50"
                 placeholder="clinic descrition..."
+                maxlength="500"
                 required
               ></textarea>
-              <span class="ml-2 text-red-700 col-1" v-if="errorDescription">{{errorDescription}}</span><br>
             </div>
 
           </div>
@@ -194,5 +197,8 @@ input {
 }
 input:focus {
   background-color: rgb(216 180 254);
+}
+.empty-field {
+  border: red 2px solid;
 }
 </style>

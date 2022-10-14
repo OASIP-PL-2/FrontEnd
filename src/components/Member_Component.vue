@@ -22,12 +22,17 @@ const props = defineProps({
   },
   
 });
+
+const imgURL = "../assets/members/" + props.img
+console.log(imgURL);
+
 </script>
  
 <template>
     <div class="">
           <div class="p-8 transition duration-300 ease-in-out bg-gray-100 cursor-pointer col-12 rounded-3xl hover:scale-105">
             <div class="-mb-20 transform -translate-y-1/2 col-12">
+              <!-- <img :src="imgURL" :alt="`${name}`" class="object-cover object-center w-48 mx-auto rounded-md h-52" /> -->
               <img :src="`src/assets/members/${img}`" :alt="`${name}`" class="object-cover object-center w-48 mx-auto rounded-md h-52" />
             </div>
             <div class="text-center col-12">
@@ -57,7 +62,7 @@ const props = defineProps({
               </div>
             </ul>
             <div class="-mt-5 text-center col-12">
-              <button class="px-20 py-1.5 text-white bg-black rounded-xl"></button>
+              <button class="px-20 py-1.5 text-white bg-black rounded-xl bg-re"></button>
             </div>
           </div>
     </div>

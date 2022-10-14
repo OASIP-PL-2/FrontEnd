@@ -1,13 +1,29 @@
 <script setup>
+import { ref, computed, onUpdated } from "vue";
+import EditCategory from '../CategoryComponents/EditCategory.vue'
 const props = defineProps({
   categories: {
     type: Array,
     require: true,
   }
 })
+
+const isShowEdit = ref(0)
+const detailCurrentCategory = ref({})
+const showEditForm = (category) => {
+  console.log("เข้า");
+  detailCurrentCategory.value = category;
+  isShowEdit.value = 1;
+}
+const closeEditForm = () => {
+  isShowEdit.value = 0;
+  window.location.reload();
+};
+
 </script>
  
 <template>
+  <div>
     <div class="text-5xl font-bold text-center">Clinic</div>
     <div class="px-4 mx-16 my-12 md:px-12">
       <div v-if="categories.length !== 0" class="flex flex-wrap -mx-1 lg:-mx-4">
@@ -49,7 +65,8 @@ const props = defineProps({
   
     <EditCategory v-if="isShowEdit == 1" @closeEditCategory="closeEditForm" :categories="categories"
       :category="detailCurrentCategory" :showEditForm="isShowEdit" />
-  
+
+    </div>
   </template>
  
 <style>

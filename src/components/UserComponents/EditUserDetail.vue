@@ -70,7 +70,7 @@ const editingUser = () => {
     editUserDetail(userToEdit.value , props.user.id)
       .then( (res) => {
         Swal.fire(
-            'Login Successfully',
+            'Edit Successfully',
             'You clicked the button!',
             'success'
         ).then(res => {closeEditForm()})

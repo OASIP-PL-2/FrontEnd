@@ -71,4 +71,26 @@ const Login = async (user) => {
     }
 }
 
-export {Register , Login};
+const refreshToken = async (refreshtoken) => {
+    console.log("In progress (Refresh Token)");
+    const res = await fetch(`${import.meta.env.VITE_BACK_URL}/refresh`, {
+      headers: {
+        Authorization: "Bearer " + refreshtoken,
+      },
+    });
+    if (res.status === 200) {
+      console.log('เข้า 200');
+      const response = await res.json();
+      console.log("Successfully executed! " + res.status);
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+      localStorage.setItem("userDetail", JSON.stringify(response.user));
+    } else if (res.status === 401) {
+      console.log('please login.....');
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      localStorage.removeItem('userDetail')
+    }
+  };
+
+export {Register , Login , refreshToken};

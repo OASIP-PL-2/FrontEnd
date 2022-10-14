@@ -36,7 +36,8 @@ const closeEditForm = () => {
 </script>
  
 <template>
-     <div class="min-h-screen lg:mx-48 md:mx-32 sm:mx-8">
+  <div>
+    <div class="min-h-screen lg:mx-48 md:mx-32 sm:mx-8">
     <div class="p-4 rounded-md">
       <div
         class="flex justify-between px-4 py-2 font-bold text-white rounded-md bg-gradient-to-tr from-indigo-600 to-purple-600 text-md">
@@ -93,6 +94,7 @@ const closeEditForm = () => {
   <ShowUserDetail v-if="isShowDetail == 1" @closeMe="closeShowDetail" :user="detailCurrentUser" />
   <EditUserDetail class="edit" v-if="isShowEdit == 1" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser"
     :showEditForm="isShowEdit" />
+  </div>
 </template>
  
 <style>
