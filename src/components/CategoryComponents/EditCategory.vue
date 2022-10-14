@@ -67,18 +67,6 @@ const editingCategory = () => {
   }
 };
 
-const editCategoryToDB = async (editCategory) => {
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories/${props.category.id}`,
-    {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(editCategory),
-    }
-  )
-};
-
 //show-error
 const ErrorNameNull = ref(false);
 const ErrorNameUnique = ref(false);

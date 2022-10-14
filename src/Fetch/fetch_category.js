@@ -1,7 +1,6 @@
 import { refreshToken } from "./fetch_authorization";
 
 const getCategories = async () => {
-  if(localStorage.getItem('accessToken') == null){return 0}
     console.log('In progress (Get Categories)s');
     const res = await fetch(`${import.meta.env.VITE_BACK_URL}/categories`, {
       headers: {
