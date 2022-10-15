@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import {getUserDetail} from "../../Fetch/fetch_user.js"
+import { getUserDetail } from "../../Fetch/fetch_user.js"
 import ShowUserDetail from "../../components/UserComponents/ShowUserDetail.vue";
 import EditUserDetail from "../../components/UserComponents/EditUserDetail.vue";
 

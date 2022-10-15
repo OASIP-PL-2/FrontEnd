@@ -153,10 +153,6 @@ const addEvent = async () => {
 
   if (file.value.length != 0) {
     data.append("file", file.value);
-  } else {
-    console.log('ไม่มีไฟล์');
-    console.log(file.value);
-    data.append("file", new Object());
   }
   
   console.log(data.values);
