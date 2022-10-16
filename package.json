@@ -11,6 +11,7 @@
     "@headlessui/vue": "^1.6.2",
     "@vuepic/vue-datepicker": "^3.2.1",
     "alga-css": "^1.0.0-stone-8",
+    "boxicons": "^2.1.4",
     "filepond": "^4.30.4",
     "filepond-plugin-file-validate-type": "^1.2.8",
     "filepond-plugin-image-preview": "^4.6.11",
