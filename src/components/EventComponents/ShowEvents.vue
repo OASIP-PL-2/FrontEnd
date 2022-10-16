@@ -16,7 +16,6 @@ const allEvents = ref([]);
 const categories = ref([]);
 const param = ref();
 
-// เรียกใช้ getEvents() ก่อนที่หน้าเว็บจะแสดง
 onBeforeMount(async () => {
   param.value = params.time;
   categories.value = await getCategories();

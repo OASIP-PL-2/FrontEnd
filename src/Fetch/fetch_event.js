@@ -1,5 +1,6 @@
 
 import { refreshToken } from "./fetch_authorization";
+
 const getEvents = async () => {
   if (localStorage.getItem("accessToken") == null) {
     return 0;
@@ -31,7 +32,18 @@ const editEventDetail = async (event, id) => {
     },
     body: JSON.stringify(event),
   });
-  return res;
+  
+  if (res.status === 200) {
+    console.log("Successfully executed! " + res.status);
+    return res.status;
+  } else if (res.status === 401) {
+    await refreshToken(localStorage.getItem("refreshToken"));
+    await editEventDetail(event,id)
+    window.location.reload()
+  } else {
+    console.log("Failed to execute! " + res.status);
+    return res.status;
+  }
 };
 
 const getPastEvents = async () => {
