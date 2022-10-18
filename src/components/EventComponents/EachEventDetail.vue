@@ -1,11 +1,22 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
+import 'boxicons'
+import { getFileName } from '../../Fetch/fetch_file.js'
+import { downloadFile } from '../../Fetch/fetch_file.js'
 const props = defineProps({
   event: {
     type: Object,
     require: true,
   },
 });
+
+const fileName = ref("")
+const fileUrl = ref("")
+onBeforeMount(async () => {
+  fileName.value = (await getFileName(props.event.id))[0];
+  fileUrl.value = await downloadFile(props.event.id, fileName.value);
+  console.log(fileUrl.value);
+})
 
 const monthNames = [
   "January",
@@ -100,6 +111,17 @@ const extractTime = (time) => {
                   <span class="inline-flex"> {{ event.eventNote }}</span></span>
               </span>
             </div>
+
+            <div class="mt-4 text-gray-700 col-12" v-if="fileName != undefined">
+              Attachment File
+              <div class="p-3 px-4 border-2 border-stone-400 rounded-md">
+                <div class="grid grid-cols-6 gap-4 content-center "> 
+                  <span class="col-span-5 self-center text-sm">{{ fileName }}</span>
+                  <a :href="fileUrl" :download="fileName"><box-icon name='cloud-download' size='md' border='circle' animation='tada-hover' class="" ></box-icon></a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

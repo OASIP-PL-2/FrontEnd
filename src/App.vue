@@ -40,7 +40,7 @@ const logout = () => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       localStorage.removeItem('userDetail')
-    reloadPage()
+      reloadPage()
     }
   })
 }

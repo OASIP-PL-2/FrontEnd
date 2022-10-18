@@ -45,6 +45,7 @@ onBeforeMount(async () => {
   if (isLogin) {
     bookingEmail.value = JSON.parse(localStorage.getItem("userDetail")).email;
   }
+  console.log(minDatetimeLocal.value);
 });
 
 // clear form func.
@@ -102,15 +103,12 @@ const minDatetimeLocal = computed(() => {
   const date =
     today.getFullYear() +
     "-" +
-    ("0" + (today.getMonth() + 1)).slice(-2) +
+    String(today.getMonth() + 1).padStart(2, '0') +
     "-" +
-    today.getDate();
-  const hour = today.getHours();
-  const minute = computed(() => {
-    if (today.getMinutes() < 10) return "0" + today.getMinutes();
-    else return today.getMinutes();
-  });
-  const dateTime = `${date}T${hour}:${minute.value}`;
+    String(today.getDate()).padStart(2, '0')
+  const hour = String(today.getHours()).padStart(2, '0')
+  const minute = String(today.getMinutes()).padStart(2, '0')
+  const dateTime = `${date}T${hour}:${minute}`;
   return dateTime;
 });
 
@@ -148,37 +146,13 @@ const addEvent = async () => {
     eventStartTime: changeFormat(eventStartTime.value),
   };
   data.append("event", JSON.stringify(newEvent));
-  
-  // data.append("file", null);
-
   if (file.value.length != 0) {
     data.append("file", file.value);
-  } else {
-    console.log('ไม่มีไฟล์');
-    console.log(file.value);
-    data.append("file", new Object());
   }
-  
   console.log(data.values);
   addNewEvent(data);
-  // console.log(res);
 };
 
-// const addEventToDB = async (data) => {
-//   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
-//     mode: 'no-cors',
-//     method: "POST",
-//     headers: {
-//       "content-type": "application/json",
-//       "Authorization": "Bearer " + localStorage.getItem("accessToken"),
-//     },
-//     body: data,
-//   });
-
-//   if(res.status === 0) {
-//     console.log('success');
-//   }
-// };
 
 </script>
 
