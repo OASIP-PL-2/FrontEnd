@@ -11,10 +11,6 @@ const getCategories = async () => {
       const response = await res.json()
       console.log("Successfully executed! " + res.status);
       return response;
-    } else if (res.status === 401) {
-      await refreshToken(localStorage.getItem("refreshToken"));
-      await getCategories()
-      window.location.reload()
     } else {
       console.log("Failed to execute! " + res.status);
       return res.status;
