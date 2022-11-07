@@ -151,24 +151,23 @@ const deleteEvent = async (event) => {
 const addNewEvent = async (data) => {
   //   console.log([...data]);
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
-    mode: "no-cors",
+    // mode: "no-cors",
     method: "POST",
     headers: {
-      "content-type": "application/json",
+      // "content-type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: data,
-  });
-
+  })
   console.log(res.status);
   // const response = await res.json()
   // console.log(response.message);
 
-  if (res.status === 0) {
-    console.log("success");
-  } else if (res.status === 400) {
-    console.log("bad");
-  }
+  // if (res.status === 0) {
+  //   console.log("success");
+  // } else if (res.status === 400) {
+  //   console.log("bad");
+  // }
 
   //   fetch(`${import.meta.env.VITE_BACK_URL}/events`, {
   //     mode: 'no-cors',
