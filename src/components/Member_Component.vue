@@ -25,6 +25,7 @@ const props = defineProps({
 
 const imgURL = "../assets/members/" + props.img
 console.log(imgURL);
+//Test push
 
 </script>
  
