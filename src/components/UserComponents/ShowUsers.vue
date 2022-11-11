@@ -36,7 +36,7 @@ const closeEditForm = () => {
 </script>
  
 <template>
-  <div>
+  <!-- <div>
     <div class="min-h-screen lg:mx-48 md:mx-32 sm:mx-8">
     <div class="p-4 rounded-md">
       <div
@@ -89,12 +89,56 @@ const closeEditForm = () => {
           </div>
         </div>
       </div>
+    </div> -->
+
+    <div class="mb-4 row mb-lg-4">
+        <div class="mx-auto text-center col-md-8 col-xl-6">
+            <h2>Users</h2>
+        </div>
     </div>
-  </div>
+    <div class="container text-center" v-if="users.length !== 0">
+        <div class="table-responsive d-sm-flex">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="color: var(--bs-black);">Profile</th>
+                        <th class="text-start" style="color: var(--bs-black);">Username</th>
+                        <th class="text-start" style="color: var(--bs-black);">Email</th>
+                        <th style="color: var(--bs-black);">Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody v-for="(user, index) in users" :key="index">
+                    <tr style="background: #eff3f7;" v-if="index%2==0">
+                        <td><img class="rounded-circle" src="../../assets/profile/6.png" width="55" height="55" style="border-style: none;"></td>
+                        <td class="text-uppercase fw-bold text-start" style="color: var(--bs-black);padding-top: 24px;">{{user.name}}</td>
+                        <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
+                        <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
+                        <td class="text-truncate" style="padding-top: 20px;">
+                          <button @click="showDetail(user.id)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
+                          <button @click="showEditForm(user)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
+                          <button @click="$emit('deleteUsers' , user.id)" class="btn btn-primary" type="button" style="background: var(--bs-red);border-color: var(--bs-red);padding: 3px 8px;height: 30px;padding-top: 1px;">Delete</button></td>
+                    </tr>
+                    <tr v-if="index%2!=0">
+                        <td><img class="rounded-circle" src="../../assets/profile/6.png" width="55" height="55" style="border-style: none;"></td>
+                        <td class="text-uppercase fw-bold text-start" style="color: var(--bs-black);padding-top: 24px;">{{user.name}}</td>
+                        <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
+                        <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
+                        <td class="text-truncate" style="padding-top: 20px;">
+                          <button @click="showDetail(user.id)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
+                          <button @click="showEditForm(user)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
+                          <button @click="$emit('deleteUsers' , user.id)" class="btn btn-primary" type="button" style="background: var(--bs-red);border-color: var(--bs-red);padding: 3px 8px;height: 30px;padding-top: 1px;">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
   <ShowUserDetail v-if="isShowDetail == 1" @closeMe="closeShowDetail" :user="detailCurrentUser" />
   <EditUserDetail class="edit" v-if="isShowEdit == 1" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser"
     :showEditForm="isShowEdit" />
-  </div>
+
 </template>
  
 <style>

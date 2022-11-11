@@ -14,9 +14,23 @@ const getUserDetail = async (id) => {
     await refreshToken(localStorage.getItem("refreshToken"));
     await getUserDetail(id);
     window.location.reload()
-  } else {
-    console.log("Failed to execute! " + res.status);
-    return res.status;
+  } else if(res.status === 404){
+    Swal.fire(
+      `Not found this user`,
+      'Please Try again',
+      'warning'
+    ).then((res) => {
+      window.location=document.referrer
+    });
+  }else {
+    const response = await res.json() 
+    Swal.fire(
+      `${response.message}`,
+      'Please Try again',
+      'warning'
+    ).then((res) => {
+      window.location=document.referrer
+    });
   }
 };
 
@@ -35,12 +49,26 @@ const editUserDetail = async (user, id) => {
   );
   if (res.status === 200) {
     console.log("Successfully executed! " + res.status);
+    Swal.fire(
+      'Edit Successfully',
+      'You clicked the button!',
+      'success'
+    )
     return res.status;
   } else if (res.status === 401) {
     await refreshToken(localStorage.getItem("refreshToken"));
     await editUserDetail(user, id);
     window.location.reload()
-  } else {
+  } else if(res.status !== 200){  
+    const response = await res.json() 
+    Swal.fire(
+      `${response.message}`,
+      'Please Try again',
+      'warning'
+    ).then((res) => {
+      window.location=document.referrer
+    });
+  }else {
     console.log("Failed to execute! " + res.status);
     return res.status;
   }
@@ -76,6 +104,15 @@ const deleteUser = async (id) => {
         }
       })
       return res.status;
+    }else if(res.status !== 200){
+      const response = await res.json() 
+      Swal.fire(
+        `${response.message}`,
+        'Please Try again',
+        'warning'
+      ).then((res) => {
+        window.location=document.referrer
+      });
     }
   }else{
       console.log("Failed to execute! This's user hasn't been deleted.");

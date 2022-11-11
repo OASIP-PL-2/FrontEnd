@@ -58,6 +58,8 @@ const validateEmailFormat = (email) => {
 // EDIT
 const userToEdit = ref({});
 
+const emit = defineEmits(["closeEditEvent"]);
+
 const editingUser = () => {
   if(username.value == props.user.name && email.value == props.user.email && role.value == props.user.role){
     closeEditForm();
@@ -69,16 +71,10 @@ const editingUser = () => {
     };
     editUserDetail(userToEdit.value , props.user.id)
       .then( (res) => {
-        Swal.fire(
-            'Edit Successfully',
-            'You clicked the button!',
-            'success'
-        ).then(res => {closeEditForm()})
+        if(res == 200){closeEditForm()}
       })
   }
 };
-
-const emit = defineEmits(["closeEditUser"]);
 
 const closeEditForm = () => {
   showEditForm.value = false

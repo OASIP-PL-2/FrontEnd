@@ -33,7 +33,7 @@ console.log(imgURL);
           <div class="p-8 transition duration-300 ease-in-out bg-gray-100 cursor-pointer col-12 rounded-3xl hover:scale-105">
             <div class="-mb-20 transform -translate-y-1/2 col-12">
               <!-- <img :src="imgURL" :alt="`${name}`" class="object-cover object-center w-48 mx-auto rounded-md h-52" /> -->
-              <img :src="`src/assets/members/${img}`" :alt="`${name}`" class="object-cover object-center w-48 mx-auto rounded-md h-52" />
+              <img :src="`../src/assets/members/${img}`" :alt="`${name}`" class="object-cover object-center w-48 mx-auto rounded-md h-52" />
             </div>
             <div class="text-center col-12">
               <h3 class="text-xl font-bold text-center uppercase"> {{name}} </h3>

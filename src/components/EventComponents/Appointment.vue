@@ -11,17 +11,18 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import { EMPTY_ARR, EMPTY_OBJ } from "@vue/shared";
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateSize
 );
 
 const appRouter = useRouter();
 const goBack = () => appRouter.go(-1);
 
-//ตัวแปรจาก v-model
 const bookingName = ref("");
 const bookingEmail = ref("");
 const eventCategoryId = ref("");
@@ -30,13 +31,13 @@ const eventDuration = computed(() => {
     return 0;
   } else {
     return categories.value.filter(
-      (category) => category.id == eventCategoryId.value
+      category => category.id == eventCategoryId.value
     )[0].eventDuration;
   }
 });
 const eventStartTime = ref("");
 const eventNote = ref("");
-let file = ref("")
+let file = ref("");
 
 const categories = ref([]);
 const isLogin = localStorage.getItem("accessToken") != null;
@@ -45,7 +46,7 @@ onBeforeMount(async () => {
   if (isLogin) {
     bookingEmail.value = JSON.parse(localStorage.getItem("userDetail")).email;
   }
-  console.log(minDatetimeLocal.value);
+  console.log(categories.value);
 });
 
 // clear form func.
@@ -70,8 +71,7 @@ const validateBookingName = () => {
   ErrorName.value = bookingName.value.length == 0;
 };
 
-let format =
-  /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+let format = /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const validateBookingEmail = () => {
   ErrorEmail.value = bookingEmail.value.length == 0;
   if (!format.test(bookingEmail.value.trim())) {
@@ -103,39 +103,42 @@ const minDatetimeLocal = computed(() => {
   const date =
     today.getFullYear() +
     "-" +
-    String(today.getMonth() + 1).padStart(2, '0') +
+    String(today.getMonth() + 1).padStart(2, "0") +
     "-" +
-    String(today.getDate()).padStart(2, '0')
-  const hour = String(today.getHours()).padStart(2, '0')
-  const minute = String(today.getMinutes()).padStart(2, '0')
+    String(today.getDate()).padStart(2, "0");
+  const hour = String(today.getHours()).padStart(2, "0");
+  const minute = String(today.getMinutes()).padStart(2, "0");
   const dateTime = `${date}T${hour}:${minute}`;
   return dateTime;
 });
 
 //format date-time for send to backend
-const changeFormat = (eventStartTime) => {
+const changeFormat = eventStartTime => {
   const dateTime = new Date(eventStartTime);
   return `${dateTime.toLocaleString("en-GB")}`;
 };
 
-const onFileChanged = (e) => {
-  file.value = e.target.files[0]
+const onFileChanged = e => {
+  file.value = e.target.files[0];
   console.log(file.value);
-}
+};
 
 const addEvent = async () => {
   ErrorName.value = bookingName.value.length == 0;
   ErrorEmail.value = bookingEmail.value.length == 0;
-  ErrorCategory.value = eventCategoryId.value.length == 0 || eventCategoryId.value == "";
+  ErrorCategory.value =
+    eventCategoryId.value.length == 0 || eventCategoryId.value == "";
   ErrorStartTime.value = eventStartTime.value.length == 0;
   if (
     ErrorName.value ||
     ErrorEmail.value ||
     ErrorCategory.value ||
-    ErrorStartTime.value
+    ErrorStartTime.value ||
+    file.value.size > 10000000
   ) {
     return 0;
   }
+
   const data = new FormData();
   const newEvent = {
     bookingEmail: bookingEmail.value,
@@ -143,7 +146,7 @@ const addEvent = async () => {
     eventCategoryId: eventCategoryId.value,
     eventDuration: eventDuration.value,
     eventNote: eventNote.value,
-    eventStartTime: changeFormat(eventStartTime.value),
+    eventStartTime: changeFormat(eventStartTime.value)
   };
   data.append("event", JSON.stringify(newEvent));
   if (file.value.length != 0) {
@@ -152,8 +155,6 @@ const addEvent = async () => {
   console.log(data.values);
   addNewEvent(data);
 };
-
-
 </script>
 
 <template>
@@ -162,14 +163,10 @@ const addEvent = async () => {
       <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Add New Event :</h2>
 
       <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div
-          class="relative px-4 py-10 mx-8 bg-white shadow md:mx-0 rounded-3xl sm:p-10"
-        >
+        <div class="relative px-4 py-10 mx-8 bg-white shadow md:mx-0 rounded-3xl sm:p-10">
           <div class="max-w-lg mx-auto -mt-7">
             <div class="divide-y divide-gray-200">
-              <div
-                class="py-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7"
-              >
+              <div class="py-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7">
                 <!-- name input -->
                 <div class="flex flex-col">
                   <label class="leading-loose">Booking Name :</label>
@@ -200,36 +197,27 @@ const addEvent = async () => {
                   <p
                     class="ml-2 text-xs text-right text-red-700"
                     v-if="ErrorEmail"
-                  >
-                    {{ ErrorEmail_message }}
-                  </p>
+                  >{{ ErrorEmail_message }}</p>
                 </div>
 
                 <!-- clinic input -->
                 <div class="flex flex-col">
                   <label class="leading-loose">Clinic :</label>
                   <div>
-                    <select
-                      v-model="eventCategoryId"
-                      :class="{ 'empty-field': ErrorCategory }"
-                    >
-                      <option value disabled selected>
-                        *** Select Clinic ***
-                      </option>
+                    <select v-model="eventCategoryId" :class="{ 'empty-field': ErrorCategory }">
+                      <option value disabled selected>*** Select Clinic ***</option>
                       <option
                         v-for="category in categories"
                         :key="category.id"
                         :value="category.id"
-                      >
-                        {{ category.eventCategoryName }}
-                      </option>
+                      >{{ category.eventCategoryName }}</option>
                     </select>
                     <span class="ml-3 font-bold">
                       Duration :
                       <input
                         type="type"
                         v-model="eventDuration"
-                        style="width: 80px"
+                        style="width: 60px"
                         class="text-center"
                         :disabled="true"
                       />
@@ -252,15 +240,11 @@ const addEvent = async () => {
                     />
 
                     <!-- startTime validate -->
-                    <span
-                      class="relative text-gray-400 focus-within:text-gray-600"
-                    >
+                    <span class="relative text-gray-400 focus-within:text-gray-600">
                       <p
                         class="ml-2 text-xs text-red-700"
                         v-if="validateEventStartTime"
-                      >
-                        {{ ErrorStartTime_message }}
-                      </p>
+                      >{{ ErrorStartTime_message }}</p>
                     </span>
                   </div>
                 </div>
@@ -282,17 +266,18 @@ const addEvent = async () => {
                 </div>
               </div>
 
-              <FilePond
-                name="test"
-                ref="pond"
-
-                @change="onFileChanged($event)"
-                label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>"
-              />
+              <div class="py-4">
+                <label class="leading-loose">Attachment File :</label>
+                <FilePond
+                  ref="pond"
+                  maxFileSize="10MB"
+                  @change="onFileChanged($event)"
+                  label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>"
+                />
+              </div>
 
               <!-- button -->
               <div class="flex items-center pt-4 space-x-4">
-                <!-- <router-link :to="{ name: 'ShowEvent' , params: { time: 'All' }}" > -->
                 <button
                   @click="goBack"
                   class="flex items-center justify-center w-full px-4 py-3 text-gray-900 rounded-md focus:outline-none hover:bg-red-500"
@@ -313,13 +298,10 @@ const addEvent = async () => {
                   </svg>
                   Cancel
                 </button>
-                <!-- </router-link> -->
                 <button
                   @click="addEvent"
                   class="flex items-center justify-center w-full px-4 py-3 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none"
-                >
-                  Create
-                </button>
+                >Create</button>
               </div>
             </div>
           </div>

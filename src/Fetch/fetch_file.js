@@ -16,7 +16,6 @@ const getFileName = async (eventId) => {
     window.location.reload();
   } else {
     console.log("Failed to execute! " + res.status);
-    return res.status;
   }
 };
 
@@ -42,9 +41,9 @@ const downloadFile = async (eventId, filName) => {
     await refreshToken(localStorage.getItem("refreshToken"));
     await getUserDetail(id);
     window.location.reload();
-  } else {
+  }
+  else {
     console.log("Failed to execute! " + res.status);
-    return res.status;
   }
 };
 

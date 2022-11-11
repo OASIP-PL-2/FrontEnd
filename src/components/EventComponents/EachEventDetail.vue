@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import 'boxicons'
-import { getFileName } from '../../Fetch/fetch_file.js'
-import { downloadFile } from '../../Fetch/fetch_file.js'
+import { getFileName , downloadFile } from '../../Fetch/fetch_file.js'
 const props = defineProps({
   event: {
     type: Object,

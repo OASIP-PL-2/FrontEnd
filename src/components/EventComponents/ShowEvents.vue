@@ -6,6 +6,7 @@ import { getPastEvents } from "../../Fetch/fetch_event.js";
 import { getUpcomingEvents } from "../../Fetch/fetch_event.js";
 import { getEventsByDate } from "../../Fetch/fetch_event.js";
 import { deleteEvent } from "../../Fetch/fetch_event.js";
+import { getFileName} from "../../Fetch/fetch_file.js";
 import EachEventDetail from "../../components/EventComponents/EachEventDetail.vue";
 import EditEvent from "../../components/EventComponents/EditEvent.vue";
 import { useRoute } from "vue-router";
@@ -25,15 +26,6 @@ onBeforeMount(async () => {
   console.log(currentCategory.value);
   return chooseTime();
 });
-
-//addแล้วข้อมูล update ตอนมาหน้า AllEventList **อันนี้ยังไม่เเน่ใจว่าลบได้ไหมเพราะยัง add event ไม่ได้
-// onMounted(async () => {
-//   // alert("onMount work")
-//   //   extractCategory()
-//   await getEvents();
-//   // await getPastEvents()
-//   // await getUpcomingEvents()
-// });
 
 const currentCategory = ref([]);
 const extractCategory = () => {
@@ -103,9 +95,11 @@ const closeShowDetail = () => {
   isShow.value = 0;
   isShowEdit.value = 0;
 };
-const showEditForm = (event) => {
-  isShowEdit.value = 1;
+const fileName = ref("")
+const showEditForm = async (event) => {
+  fileName.value = (await getFileName(event.id))[0];
   detailCurrentEvent.value = event;
+  isShowEdit.value = 1;
 };
 const closeEditForm = () => {
   isShowEdit.value = 0;
@@ -331,6 +325,7 @@ const isLecturer = JSON.parse(localStorage.getItem("userDetail")).role == "lectu
       @closeEditEvent="closeEditForm"
       :events="filterEvent"
       :event="detailCurrentEvent"
+      :fileName="fileName"
       :showEditForm="isShowEdit"
     />
     <div>

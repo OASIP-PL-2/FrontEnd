@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { editCategory } from '../../Fetch/fetch_category'
 const props = defineProps({
   categories: {
@@ -58,11 +58,7 @@ const editingCategory = () => {
     };
     editCategory(props.category.id, categoryToEdit.value)
     .then( (res) => {
-        Swal.fire(
-            'Edit Successfully',
-            'You clicked the button!',
-            'success'
-        ).then(res => {emit('closeEditCategory')})
+        if(res === 200) {emit('closeEditCategory')}
       })
   }
 };
@@ -86,10 +82,47 @@ const validateDuration = () => {
 </script>
 
 <template>
-  <main class="my-8">
+<section class="py-4 position-relative py-xl-5" style="padding-top: 64px;margin-top: -23px;" v-show="showEditForm == 1">
+        <div class="container position-relative" style="padding-top: 0px;">
+            <div class="row d-flex justify-content-center" style="border-style: none;margin-left: 66px;margin-right: 64px;">
+                <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4" style="padding-top: 0px;">
+                    <div class="mb-5 card" style="padding-top: 0px;background: rgba(82,108,147,0.13);">
+                        <div class="card-body p-sm-5" style="margin: 0px 7px 0px -1px;margin-right: 7px;margin-left: 5px;padding-top: 48px;margin-top: -10px;">
+                            <h2 class="mb-4 text-center" style="padding-top: 0px;margin-top: 3px;">Edit Clinic</h2>
+                            <form method="post">
+                                <div class="mb-3">
+                                    <p style="margin-bottom: 2px;">Clinic Name:</p>
+                                    <input class="form-control" type="text" v-model="categoryName" @keyup="validateEventCategoryName" id="name-2" name="name" autofocus="" maxlength="100" :class="{ 'empty-field': ErrorNameNull }" placeholder="categoryName" required>
+                                    <span v-if="ErrorNameUnique">This name is already used</span>
+                                </div>
+                                <div class="mb-3">
+                                    <p style="margin-bottom: 4px;">Duration:</p>
+                                    <input class="form-control" type="number" v-model="duration" @keyup="validateDuration" @change="validateDuration" placeholder="duration" :class="{'empty-field': ErrorDurationNull }" required>
+                                    <span v-if="ErrorDurationRange">Must be in range 1-480</span>
+                                </div>
+                                <div class="mb-3">
+                                    <p style="margin-bottom: 2px;">Description:</p>
+                                    <textarea class="form-control" id="message-2" name="message" rows="6" maxlength="500" minlength="0" autofocus="" type="text" v-model="description" placeholder="clinic descrition..." required></textarea>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="text-center col">
+                                  <button class="btn btn-primary" type="button" style="background: var(--bs-red);margin-right: 11px;border-style: none;" @click="$emit('closeEditCategory')">Cancel</button>
+                                  <button class="btn btn-primary" type="button" style="background: var(--bs-yellow);border-style: none;" @click="editingCategory">Save</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  <!-- <main class="my-8">
     <div class="px-6 detail-container" v-show="showEditForm == 1">
       <div class="{`col-12 overflow-auto h-3/4 top-28 bottom-auto rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}" >
-        <!-- navbar -->
+        
+
         <nav class="max-h-screen py-2 rounded-t-lg lg:w-12/12 bg-neutral-800">
           <span class="text-2xl font-bold text-justify ml-7 text-zinc-100 col-7">
             Edit Clinic :
@@ -98,7 +131,8 @@ const validateDuration = () => {
             <img src="../../assets/close.png" />
           </button>
         </nav>
-        <!-- edit clinic -->
+      
+
         <div class="overflow-hidden bg-white bg-center bg-cover shadow-lg col-12 shadow-zinc-700">
           <div class="grid gap-6 px-10 mx-16 my-10 mb-6 lg:grid-cols-2">
             <div>
@@ -156,11 +190,11 @@ const validateDuration = () => {
         </div>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <style scoped>
-.detail-container {
+/* .detail-container {
   position: absolute;
   left: 30%;
   line-height: 10px;
@@ -189,4 +223,5 @@ input:focus {
 .empty-field {
   border: red 2px solid;
 }
-</style>
+*/
+</style> 
