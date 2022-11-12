@@ -13,8 +13,10 @@ const fileName = ref("")
 const fileUrl = ref("")
 onBeforeMount(async () => {
   fileName.value = (await getFileName(props.event.id))[0];
-  fileUrl.value = await downloadFile(props.event.id, fileName.value);
-  console.log(fileUrl.value);
+  if(fileName.value != undefined) {
+    fileUrl.value = await downloadFile(props.event.id, fileName.value);
+    console.log(fileUrl.value); 
+  } 
 })
 
 const monthNames = [

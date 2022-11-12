@@ -1,42 +1,32 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { getCategories } from './Fetch/fetch_category';
+import Login from './views/Users/Login.vue'
+import Register from './views/Users/Register.vue'
 
 console.clear;
-// const isOpen = ref(false);
-// const isOpenRoles = ref(false);
 
 const reloadPage = () => {
   window.location.reload();
 };
 
-const categories = ref([]);
-// GET Category
-onMounted(async () => {
-  categories.value = await getCategories()
-})
-
-// let eventSelect = ref(false)
-// const openSelectEvent = () => {
-//   eventSelect.value = !eventSelect.value
-// }
-
-// let mobileMenuOpen = ref(false)
-// const openMobileMenu = () => {
-//   mobileMenuOpen.value = !mobileMenuOpen.value
-// }
+// const categories = ref([]);
+// // GET Category
+// onMounted(async () => {
+//   categories.value = await getCategories()
+// })
 
 const logout = () => {
   Swal.fire({
     title: 'Do you want to Logout',
     text: "You won't be able to revert this!",
-    icon: 'warning',
+    icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#d33',
     cancelButtonColor: '#3085d6',
     confirmButtonText: 'Done'
   }).then(res => {
-    if(res.isConfirmed){
+    if (res.isConfirmed) {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       localStorage.removeItem('userDetail')
@@ -45,58 +35,100 @@ const logout = () => {
   })
 }
 
+const user = JSON.parse(localStorage.getItem('userDetail'))
+
 const isLogin = computed(() => {
   return localStorage.getItem('accessToken') !== null
 })
 
 const isAdmin = computed(() => {
-  if(localStorage.getItem('accessToken') !== null){
+  if (localStorage.getItem('accessToken') !== null) {
     return JSON.parse(localStorage.getItem('userDetail')).role == 'admin'
   }
 })
 
-const isLecturer = computed(() =>{
-  if(localStorage.getItem('accessToken') !== null){
+const isLecturer = computed(() => {
+  if (localStorage.getItem('accessToken') !== null) {
     return JSON.parse(localStorage.getItem('userDetail')).role == 'lecturer'
   }
 })
+
 
 </script>
 
 <template>
 
-<body class="text-center text-sm-center text-md-center text-lg-center text-xl-center text-xxl-center" style="background: var(--bs-white);">
+  <body class="text-center text-sm-center text-md-center text-lg-center text-xl-center text-xxl-center"
+    style="background: var(--bs-white);">
     <nav class="py-3 navbar navbar-light navbar-expand-md mt-lg-0" style="margin-bottom: 2px;">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-md bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" style="background: var(--bs-yellow);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
-                        <path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
-                        <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
-                    </svg></span><span>OASIP</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-2">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><router-link :to="{ name: 'Home' }"><a class="nav-link active me-lg-2">Home</a></router-link></li>
-                    <li class="nav-item"><router-link :to="{ name: 'AboutUs' }"><a class="nav-link me-lg-2">About</a></router-link></li>
-                    <li class="nav-item" v-if="isLogin"><router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }"><a class="nav-link me-lg-2" href="events.html">Events</a></router-link></li>
-                    <li class="nav-item" v-if="isLogin"><router-link :to="{ name: 'ShowCategory' }"><a class="nav-link" style="margin-right: 8px;">Categories</a></router-link></li>
-                    <li class="nav-item" v-if="isAdmin"><router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }"><a class="nav-link" style="margin-right: 8px;">Users</a></router-link></li>
-                    <li class="nav-item dropdown" v-if="isLogin">
-                      <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Username</a>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#">Profile</a>
-                          <a class="dropdown-item" href="#">Sign Out</a>
-                        </div>
-                    </li>
-                </ul>
-                <button class="btn btn-primary me-lg-4" type="button" style="background: var(--bs-yellow);border-color: var(--bs-yellow);" v-if="!isLogin"><router-link :to="{ name: 'Login' }">Sign In</router-link></button>
-                <button class="btn btn-dark me-lg-2" type="button" v-if="isLogin" @click="logout">Sign Out</button>
-                <button class="btn btn-dark me-lg-2" type="button" v-if="!isLogin"><router-link :to="{ name: 'SignUp' }">Register</router-link></button>
-            </div>
-        </div>
-    </nav>
-</body>
+      <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span
+            class="bs-icon-md bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"
+            style="background: var(--bs-yellow);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+              fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
+              <path fill-rule="evenodd"
+                d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z">
+              </path>
+              <path
+                d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z">
+              </path>
+            </svg></span><span>OASIP</span></a><button data-bs-toggle="collapse" class="navbar-toggler"
+          data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span
+            class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-2">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <router-link :to="{ name: 'Home' }"><a class="nav-link active me-lg-2">Home</a></router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'AboutUs' }"><a class="nav-link me-lg-2">About</a></router-link>
+            </li>
+            <li class="nav-item" v-if="isLogin">
+              <router-link :to="{ name: 'ShowEvent', params: { time: 'All' } }"><a class="nav-link me-lg-2"
+                  href="events.html">Events</a></router-link>
+            </li>
+            <li class="nav-item" v-if="isLogin">
+              <router-link :to="{ name: 'ShowCategory' }"><a class="nav-link" style="margin-right: 8px;">Categories</a>
+              </router-link>
+            </li>
+            <li class="nav-item" v-if="isAdmin">
+              <router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }"><a class="nav-link"
+                  style="margin-right: 8px;">Users</a></router-link>
+            </li>
+            <li class="nav-item dropdown" v-if="isLogin">
+              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">{{
+                  user.name
+              }}</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Profile</a>
+                <a class="dropdown-item" href="#" @click="logout">Sign Out</a>
+              </div>
+            </li>
+          </ul>
+          <button class="btn btn-primary me-lg-2" type="button" v-if="!isLogin"
+            style="background: var(--bs-yellow);border-color: var(--bs-yellow);" data-bs-target="#modal-2"
+            data-bs-toggle="modal">Sign-in</button>
 
-<div>
-    <router-view :key="$route.fullPath"></router-view>
-</div>
+          <button class="btn btn-dark me-lg-2" type="button" v-if="!isLogin"
+            data-bs-target="#modal-3" data-bs-toggle="modal">Register</button>
+        </div>
+      </div>
+
+
+      <div class="modal fade" role="dialog" tabindex="-1" id="modal-2" style="margin-top: 0px;margin-bottom: 0px;">
+        <Login />
+      </div>
+
+      <div class="modal fade" role="dialog" tabindex="-1" id="modal-3" style="margin-left: 0px;">
+        <Register />
+      </div>
+
+    </nav>
+
+
+    <div>
+      <router-view :key="$route.fullPath"></router-view>
+    </div>
+  </body>
 
   <!-- <div>
   <nav class="px-2 mx-10 my-5 border-gray-200 dark:bg-gray-900 dark:border-gray-700">

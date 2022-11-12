@@ -103,7 +103,6 @@ const showEditForm = async (event) => {
 };
 const closeEditForm = () => {
   isShowEdit.value = 0;
-  window.location.reload();
   console.log(isShowEdit.value);
 };
 
