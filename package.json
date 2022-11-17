@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.31.0",
     "@headlessui/vue": "^1.6.2",
     "@vuepic/vue-datepicker": "^3.2.1",
     "alga-css": "^1.0.0-stone-8",
@@ -21,6 +22,7 @@
     "v-calendar": "^3.0.0-alpha.8",
     "vue": "^3.2.25",
     "vue-filepond": "^7.0.3",
+    "vue-msal": "^3.2.0",
     "vue-router": "^4.0.15"
   },
   "devDependencies": {

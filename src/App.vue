@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from "vue";
 import { getCategories } from './Fetch/fetch_category';
 import Login from './views/Users/Login.vue'
 import Register from './views/Users/Register.vue'
+import { signOut } from './login_MS/authRedirect.js'
 
 console.clear;
 
@@ -27,9 +28,13 @@ const logout = () => {
     confirmButtonText: 'Done'
   }).then(res => {
     if (res.isConfirmed) {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      localStorage.removeItem('userDetail')
+      if(JSON.parse(localStorage.getItem('isLoginMs'))) {
+        signOut();
+      }
+      // localStorage.removeItem('accessToken')
+      // localStorage.removeItem('refreshToken')
+      // localStorage.removeItem('userDetail')
+      localStorage.clear();
       reloadPage()
     }
   })
@@ -255,6 +260,9 @@ const isLecturer = computed(() => {
 </template>
 
 <style scoped>
+a {
+  text-decoration: none !important
+}
 /* .scrollBar {
   overflow-y: scroll;
   height: 80vh;

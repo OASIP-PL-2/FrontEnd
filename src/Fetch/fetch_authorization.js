@@ -43,6 +43,7 @@ const Login = async (user) => {
         localStorage.setItem('accessToken', response.accessToken)
         localStorage.setItem('refreshToken', response.refreshToken)
         localStorage.setItem("userDetail", JSON.stringify(response.user));
+        localStorage.setItem('isLoginMs', false)
         console.log('Successfully executed! ' + res.status);
         Swal.fire(
             'Login Successfully',
