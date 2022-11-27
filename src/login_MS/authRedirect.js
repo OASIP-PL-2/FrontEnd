@@ -42,6 +42,7 @@ function handleResponse(response) {
      */
 
     if (response !== null) {
+
         username = response.account.username;
         const claims =  response.idTokenClaims;
         console.log(claims);
@@ -50,17 +51,25 @@ function handleResponse(response) {
             email : claims.preferred_username,
             role : claims.roles[0]
         }
-        localStorage.setItem('accessToken', response.accessToken)
-        localStorage.setItem('refreshToken', response.accessToken)
+        
         localStorage.setItem('userDetail', JSON.stringify(user))
         localStorage.setItem('isLoginMs', true)
-        Swal.fire(
-            'Login Successfully',
-            'You clicked the button!',
-            'success'
-        ).then((res) => {
-            window.location.replace("../");
-        })
+
+        getTokenRedirect(tokenRequest)
+        .then(response => {
+            localStorage.setItem('accessToken', response.accessToken)
+            localStorage.setItem('refreshToken', response.accessToken)
+        }).catch(error => {
+            console.error(error);
+        });
+
+        // Swal.fire(
+        //     'Login Successfully',
+        //     'You clicked the button!',
+        //     'success'
+        // ).then((res) => {
+        //     window.location.replace("../");
+        // })
         // welcomeUser(username);
     } else {
         selectAccount();
@@ -124,4 +133,34 @@ function passTokenToApi() {
         });
 }
 
-export { signIn , signOut}
+const callApi = async () =>{
+    if(user == 0){return 0}
+        console.log('In progress .....');
+        const res = await fetch(`http://localhost:8082/api/users`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(user),
+        });
+        if(res.status === 201){
+            console.log('Successfully executed! ' + res.status);
+            Swal.fire(
+                'Register Successfully',
+                'You clicked the button!',
+                'success'
+            ).then((res) => {
+                window.location=document.referrer
+            })
+        }else {
+            const response = await res.json() 
+            Swal.fire({
+                icon: 'warning',
+                text: response.message,
+            }) 
+            console.log('Failed to execute! ' + res.status);
+        }
+}
+
+export { signIn , signOut, callApi}
+

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router"
-import {deleteUser , getUsers} from "../../Fetch/fetch_user.js"
+import { deleteUser , getUsers } from "../../Fetch/fetch_user.js"
 import ShowUsers from "../../components/UserComponents/ShowUsers.vue"
 let { params } = useRoute()
 

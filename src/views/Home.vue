@@ -22,6 +22,8 @@ const isLecturer = computed(() =>{
 
 console.log(isLogin.value);
 
+
+
 </script>
  
 <template>
@@ -112,6 +114,9 @@ console.log(isLogin.value);
                 </router-link>
                 <button @click="signIn" v-if="!isLogin" class="btn btn-primary d-md-flex d-lg-flex d-xl-flex mt-lg-3 ms-lg-3" type="button" style="background: rgb(82,108,147);border-color: rgb(82,108,147);border-top-color: rgb(255,;border-right-color: 255,;border-bottom-color: 255);border-left-color: 255,;">
                     Sign-in MS
+                </button>
+                <button @click="signIn" v-if="isLogin" class="btn btn-primary d-md-flex d-lg-flex d-xl-flex mt-lg-3 ms-lg-3" type="button" style="background: rgb(82,108,147);border-color: rgb(82,108,147);border-top-color: rgb(255,;border-right-color: 255,;border-bottom-color: 255);border-left-color: 255,;">
+                    Call api
                 </button>
             </div>
             <div class="col"><img class="img-fluid ps-lg-5 ms-lg-0" src="../assets/home_img/appointment-pic.jpg"></div>
