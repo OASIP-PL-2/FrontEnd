@@ -53,7 +53,9 @@ const editUserDetail = async (user, id) => {
       'Edit Successfully',
       'You clicked the button!',
       'success'
-    )
+    ).then((res) => {
+      window.location=document.referrer
+    });
     return res.status;
   } else if (res.status === 401) {
     await refreshToken(localStorage.getItem("refreshToken"));
@@ -65,9 +67,7 @@ const editUserDetail = async (user, id) => {
       `${response.message}`,
       'Please Try again',
       'warning'
-    ).then((res) => {
-      window.location=document.referrer
-    });
+    )
   }else {
     console.log("Failed to execute! " + res.status);
     return res.status;

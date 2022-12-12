@@ -6,6 +6,6 @@ import ShowEvent from "../../components/EventComponents/ShowEvents.vue"
 <ShowEvent></ShowEvent>
 </template>
  
-<style>
+<style scoped>
 
 </style>

@@ -6,6 +6,6 @@ import Appointment from "../../components/EventComponents/Appointment.vue"
 <Appointment></Appointment>
 </template>
  
-<style>
+<style scoped>
 
 </style>

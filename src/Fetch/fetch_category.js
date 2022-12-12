@@ -15,8 +15,7 @@ const getCategories = async () => {
 
   console.log("In progress (Get Categories)s");
   const res = await fetch(
-    `${import.meta.env.VITE_BACK_URL}/categories`,
-    isLogin()
+    `${import.meta.env.VITE_BACK_URL}/categories`,  isLogin()
   );
   if (res.status === 200) {
     const response = await res.json();

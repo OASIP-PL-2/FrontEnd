@@ -122,6 +122,8 @@ console.log(isLogin.value);
             <div class="col"><img class="img-fluid ps-lg-5 ms-lg-0" src="../assets/home_img/appointment-pic.jpg"></div>
         </div>
     </div>
+
+    
  
 </template>
 

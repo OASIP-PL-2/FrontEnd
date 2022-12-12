@@ -111,6 +111,6 @@ const isAdmin = computed(() =>{
       :category="detailCurrentCategory" :showEditForm="isShowEdit" />
   </template>
  
-<style>
+<style scoped>
 
 </style>

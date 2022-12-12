@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { getCategories } from './Fetch/fetch_category';
-import Login from './views/Users/Login.vue'
-import Register from './views/Users/Register.vue'
-import { signOut } from './login_MS/authRedirect.js'
+import { getCategories } from "./Fetch/fetch_category";
+import Login from "./views/Users/Login.vue";
+import Register from "./views/Users/Register.vue";
+import { signOut } from "./login_MS/authRedirect.js";
 
 console.clear;
 
@@ -19,56 +19,56 @@ const reloadPage = () => {
 
 const logout = () => {
   Swal.fire({
-    title: 'Do you want to Logout',
+    title: "Do you want to Logout",
     text: "You won't be able to revert this!",
-    icon: 'question',
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Done'
-  }).then(res => {
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Done",
+  }).then((res) => {
     if (res.isConfirmed) {
-      if(JSON.parse(localStorage.getItem('isLoginMs'))) {
+      if (JSON.parse(localStorage.getItem("isLoginMs"))) {
         signOut();
       }
       // localStorage.removeItem('accessToken')
       // localStorage.removeItem('refreshToken')
       // localStorage.removeItem('userDetail')
       localStorage.clear();
-      reloadPage()
+      window.location.replace("/");
     }
-  })
-}
+  });
+};
 
-const user = JSON.parse(localStorage.getItem('userDetail'))
+const user = JSON.parse(localStorage.getItem("userDetail"));
 
 const isLogin = computed(() => {
-  return localStorage.getItem('accessToken') !== null
-})
+  return localStorage.getItem("accessToken") !== null;
+});
 
 const isAdmin = computed(() => {
-  if (localStorage.getItem('accessToken') !== null) {
-    return JSON.parse(localStorage.getItem('userDetail')).role == 'admin'
+  if (localStorage.getItem("accessToken") !== null) {
+    return JSON.parse(localStorage.getItem("userDetail")).role == "admin";
   }
-})
+});
 
 const isLecturer = computed(() => {
-  if (localStorage.getItem('accessToken') !== null) {
-    return JSON.parse(localStorage.getItem('userDetail')).role == 'lecturer'
+  if (localStorage.getItem("accessToken") !== null) {
+    return JSON.parse(localStorage.getItem("userDetail")).role == "lecturer";
   }
-})
-
-
+});
 </script>
 
 <template>
 
   <body class="text-center text-sm-center text-md-center text-lg-center text-xl-center text-xxl-center"
-    style="background: var(--bs-white);">
-    <nav class="py-3 navbar navbar-light navbar-expand-md mt-lg-0" style="margin-bottom: 2px;">
-      <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span
+    style="background: var(--bs-white)">
+    <nav class="py-3 navbar navbar-light navbar-expand-md mt-lg-0" style="margin-bottom: 2px">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <span
             class="bs-icon-md bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"
-            style="background: var(--bs-yellow);"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+            style="background: var(--bs-yellow)"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
               fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
               <path fill-rule="evenodd"
                 d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z">
@@ -77,8 +77,9 @@ const isLecturer = computed(() => {
                 d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z">
               </path>
             </svg></span><span>OASIP</span></a><button data-bs-toggle="collapse" class="navbar-toggler"
-          data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span
-            class="navbar-toggler-icon"></span></button>
+          data-bs-target="#navcol-2">
+          <span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navcol-2">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
@@ -92,17 +93,16 @@ const isLecturer = computed(() => {
                   href="events.html">Events</a></router-link>
             </li>
             <li class="nav-item" v-if="isLogin">
-              <router-link :to="{ name: 'ShowCategory' }"><a class="nav-link" style="margin-right: 8px;">Categories</a>
+              <router-link :to="{ name: 'ShowCategory' }"><a class="nav-link" style="margin-right: 8px">Categories</a>
               </router-link>
             </li>
             <li class="nav-item" v-if="isAdmin">
               <router-link :to="{ name: 'ShowUsers', params: { roles: 'all' } }"><a class="nav-link"
-                  style="margin-right: 8px;">Users</a></router-link>
+                  style="margin-right: 8px">Users</a></router-link>
             </li>
             <li class="nav-item dropdown" v-if="isLogin">
-              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">{{
-                  user.name
-              }}</a>
+              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"
+                style="text-transform: uppercase">{{ user.name }}</a>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Profile</a>
                 <a class="dropdown-item" href="#" @click="logout">Sign Out</a>
@@ -110,25 +110,26 @@ const isLecturer = computed(() => {
             </li>
           </ul>
           <button class="btn btn-primary me-lg-2" type="button" v-if="!isLogin"
-            style="background: var(--bs-yellow);border-color: var(--bs-yellow);" data-bs-target="#modal-2"
-            data-bs-toggle="modal">Sign-in</button>
+            style="background: var(--bs-yellow); border-color: var(--bs-yellow)" data-bs-target="#modal-1"
+            data-bs-toggle="modal">
+            Sign-in
+          </button>
 
-          <button class="btn btn-dark me-lg-2" type="button" v-if="!isLogin"
-            data-bs-target="#modal-3" data-bs-toggle="modal">Register</button>
+          <button class="btn btn-dark me-lg-2" type="button" v-if="!isLogin" data-bs-target="#modal-2"
+            data-bs-toggle="modal">
+            Register
+          </button>
         </div>
       </div>
 
-
-      <div class="modal fade" role="dialog" tabindex="-1" id="modal-2" style="margin-top: 0px;margin-bottom: 0px;">
+      <div class="modal fade" role="dialog" tabindex="-1" id="modal-1" style="margin-top: 0px; margin-bottom: 0px">
         <Login />
       </div>
 
-      <div class="modal fade" role="dialog" tabindex="-1" id="modal-3" style="margin-left: 0px;">
+      <div class="modal fade" role="dialog" tabindex="-1" id="modal-2" style="margin-left: 0px">
         <Register />
       </div>
-
     </nav>
-
 
     <div>
       <router-view :key="$route.fullPath"></router-view>
@@ -255,14 +256,13 @@ const isLecturer = computed(() => {
     <router-view :key="$route.fullPath"></router-view>
   </div>
 </div> -->
-
-
 </template>
 
 <style scoped>
 a {
-  text-decoration: none !important
+  text-decoration: none !important;
 }
+
 /* .scrollBar {
   overflow-y: scroll;
   height: 80vh;
@@ -321,8 +321,6 @@ form::-webkit-scrollbar .gradient, form:valid .gradient{
   font-weight: bold;
   color: #50403f;
 } */
-
-
 
 /* 
 .filterTime {

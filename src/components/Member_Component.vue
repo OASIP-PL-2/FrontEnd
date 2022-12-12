@@ -69,6 +69,6 @@ console.log(imgURL);
     </div>
 </template>
  
-<style>
+<style scoped>
 
 </style>

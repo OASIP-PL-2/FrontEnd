@@ -7,5 +7,5 @@ import {Register} from '../../Fetch/fetch_authorization.js'
 <Reigster @register="Register"></Reigster>
 </template>
  
-<style>
+<style scoped>
 </style>

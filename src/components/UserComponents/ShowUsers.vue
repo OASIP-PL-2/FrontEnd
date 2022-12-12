@@ -24,8 +24,9 @@ const closeShowDetail = () => {
   isShowDetail.value = 0
   isShowEdit.value = 0
 }
-const showEditForm = (user) => {
+const showEditForm = async (user) => {
   isShowEdit.value = 1
+  // detailCurrentUser.value = await getUserDetail(user.id)
   detailCurrentUser.value = user
   console.log(isShowEdit.value)
 }
@@ -36,6 +37,7 @@ const closeEditForm = () => {
 </script>
  
 <template>
+  <div>
   <!-- <div>
     <div class="min-h-screen lg:mx-48 md:mx-32 sm:mx-8">
     <div class="p-4 rounded-md">
@@ -115,8 +117,8 @@ const closeEditForm = () => {
                         <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
                         <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
                         <td class="text-truncate" style="padding-top: 20px;">
-                          <button @click="showDetail(user.id)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
-                          <button @click="showEditForm(user)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
+                          <button @click="showDetail(user.id)" data-bs-target="#modal-3" data-bs-toggle="modal" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
+                          <button @click="showEditForm(user)" data-bs-target="#modal-4" data-bs-toggle="modal"  class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
                           <button @click="$emit('deleteUsers' , user.id)" class="btn btn-primary" type="button" style="background: var(--bs-red);border-color: var(--bs-red);padding: 3px 8px;height: 30px;padding-top: 1px;">Delete</button></td>
                     </tr>
                     <tr v-if="index%2!=0">
@@ -125,22 +127,35 @@ const closeEditForm = () => {
                         <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
                         <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
                         <td class="text-truncate" style="padding-top: 20px;">
-                          <button @click="showDetail(user.id)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
-                          <button @click="showEditForm(user)" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
+                          <button @click="showDetail(user.id)" data-bs-target="#modal-3" data-bs-toggle="modal" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);border-color: var(--bs-gray-400);color: var(--bs-gray-700);height: 30px;padding: 3px 8px;padding-top: 1px;">Details</button>
+                          <button @click="showEditForm(user)" data-bs-target="#modal-4" data-bs-toggle="modal" class="btn btn-primary" type="button" style="margin-right: 6px;background: var(--bs-gray-400);color: var(--bs-gray-700);border-color: var(--bs-gray-400);padding: 3px 8px;height: 30px;padding-top: 1px;">Edit</button>
                           <button @click="$emit('deleteUsers' , user.id)" class="btn btn-primary" type="button" style="background: var(--bs-red);border-color: var(--bs-red);padding: 3px 8px;height: 30px;padding-top: 1px;">Delete</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-3">
+      <ShowUserDetail @closeMe="closeShowDetail" :user="detailCurrentUser" />
+    </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="modal-4">
+      <EditUserDetail class="edit" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser" :showEditForm="isShowEdit" />
+    </div>
+
+    <!-- <EditUserDetail v-if="isShowEdit == 1" class="edit" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser" :showEditForm="isShowEdit" /> -->
+
+
     
 
-  <ShowUserDetail v-if="isShowDetail == 1" @closeMe="closeShowDetail" :user="detailCurrentUser" />
-  <EditUserDetail class="edit" v-if="isShowEdit == 1" @closeEditUser="closeEditForm" :users="users" :user="detailCurrentUser"
-    :showEditForm="isShowEdit" />
+    
+
+  
+  </div>
 
 </template>
  
-<style>
+<style scoped>
 
 </style>

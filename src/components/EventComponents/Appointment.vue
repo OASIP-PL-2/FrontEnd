@@ -26,15 +26,16 @@ const goBack = () => appRouter.go(-1);
 const bookingName = ref("");
 const bookingEmail = ref("");
 const eventCategoryId = ref("");
-const eventDuration = computed(() => {
-  if (eventCategoryId.value == "") {
-    return 0;
-  } else {
-    return categories.value.filter(
-      category => category.id == eventCategoryId.value
-    )[0].eventDuration;
-  }
-});
+const eventDuration = ref(0)
+// const eventDuration = computed(() => {
+//   if (eventCategoryId.value == "") {
+//     return 0;
+//   } else {
+//     return categories.value.filter(
+//       category => category.id == eventCategoryId.value
+//     )[0].eventDuration;
+//   }
+// });
 const eventStartTime = ref("");
 const eventNote = ref("");
 let file = ref("");
@@ -43,6 +44,7 @@ const categories = ref([]);
 const isLogin = localStorage.getItem("accessToken") != null;
 onBeforeMount(async () => {
   categories.value = await getCategories();
+  console.log(categories.value);
   if (isLogin) {
     bookingEmail.value = JSON.parse(localStorage.getItem("userDetail")).email;
   }
@@ -118,6 +120,12 @@ const changeFormat = eventStartTime => {
   return `${dateTime.toLocaleString("en-GB")}`;
 };
 
+const selectCategory = () => {
+  eventDuration.value = categories.value.filter(
+      category => category.id == eventCategoryId.value
+    )[0].eventDuration;
+}
+
 const onFileChanged = e => {
   file.value = e.target.files[0];
   console.log(file.value);
@@ -158,8 +166,85 @@ const addEvent = async () => {
 </script>
 
 <template>
-  <main class="my-8">
-    <div class="container px-6 mx-auto">
+  <main >
+    <div class="container-fluid" style="width: 70%;margin-bottom: 70px;margin-top: 0px;padding-top: 11px;padding-bottom: 15px;">
+        <div class="row d-lg-flex justify-content-lg-start justify-content-xl-start" style="margin-top: 18px;margin-left: -2px;margin-right: -2px;box-shadow: 1px 1.5px 14px rgb(176,176,177);">
+            <div class="left-box col-7 col-md-6 col-lg-6 d-none d-print-none d-sm-none d-md-block d-lg-block d-xl-block d-xxl-block justify-content-md-end justify-content-xl-end" style="">
+            </div>
+            <div class="col-md-6 flex-shrink-1" style="margin-right: 40px;text-align: left; margin-left: 0px;padding: 44px;padding-bottom: 38px;padding-right: 2px;padding-top: 42px;">
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: -2px;">
+                    <p class="text-uppercase fw-bold" style="font-size: 30px;padding-left: 8px;margin-left: 1px;margin-bottom: 0px;">Schedule</p>
+                    <p class="text-uppercase fw-bold" style="font-size: 30px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Your Appointment.</p>
+                </div>
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 44px;">
+                    <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Booking Name <span class="text-danger">*</span></p>
+                    <input type="text" style="width: 100%;" :class="[ErrorName ? 'empty-field' : 'input-field']"
+                    v-model="bookingName" maxlength="100" @keyup="validateBookingName" placeholder="Enter booking name">
+                </div>
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 40px;">
+                    <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Booking Email <span class="text-danger">*</span></p>
+                    <input type="text" placeholder="Enter booking email"
+                    style="width: 100%;" :class="[ErrorEmail ? 'empty-field' : 'input-field']"
+                    v-model="bookingEmail"
+                    pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+                    :disabled="isLogin"
+                    @keyup="validateBookingEmail">
+                    <p
+                    class="error-message"
+                    v-if="ErrorEmail"
+                  >{{ ErrorEmail_message }}</p>
+                </div>
+                <div class="d-flex justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 40px;">
+                    <div style="width: 85%;margin-right: 22px;">
+                        <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Clinic <span class="text-danger">*</span></p>
+                        <select v-model="eventCategoryId" @change="selectCategory" style="width: 100%" :class="[ErrorCategory ? 'empty-field' : 'input-field']">
+                          <option value disabled selected>*** Select Clinic ***</option>
+                          <option
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id">
+                            {{ category.eventCategoryName }}
+                          </option>
+                        </select>
+                    </div>
+                    <div>
+                        <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Duration</p>
+                        <div class="d-flex" style="padding-left: 6px;">
+                        <input type="text" style="width: 35%;padding-left: 6px;" v-model="eventDuration"
+                         class="input-field text-center" placeholder="100" disabled="">
+                        <span class="d-lg-flex align-items-lg-center" style="font-size: 12px;padding-left: 11px;">min .</span></div>
+                    </div>
+                </div>
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 40px;">
+                    <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Start Time <span class="text-danger">*</span></p>
+                    <input type="datetime-local" style="width: 60%;" :class="[ErrorStartTime ? 'empty-field' : 'input-field']"
+                      :min="`${minDatetimeLocal}`" v-model="eventStartTime" @change="validateEventStartTime">
+                      <p
+                        class="error-message"
+                        v-if="ErrorStartTime"
+                      >{{ ErrorStartTime_message }}</p>
+                </div>
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 40px;">
+                    <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Note</p>
+                    <textarea type="text" rows="6" cols="50" maxlength="500" style="width: 100%;border-radius: 10px;background: var(--bs-gray-200);border-style: none;padding: 9px;padding-top: 7px;padding-bottom: 7px;padding-left: 16px;font-size: 13px;height: 78px;" 
+                      v-model="eventNote" placeholder="Enter your note"></textarea>
+                </div>
+                <div class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 19px;margin-bottom: 8px;">
+                    <p class="fw-semibold" style="font-size: 14px;padding-left: 8px;margin-bottom: 8px;margin-left: 1px;">Attachment File</p>
+                    <FilePond
+                      ref="pond"
+                      maxFileSize="10MB"
+                      @change="onFileChanged($event)"
+                      label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>"
+                    />
+                </div>
+                <div @click="addEvent" class="justify-content-center justify-content-sm-center justify-content-md-start" style="margin-top: 19px;margin-bottom: 2px;"><button class="btn btn-primary fw-semibold" type="button" style="width: 100%;background: var(--bs-purple);border-radius: 100px;border-style: none;padding-top: 10px;padding-bottom: 10px;font-size: 14px;margin-bottom: 7px;">
+                  BOOKING</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container px-6 mx-auto">
       <h2 class="mt-3 mb-5 text-4xl font-bold text-white">Add New Event :</h2>
 
       <div class="relative py-3 sm:max-w-xl sm:mx-auto">
@@ -167,7 +252,7 @@ const addEvent = async () => {
           <div class="max-w-lg mx-auto -mt-7">
             <div class="divide-y divide-gray-200">
               <div class="py-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7">
-                <!-- name input -->
+                
                 <div class="flex flex-col">
                   <label class="leading-loose">Booking Name :</label>
                   <input
@@ -181,7 +266,6 @@ const addEvent = async () => {
                   />
                 </div>
 
-                <!-- email input -->
                 <div class="flex flex-col">
                   <label class="leading-loose">Email :</label>
                   <input
@@ -200,7 +284,6 @@ const addEvent = async () => {
                   >{{ ErrorEmail_message }}</p>
                 </div>
 
-                <!-- clinic input -->
                 <div class="flex flex-col">
                   <label class="leading-loose">Clinic :</label>
                   <div>
@@ -226,7 +309,6 @@ const addEvent = async () => {
                   </div>
                 </div>
 
-                <!-- startTime input -->
                 <div class="flex items-center space-x-4">
                   <div class="flex flex-col col-7">
                     <label class="leading-loose">Start Time :</label>
@@ -239,7 +321,6 @@ const addEvent = async () => {
                       @change="validateEventStartTime"
                     />
 
-                    <!-- startTime validate -->
                     <span class="relative text-gray-400 focus-within:text-gray-600">
                       <p
                         class="ml-2 text-xs text-red-700"
@@ -249,7 +330,6 @@ const addEvent = async () => {
                   </div>
                 </div>
 
-                <!-- event note input -->
                 <div class="flex items-center space-x-4">
                   <div class="flex flex-col">
                     <label class="leading-loose">Note :</label>
@@ -276,7 +356,6 @@ const addEvent = async () => {
                 />
               </div>
 
-              <!-- button -->
               <div class="flex items-center pt-4 space-x-4">
                 <button
                   @click="goBack"
@@ -307,11 +386,20 @@ const addEvent = async () => {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </main>
 </template>
 
 <style scoped>
+
+.left-box {
+  background: url("../../assets/background/booking_bg.jpg") left / cover no-repeat;
+  width: 42%;
+  padding-right: 1px;
+  padding-left: 0px;
+  margin-right: 0px;
+  /* border: 1px black solid; */
+}
 #addEvent-tp {
   margin-left: 27%;
   margin-top: 10%;
@@ -344,6 +432,7 @@ const addEvent = async () => {
 .buttonStyle:hover {
   background-color: #d9f4a4;
 }
+
 input,
 select,
 .endTime {
@@ -354,9 +443,9 @@ select,
   font-size: 100%;
 }
 
-input:focus {
+/* input:focus {
   background-color: #d9f4a4;
-}
+} */
 
 option {
   background-color: lavender;
@@ -375,6 +464,37 @@ label {
   font-size: 100%;
 }
 .empty-field {
-  border: #dd2828 2px solid;
+  background: var(--bs-gray-200);
+  border-radius: 100px;
+  border-width: 0px;
+  /* width: 100%; */
+  padding: 9px;
+  font-size: 13px;
+  padding-left: 16px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  margin-left: 0px;
+  border: red 2px solid;
 }
+
+.input-field {
+  background: var(--bs-gray-200);
+  border-radius: 100px;
+  border-width: 0px;
+  /* width: 100%; */
+  padding: 9px;
+  font-size: 13px;
+  padding-left: 16px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  margin-left: 0px;
+}
+
+.error-message {
+  color: rgb(208, 27, 27);
+  font-size: 11px;
+  margin-left: 13px;
+  margin-top: 3px;
+}
+
 </style>
