@@ -48,7 +48,7 @@ const editCategory = async (id, editCategory) => {
     return res.status;
   } else if (res.status === 401) {
     await refreshToken(localStorage.getItem("refreshToken"));
-    await editCategory(editCategory);
+    await editCategory(id, editCategory);
     window.location.reload();
   } else if(res.status !== 200){
     const response = await res.json()   

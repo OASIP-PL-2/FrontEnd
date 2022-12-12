@@ -16,34 +16,25 @@ const props = defineProps({
   }
 });
 
+const emit = defineEmits(["closeEditEvent"]);
+
 const filterUsers = ref([])
 onBeforeMount(async () => {
   filterUsers.value = props.users.filter((user) => user.id != props.user.id)
-  console.log("เข้า");
 });
 
-// onUnmounted(() => console.log(props.user))
-onBeforeUpdate(() => {
-  // username.value = props.user.name
-  // email.value = props.user.email
-  // role.value = props.user.role
-  // showEditForm.value = props.showEditForm
-  // console.log(props.user.name)
-})
 
-// const username = ref("hello");
 const username = ref(props.user.name);
 const email = ref(props.user.email);
-const role = ref("");
-// const role = ref(props.user.role);
+const role = ref(props.user.role);
 const roles = ["admin", "lecturer", "student"];
 const showEditForm = ref(props.showEditForm);
 
-const ErrorNameNull = ref(false);
-const ErrorNameUnique = ref(false)
-const ErrorEmailNull = ref(false);
-const ErrorEmailUnique = ref(false)
-const ErrorEmailFormat = ref(false)
+// const ErrorNameNull = ref(false);
+// const ErrorNameUnique = ref(false)
+// const ErrorEmailNull = ref(false);
+// const ErrorEmailUnique = ref(false)
+// const ErrorEmailFormat = ref(false)
 
 let ErrorName = ref(false);
 let ErrorEmail = ref(false);
@@ -52,7 +43,6 @@ let ErrorEmail_message = ref("");
 
 
 const validationName = () => {
-  // console.log(props.user.name);
   ErrorName.value = username.value == null || username.value == ''
   console.log(filterUsers.value);
   if (filterUsers.value.map((user) => { return user.name.trim() }).includes(username.value.trim())) {
@@ -60,7 +50,6 @@ const validationName = () => {
     ErrorName.value = true
     ErrorName_message.value = "Username is already used"
   }
-  // ErrorNameUnique.value = filterUsers.value.map((user) => { return user.name.trim() }).includes(username.value.trim())
 }
 
 let format = /^(([^<>()[\]\\.,;:\s*$&!#?@"]+(\.[^<>()[\]\\.,;:\s*$&!#?@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -70,18 +59,8 @@ const validationEmail = () => {
     ErrorEmail.value = true;
     ErrorEmail_message.value = "Format email is Invaild";
   } else if (filterUsers.value.map((user) => { return user.email.trim() }).includes(email.value.trim())) {
-    console.log("เข้า");
     ErrorEmail.value = true
     ErrorEmail_message.value = "Email is already used"
-  }
-
-  if (email.value == null || email.value == '') {
-    ErrorEmailNull.value = true
-    ErrorEmailFormat.value = false
-  } else {
-    ErrorEmailNull.value = false
-    ErrorEmailFormat.value = validateEmailFormat(email.value.trim())
-    ErrorEmailUnique.value = filterUsers.value.map((user) => { return user.email.trim() }).includes(email.value.trim())
   }
 }
 
@@ -95,17 +74,26 @@ const validateEmailFormat = (email) => {
 // EDIT
 const userToEdit = ref({});
 
-const emit = defineEmits(["closeEditEvent"]);
 
 const editingUser = () => {
-  // if (username.value == props.user.name && email.value == props.user.email && role.value == props.user.role) {
-  //   closeEditForm();
-  // } 
-  console.log(email.value == null || email.value == '');
   ErrorName.value = username.value == null || username.value == ''
   ErrorEmail.value = email.value == null || email.value == ''
 
-  if (ErrorEmail.value || ErrorName.value) {
+  if (username.value == props.user.name && email.value == props.user.email && role.value == props.user.role) {
+    Swal.fire({
+      title: 'Sorry, there are no changes in this editing !',
+      text: "Do you want to continue or cancel this editing?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Continue editing !',
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return emit('closeEditUser')
+    }
+  })
+  } else if (ErrorEmail.value || ErrorName.value) {
     return 0;
   } else {
     userToEdit.value = {
@@ -118,23 +106,25 @@ const editingUser = () => {
   }
 };
 
-const closeEditForm = () => {
-  showEditForm.value = false
-  window.location.reload()
+const closeEditForm = e => {
+  console.log(e.target.className);
+  if(e.target.className == 'overlay') {
+    emit('closeEditUser')
+  }
 }
 
 </script>
 
 <template>
   <main class="w-5/12 my-8">
-    <div id="popup1" class="overlay">
+    <div id="popup1" class="overlay" @click="closeEditForm($event)">
       <div class="popup">
         <div class="content">
-          <div style="border-style: none;margin-bottom: -8px;text-align: right;" @click="$emit('closeEditUser')">
-            <button type="button" class="btn-close" aria-label="Close"></button>
+          <div style="border-style: none;margin-bottom: -8px;text-align: right;padding: 5px" >
+            <button type="button" class="btn-close" aria-label="Close" @click="$emit('closeEditUser')"></button>
           </div>
-          <div class="modal-body text-center d-block"
-            style="margin-top: 20px;margin-bottom: 12px;text-align: center;padding-left: 30px;padding-right: 22px;">
+          <div class="text-center d-block"
+            style="margin-top: 25px;margin-bottom: 12px;text-align: center;padding-left: 30px;padding-right: 22px;">
             <div class="row">
               <div class="col" style="margin-bottom: 9px;border-color: var(--bs-orange);">
                 <p
@@ -146,7 +136,7 @@ const closeEditForm = () => {
             </div>
             <div class="row">
               <div class="col" style="text-align: left;margin-bottom: 15px;">
-                <p style="margin-bottom: 7px;font-size: 13px;padding-left: 5px;">Username</p>
+                <p style="margin-bottom: 7px;font-size: 13px;padding-left: 5px;">Username <span class="text-danger">*</span></p>
                 <input type="text" :class="[ErrorName ? 'empty-field' : 'input-field']" style="" @keyup="validationName"
                   v-model="username" maxlength="100" :placeholder=user.name>
                 <p class="error-message text-start" v-if="ErrorName">{{ ErrorName_message }}</p>
@@ -154,7 +144,7 @@ const closeEditForm = () => {
             </div>
             <div class="row">
               <div class="col" style="text-align: left;margin-bottom: 15px;">
-                <p style="margin-bottom: 6px;font-size: 13px;padding-left: 5px;">Email</p>
+                <p style="margin-bottom: 6px;font-size: 13px;padding-left: 5px;">Email <span class="text-danger">*</span></p>
                 <input type="text" :class="[ErrorEmail ? 'empty-field' : 'input-field']" @keyup="validationEmail"
                   v-model="email" maxlength="50" :placeholder=user.email>
                 <p class="error-message text-start" v-if="ErrorEmail">{{ ErrorEmail_message }}</p>
@@ -173,7 +163,7 @@ const closeEditForm = () => {
             <div class="row">
               <div class="col" style="text-align: right;margin-bottom: 8px;padding-left: 6px;padding-right: 28px;">
                 <button @click="editingUser" class="btn btn-primary btn-sm fw-semibold" type="button"
-                  style="margin-left: 5px;background: var(--bs-yellow);border-width: 0px;border-left-width: 0px;border-radius: 100px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 6px;padding-top: 6px;width: 101.775px;height: 37px;">SAVE</button>
+                  style="margin-left: 5px;background: var(--bs-yellow);border-width: 0px;border-left-width: 0px;border-radius: 100px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 6px;padding-top: 6px;width: 30%;height: 37px;">SAVE</button>
               </div>
             </div>
           </div>
@@ -260,14 +250,6 @@ const closeEditForm = () => {
   background: rgba(0, 0, 0, 0.5);
   transition: all 0.8s ease;
   z-index: 10;
-  /* position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  visibility: hidden;
-  opacity: 0; */
 }
 
 .overlay:target {
@@ -276,36 +258,14 @@ const closeEditForm = () => {
 }
 
 .popup {
-  margin: 70px auto;
+  margin: 8% auto;
   padding: 20px;
   background: #fff;
   border-radius: 5px;
-  border: 1px black solid;
   width: 30%;
   position: relative;
   animation-delay: 2s;
   /* transition: all 5s ease-in-out; */
-}
-
-.popup h2 {
-  margin-top: 0;
-  color: #333;
-  font-family: Tahoma, Arial, sans-serif;
-}
-
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-
-.popup .close:hover {
-  color: #06D85F;
 }
 
 .popup .content {
@@ -317,7 +277,6 @@ const closeEditForm = () => {
   .box {
     width: 70%;
   }
-
   .popup {
     width: 70%;
   }
@@ -372,11 +331,10 @@ input:focus {
 
 .error-message {
   color: red;
-  font-size: small;
-  font-weight: 100;
-  margin-left: 2%;
+  font-size: 11px;
+  margin-top: 3px;
+  margin-left: 15px;
 }
-
 .empty-field {
   background: var(--bs-gray-200);
   border-radius: 100px;
@@ -396,5 +354,6 @@ input:focus {
   padding: 5px;
   padding-left: 16px;
   font-size: 13px;
+  border: white 2px solid;
 }
 </style>

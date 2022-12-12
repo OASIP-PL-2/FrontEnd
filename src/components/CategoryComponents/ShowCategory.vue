@@ -11,13 +11,13 @@ const props = defineProps({
 const isShowEdit = ref(0)
 const detailCurrentCategory = ref({})
 const showEditForm = (category) => {
-  console.log("เข้า");
   detailCurrentCategory.value = category;
   isShowEdit.value = 1;
+  console.log(isShowEdit);
 }
 const closeEditForm = () => {
   isShowEdit.value = 0;
-  window.location.reload();
+  // window.location.reload();
 };
 
 const isAdmin = computed(() =>{
@@ -73,7 +73,7 @@ const isAdmin = computed(() =>{
       :category="detailCurrentCategory" :showEditForm="isShowEdit" />
 
     </div> -->
-
+<div>
     <div class="container py-4 py-xl-5" style="padding-top: 14px;margin-top: -20px;">
         <div class="mb-5 row">
             <div class="mx-auto text-center col-md-8 col-xl-6">
@@ -109,6 +109,7 @@ const isAdmin = computed(() =>{
 
     <EditCategory v-if="isShowEdit == 1" @closeEditCategory="closeEditForm" :categories="categories"
       :category="detailCurrentCategory" :showEditForm="isShowEdit" />
+    </div>
   </template>
  
 <style scoped>

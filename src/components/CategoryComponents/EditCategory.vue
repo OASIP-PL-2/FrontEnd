@@ -48,8 +48,8 @@ const editingCategory = () => {
     }).then((result) => {
       if (!result.isConfirmed) {
         return emit('closeEditCategory')
-    }
-  })
+      }
+    })
   } else {
     categoryToEdit.value = {
       eventCategoryName: categoryName.value.trim(),
@@ -57,8 +57,8 @@ const editingCategory = () => {
       eventCategoryDescription: description.value,
     };
     editCategory(props.category.id, categoryToEdit.value)
-    .then( (res) => {
-        if(res === 200) {emit('closeEditCategory')}
+      .then((res) => {
+        if (res === 200) { emit('closeEditCategory') }
       })
   }
 };
@@ -71,7 +71,8 @@ const ErrorDurationRange = ref(false);
 
 const validateEventCategoryName = () => {
   ErrorNameNull.value = categoryName.value == null || categoryName.value == ''
-  ErrorNameUnique.value = filterCategory.value.map((category) =>{return category.eventCategoryName.trim()}).includes(categoryName.value.trim())
+  ErrorNameUnique.value = filterCategory.value.map((category) => { return category.eventCategoryName.trim() }).includes(categoryName.value.trim())
+  console.log(ErrorNameNull.value);
 }
 
 const validateDuration = () => {
@@ -79,10 +80,65 @@ const validateDuration = () => {
   ErrorDurationRange.value = duration.value < 1 || duration.value > 480
 }
 
+const closeEditForm = e => {
+  console.log(e.target.className);
+  if (e.target.className == 'overlay') {
+    emit('closeEditCategory')
+  }
+}
+
 </script>
 
 <template>
-<section class="py-4 position-relative py-xl-5" style="padding-top: 64px;margin-top: -23px;" v-show="showEditForm == 1">
+  <div id="popup1" class="overlay" @click="closeEditForm($event)">
+    <div class="popup">
+      <div class="content">
+        <div style="border-style: none;margin-bottom: -8px;text-align: right;padding: 5px">
+          <button type="button" class="btn-close" aria-label="Close" @click="$emit('closeEditCategory')"></button>
+        </div>
+        <div class="d-block"
+          style="margin-top: 25px;margin-bottom: 12px;text-align: center;padding-left: 30px;padding-right: 40px;text-align: left;">
+          <div class="row">
+            <div class="col" style="margin-bottom: 9px;border-color: var(--bs-orange);">
+              <h2 class="mb-4 text-center font-weight-i" style="padding-top: 0px;margin-top: 3px;">EDIT CLINIC !</h2>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <p style="margin-bottom: 2px;">Clinic Name <span class="text-danger">*</span></p>
+            <input class="" type="text" v-model="categoryName" @keyup="validateEventCategoryName" id="name-2"
+              maxlength="100" :class="[ErrorNameNull ? 'empty-field' : 'input-field']" placeholder="categoryName"
+              required>
+            <span v-if="ErrorNameUnique" class="error-message">This name is already used</span>
+          </div>
+          <div class="mb-3 row">
+            <p style="margin-bottom: 4px;">Duration <span class="text-danger">*</span></p>
+            <input style="width: 100%;" type="number" v-model="duration" @keyup="validateDuration"
+              @change="validateDuration" placeholder="duration"
+              :class="[ErrorDurationNull ? 'empty-field' : 'input-field']" required>
+            <span v-if="ErrorDurationRange" class="error-message">Must be in range 1-480</span>
+          </div>
+          <div class="mb-3 row">
+            <p style="margin-bottom: 2px;">Description</p>
+            <textarea style="" id="message-2" rows="6" maxlength="500" minlength="0" autofocus="" type="text"
+              v-model="description" placeholder="clinic descrition..." required></textarea>
+          </div>
+          <div class="row">
+            <div class="col"
+              style="text-align: right;margin-bottom: 8px;padding-left: 6px;padding-right: 0px;margin-top: 12px">
+              <button class="btn btn-danger" type="button"
+                style="border-radius: 100px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 30px;padding-top: 6px;width: 100px;height: 37px;color:white; margin-right: 5px;"
+                @click="$emit('closeEditCategory')">CANCEL</button>
+              <button class="btn btn-warning" type="button"
+                style="border-radius: 100px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 30px;padding-top: 6px;width: 100px;height: 37px;color:white;"
+                @click="editingCategory">SAVE</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- <section class="py-4 position-relative py-xl-5" style="padding-top: 64px;margin-top: -23px;" v-show="showEditForm == 1">
         <div class="container position-relative" style="padding-top: 0px;">
             <div class="row d-flex justify-content-center" style="border-style: none;margin-left: 66px;margin-right: 64px;">
                 <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4" style="padding-top: 0px;">
@@ -115,7 +171,7 @@ const validateDuration = () => {
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
   <!-- <main class="my-8">
@@ -194,6 +250,112 @@ const validateDuration = () => {
 </template>
 
 <style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.8s ease;
+  z-index: 10;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 8% auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 35%;
+  position: relative;
+  animation-delay: 2s;
+  /* transition: all 5s ease-in-out; */
+}
+
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px) {
+  .box {
+    width: 70%;
+  }
+
+  .popup {
+    width: 70%;
+  }
+}
+
+textarea {
+  width: 100%;
+  border-radius: 15px;
+  background: var(--bs-gray-200);
+  border-style: none;
+  padding: 20px;
+  padding-top: 12px;
+  padding-bottom: 7px;
+  padding-left: 16px;
+  font-size: 13px;
+  height: 78px;
+  margin-left: 5px;
+}
+
+textarea:focus {
+  background-color: rgb(216 180 254);
+}
+
+
+input {
+  background-color: #b9d0f0;
+  border-radius: 7px;
+  width: 100%;
+  height: 45px;
+  font-size: 100%;
+}
+
+input:focus {
+  background-color: rgb(216 180 254);
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+  margin-left: 2px;
+}
+
+.empty-field {
+  background: var(--bs-gray-200);
+  border-radius: 100px;
+  border-width: 0px;
+  width: 100%;
+  padding: 5px;
+  padding-left: 16px;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-top: 3px;
+  border: red 2px solid;
+}
+
+.input-field {
+  background: var(--bs-gray-200);
+  border-radius: 100px;
+  border-width: 0px;
+  width: 100%;
+  padding: 5px;
+  padding-left: 16px;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-top: 3px;
+  border: white 2px solid;
+}
+
 /* .detail-container {
   position: absolute;
   left: 30%;
