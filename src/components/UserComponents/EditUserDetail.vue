@@ -90,7 +90,7 @@ const editingUser = () => {
       confirmButtonText: 'Continue editing !',
     }).then((result) => {
       if (!result.isConfirmed) {
-        return emit('closeEditUser')
+        return emit('closeEditEvent')
     }
   })
   } else if (ErrorEmail.value || ErrorName.value) {
@@ -109,7 +109,7 @@ const editingUser = () => {
 const closeEditForm = e => {
   console.log(e.target.className);
   if(e.target.className == 'overlay') {
-    emit('closeEditUser')
+    emit('closeEditEvent')
   }
 }
 
@@ -170,6 +170,7 @@ const closeEditForm = e => {
         </div>
       </div>
     </div>
+    
     <!-- <div id="edit-container" class="px-6 detail-container" v-show="showEditForm == 1">
       <div
         class="{`col-12 overflow-auto h-5/6 top-24 bottom-40 rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}"

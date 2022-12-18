@@ -44,7 +44,13 @@ const editCategory = async (id, editCategory) => {
       'Edit Successfully',
       'You clicked the button!',
       'success'
-    )
+    ).then(
+      (res) => {
+        if (res.isConfirmed) {
+          window.location.reload();
+        }
+      }
+    );
     return res.status;
   } else if (res.status === 401) {
     await refreshToken(localStorage.getItem("refreshToken"));

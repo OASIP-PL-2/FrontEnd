@@ -36,7 +36,7 @@ const LoginUser = () => {
 </script>
  
 <template>
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-size modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header"
                 style="background: var(--bs-modal-bg);height: 20px;padding-bottom: 12px;margin-bottom: -7px;"><button
@@ -44,8 +44,8 @@ const LoginUser = () => {
             <div class="modal-body" style="margin-bottom: 119px;padding-top: 23px;">
                 <h5 class="float-end"
                     style="color: var(--bs-yellow);margin-right: 0px;margin-left: 16px;width: 100px;font-size: 18px;">
-                    <span style="color: rgb(169, 169, 169);">or</span> <strong type="button" data-bs-target="#modal-3"
-                        data-bs-toggle="modal">Register</strong>
+                    <span style="color: rgb(169, 169, 169);">or</span> <strong type="button" data-bs-target="#modal-2"
+                        data-bs-toggle="modal" >Register</strong>
                 </h5>
                 <h5 class="text-start" style="padding-top: 0px;padding-bottom: 0px;margin-bottom: 14px;">Sign In</h5>
                 <img class="rounded-circle img-fluid" src="../../assets/profile/7.png" width="100" height="100"
@@ -56,15 +56,18 @@ const LoginUser = () => {
                         <div class="row" style="margin-right: -5px;margin-left: -12px;">
                             <div class="col">
                                 <input type="text" placeholder="Email" v-model="email" @keyup="validationEmail"
-                                    maxlength="50" autofocus="" :class="[emailIsEmpty ? 'empty-field' : 'input-field']">
+                                style="width:330px"
+                                maxlength="50" autofocus="" :class="[emailIsEmpty ? 'empty-field' : 'input-field']">
                             </div>
-                            <div class="col input-icons">
+                            <div class="col input-icons border-2">
                                 <input v-if="!showPassword" type="password" placeholder="Password" v-model="password"
                                     @keyup="validationPassword" maxlength="50" autofocus=""
+                                    style="width:330px"
                                     :class="[passwordIsEmpty ? 'empty-field' : 'input-field']"
                                     aria-describedby="basic-addon2">
                                 <input v-if="showPassword" type="text" placeholder="Password" v-model="password"
                                     @keyup="validationPassword" maxlength="50" autofocus=""
+                                    style="width:330px"
                                     :class="[passwordIsEmpty ? 'empty-field' : 'input-field']"
                                     aria-describedby="basic-addon2">
                                 <i class="fas -ml-16 icon" @click="toggleShow" :class="{
@@ -152,13 +155,15 @@ const LoginUser = () => {
 </template>
  
 <style scoped>
-.input-login {
-    width: 50%;
+.modal-size {
+  width: 400px;
+  margin: auto;
 }
+
 
 .empty-field {
     margin-bottom: 7px;
-    width: 260px;
+    /* width: 100%; */
     padding: 1px;
     height: 40px;
     border-radius: 7px;

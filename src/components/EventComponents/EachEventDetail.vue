@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import 'boxicons'
-import { getFileName , downloadFile } from '../../Fetch/fetch_file.js'
+import { getFileName, downloadFile } from '../../Fetch/fetch_file.js'
 const props = defineProps({
   event: {
     type: Object,
@@ -9,14 +9,17 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["closeEventDetail"]);
+
 const fileName = ref("")
 const fileUrl = ref("")
 onBeforeMount(async () => {
   fileName.value = (await getFileName(props.event.id))[0];
-  if(fileName.value != undefined) {
+  if (fileName.value != undefined) {
     fileUrl.value = await downloadFile(props.event.id, fileName.value);
-    console.log(fileUrl.value); 
-  } 
+    console.log(fileUrl.value);
+  }
+  console.log(props.event);
 })
 
 const monthNames = [
@@ -51,10 +54,93 @@ const extractTime = (time) => {
   return `${t.getHours()}:${minute.value} น.`
 }
 
+const closePopup = e => {
+  console.log(e.target.className);
+  if (e.target.className == 'overlay') {
+    emit('closeEventDetail')
+  }
+}
+
+
 </script>
 
 <template>
-  <main class="my-8">
+  <div id="popup1" class="overlay" @click="closePopup($event)">
+    <div class="popup">
+      <div class="content">
+        <div style="border-style: none;margin-bottom: -8px;text-align: right;padding: 5px">
+          <button type="button" class="btn-close" aria-label="Close" @click="$emit('closeEventDetail')"></button>
+        </div>
+        <div class="modal-body text-center "
+          style="padding: 8px;">
+          <div class="row" style="height: 100%;margin-bottom: 10px;margin-top: 6px;">
+            <div class="col" style="margin-top: 0px;margin-bottom: 1px;">
+              <div class="detail-cover" style=""> </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" style="margin-bottom: 1px;margin-top: 11px;">
+              <p class="text-uppercase fs-5"
+                style="font-weight: bold;font-size: 30px;color: #3d3028;margin-bottom: 4px;">{{ event.bookingName }} </p>
+              <p class="fw-normal" style="font-size: 16px;color: #66594c;padding-bottom: 0px;margin-bottom: 6px;">
+                {{ event.eventCategoryId.eventCategoryName }}</p>
+              <div class="text-center d-flex d-md-flex justify-content-center justify-content-md-center"
+                style="text-align: center;height: 40px;padding-bottom: 0px;margin-bottom: 11px;">
+                <p class="text-uppercase fw-normal"
+                  style="background: #f5bb0e;color: rgb(255,255,255);font-weight: bold;font-size: 11px;border-radius: 100px;width: 89px;text-align: center;padding: 5px;border-color: #007aa5;padding-top: 4px;">
+                  {{ event.eventDuration }} mins
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="text-light"
+            style="background: rgba(102,16,242,0.87);border-radius: 12px;padding: 10px;border-style: none;border-right-style: none;box-shadow: 2px 2px var(--bs-purple);color: var(--bs-indigo);padding-right: 22px;padding-bottom: 12px;padding-left: 34px;padding-top: 30px;margin-right: 6px;margin-left: 4px;">
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-2 text-center" style="padding-right: 0px;padding-left: 0px;width: 10%;"><i
+                  class="far fa-calendar-alt fs-5 text-white d-inline"></i></div>
+              <div class="col-10" style="padding-left: 6px;">
+                <p class="text-start" style="font-size: 13px;color: var(--bs-modal-bg);margin-bottom: 3px;">
+                  Date: {{ extractDate(event.eventStartTime) }}</p>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 12px;">
+              <div class="col-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
+                  class="far fa-clock fs-5 text-white justify-content-end"></i></div>
+              <div class="col-10" style="padding-left: 6px;">
+                <p class="text-start" style="font-size: 13px;color: var(--bs-modal-bg);margin-bottom: 3px;">
+                  Time : {{ extractTime(event.eventStartTime) }}</p>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 14px;">
+              <div class="col-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
+                  class="far fa-envelope fs-5 text-white justify-content-end"></i></div>
+              <div class="col-10" style="padding-left: 6px;">
+                <p class="text-start" style="font-size: 13px;color: var(--bs-light);margin-bottom: 3px;">
+                  Email : {{ event.bookingEmail }}</p>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 8px;">
+              <div class="col-2 col-sm-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
+                  class="far fa-sticky-note fs-5 text-white justify-content-end"></i></div>
+              <div class="col-10" style="padding-left: 6px;">
+                <p class="text-start" style="font-size: 12px;color: var(--bs-modal-bg);">
+                  Note : <span v-if="event.eventNote">{{ event.eventNote }}</span> <span v-else> - </span>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
+                  class="far fa-file-alt fs-5 text-white justify-content-end"></i></div>
+              <div class="col-10" style="padding-left: 6px;">
+                <p class="text-start" style="font-size: 12px;color: var(--bs-modal-bg);">Attachment File : {{ fileName }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <main class="my-8">
     <div class="col-auto scroll-px-0 detail-container lg:-ml-300px md:ml-52 sm:m-24 ">
       <div
         class="{`col-12 group overflow-auto h-4/6 top-36 bottom-auto scr rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
@@ -127,10 +213,53 @@ const extractTime = (time) => {
         </div>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.8s ease;
+  z-index: 10;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 3% auto;
+  /* margin-top: auto;
+  margin-bottom: auto; */
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  animation-delay: 2s;
+  /* transition: all 5s ease-in-out; */
+}
+
+.popup .content {
+  max-height: 30%;
+}
+
+@media screen and (max-width: 700px) {
+  .box {
+    width: 70%;
+  }
+
+  .popup {
+    width: 70%;
+  }
+}
+
 .heading {
   font-weight: bold;
   font-size: 80%;
@@ -158,4 +287,13 @@ const extractTime = (time) => {
   position: absolute;
   /* left: 30%; */
 }
+
+.detail-cover {
+  background: url('./../../assets/background/event_detail.png') center / contain no-repeat;
+  height: 130px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+
+}
+
 </style>

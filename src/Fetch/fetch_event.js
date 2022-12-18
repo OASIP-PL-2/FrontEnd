@@ -22,6 +22,20 @@ const getEvents = async () => {
   }
 };
 
+const getBlindEvents = async () =>{
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/blindEvent`, {
+    headers: {
+    },
+  });
+
+  if (res.status === 200) {
+    console.log("Successfully executed! " + res.status);
+    return await res.json();
+  } else {
+    console.log("Failed to execute! " + res.status);
+  }
+}
+
 const getPastEvents = async () => {
   if (localStorage.getItem("accessToken") == null) {
     return 0;
@@ -225,4 +239,5 @@ export {
   getEventsByDate,
   addNewEvent,
   deleteEvent,
+  getBlindEvents
 };

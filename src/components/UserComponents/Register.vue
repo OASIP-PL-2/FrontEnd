@@ -38,14 +38,17 @@ let createUser = computed(() => {
   ErrorEmail.value = email.value.length == 0;
   ErrorPassword.value = password.value.length == 0;
   ErrorConfirmEmail.value = confirm_email.value.length == 0 || email.value.trim() != confirm_email.value.trim();
+  if(email.value.trim() != confirm_email.value.trim()){
+    ErrorConfirmEmail_message.value = "Email didn't matching"
+  }
   ErrorConfirmPassword.value = confirm_password.value.length == 0 || password.value.trim() != confirm_password.value.trim();
 
   if (
     ErrorName.value ||
     ErrorEmail.value ||
     ErrorConfirmEmail.value ||
-    ErrorPassword.vaalue ||
-    ErrorConfirmPassword.vaalue
+    ErrorPassword.value ||
+    ErrorConfirmPassword.value
   ) {
     return 0;
   } else {
@@ -71,6 +74,7 @@ let ErrorConfirmPassword = ref(false);
 let ErrorName_message = ref("");
 let ErrorEmail_message = ref("");
 let ErrorPassword_message = ref("");
+let ErrorConfirmEmail_message = ref("");
 
 const validationName = () => {
   ErrorName.value = username.value.length == 0;
@@ -103,7 +107,7 @@ const validationConfirmPassword = () => {
 </script>
 
 <template>
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-size modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header"
         style="background: var(--bs-modal-bg);height: 20px;padding-bottom: 12px;margin-bottom: -7px;"><button
@@ -111,7 +115,7 @@ const validationConfirmPassword = () => {
       <div class="modal-body" style="padding-top: 23px;">
         <h5 class="float-end"
           style="color: var(--bs-yellow);margin-right: 0px;margin-left: 16px;width: 100px;font-size: 18px;"><span
-            style="color: rgb(169, 169, 169);">or</span> <strong type="button" data-bs-target="#modal-2"
+            style="color: rgb(169, 169, 169);">or</span> <strong type="button" data-bs-target="#modal-1"
             data-bs-toggle="modal">Sign In</strong></h5>
         <h5 class="text-start" style="padding-top: 0px;padding-bottom: 0px;margin-bottom: 11px;">Register</h5><img
           class="rounded-circle img-fluid" src="../../assets/profile/7.png" width="100" height="100"
@@ -125,20 +129,29 @@ const validationConfirmPassword = () => {
                 <div class="row" style="margin-right: -5px;margin-left: -12px;margin-top: 7px;">
                   <div class="col">
                     <input type="text" placeholder="Username" @keyup="validationName" v-model="username" maxlength="100"
+                      style="width: 330px;"
                       :class="[ErrorName ? 'empty-field' : 'input-field']" autofocus="" autocomplete="off">
                     <p class="error-message text-start" v-if="ErrorName">{{ ErrorName_message }}</p>
 
                     <input type="text" placeholder="Email" @keyup="validationEmail" v-model="email" maxlength="100"
+                      style="width: 330px;"
                       :class="[ErrorEmail ? 'empty-field' : 'input-field']" autofocus="">
                     <p class="error-message text-start" v-if="ErrorEmail">{{ ErrorEmail_message }}</p>
+
+                    <input type="text" placeholder="Confirm Email " @keyup="validationConfirmEmail" v-model="confirm_email" maxlength="100"
+                      style="width: 330px;"
+                      :class="[ErrorConfirmEmail  ? 'empty-field' : 'input-field']" autofocus="">
+                    <p class="error-message text-start" v-if="ErrorConfirmEmail ">{{ ErrorConfirmEmail_message }}</p>
                   </div>
                 </div>
                 <div class="row" style="margin-right: -5px;margin-left: -12px;margin-top: 7px;">
                   <div class="col input-icons">
                     <input v-if="!showPassword" type="password" placeholder="Password" v-model="password"
+                      style="width: 330px;"
                       @keyup="validationPassword" autofocus="" minlength="8" maxlength="16"
                       :class="[ErrorPassword ? 'empty-field' : 'input-field']" aria-describedby="basic-addon2">
                     <input v-if="showPassword" type="text" placeholder="Password" v-model="password"
+                      style="width: 330px;"
                       @keyup="validationPassword" autofocus="" minlength="8" maxlength="16"
                       :class="[ErrorPassword ? 'empty-field' : 'input-field']" aria-describedby="basic-addon2">
                     <i class="fas icon" @click="toggleShow" :class="{
@@ -151,10 +164,10 @@ const validationConfirmPassword = () => {
                 <div class="row" style="margin-right: -5px;margin-left: -12px;margin-top: 7px;">
                   <div class="col input-icons">
                     <input v-if="!showConfirmPassword" type="password" placeholder="Confirm Password" v-model="confirm_password"
-                      @keyup="validationConfirmPassword" autofocus="" minlength="8" maxlength="16"
+                      @keyup="validationConfirmPassword" autofocus="" minlength="8" maxlength="16" style="width: 330px;"
                       :class="[ErrorConfirmPassword ? 'empty-field' : 'input-field']" aria-describedby="basic-addon2">
                     <input v-if="showConfirmPassword" type="text" placeholder="Confirm Password" v-model="confirm_password"
-                      @keyup="validationConfirmPassword" autofocus="" minlength="8" maxlength="16"
+                      @keyup="validationConfirmPassword" autofocus="" minlength="8" maxlength="16" style="width: 330px;"
                       :class="[ErrorConfirmPassword ? 'empty-field' : 'input-field']" aria-describedby="basic-addon2">
                     <i class="fas icon" @click="toggleShowConfirm" :class="{
                       'fa-eye-slash': !showConfirmPassword,
@@ -163,8 +176,8 @@ const validationConfirmPassword = () => {
                   </div>
                   <p class="error-message text-start" v-if="ErrorConfirmPassword">Password didn't matching</p>
                 </div>
-                <select v-model="role"
-                  style="width: 230px;margin-bottom: 10px;border-radius: 7px;padding-left: 4px;border-style: solid;border-color: var(--bs-gray-500);"
+                <select v-model="role" 
+                  style="width: 330px;margin-bottom: 10px;border-radius: 7px;padding-left: 4px;border-style: solid;border-color: var(--bs-gray-500);"
                   autofocus="">
                   <optgroup label="Roles">
                     <option value disabled selected>Select role</option>
@@ -289,6 +302,10 @@ const validationConfirmPassword = () => {
 </template>
 
 <style scoped>
+.modal-size {
+  width: 400px;
+  margin: auto;
+}
 .empty-field {
   margin-bottom: 7px;
   width: 260px;
@@ -314,17 +331,17 @@ const validationConfirmPassword = () => {
 
 .input-icons i {
   position: absolute;
+  /* top: 100px;  */
+  /* left: 40px; */
 }
 
 .icon {
-  z-index: 99;
-  margin-left: 110px;
-  margin-top: -34px;
-  /* padding: 1px; */
-  /* min-width: 50px; */
-  /* text-align: center; */
+    z-index: 99;
+    margin-left: -48px;
+    padding: 13px;
+    min-width: 50px;
+    text-align: center;
 }
-
 .error-message {
   color: rgb(208, 27, 27);
   font-size: 13px;

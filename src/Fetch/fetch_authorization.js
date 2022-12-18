@@ -17,7 +17,9 @@ const Register = async (user) =>{
                 'You clicked the button!',
                 'success'
             ).then((res) => {
-                window.location=document.referrer
+                let newUser = { email: user.email, password: user.password }
+                let isRegis = true;
+                Login(newUser , isRegis);
             })
         }else {
             const response = await res.json() 
@@ -29,7 +31,7 @@ const Register = async (user) =>{
         }
 }
 
-const Login = async (user) => {
+const Login = async (user , isRegis = false) => {
     console.log('In progress (Login)');
     const res = await fetch(`${import.meta.env.VITE_BACK_URL}/login`, {
         method: "POST",
@@ -45,23 +47,27 @@ const Login = async (user) => {
         localStorage.setItem("userDetail", JSON.stringify(response.user));
         localStorage.setItem('isLoginMs', false)
         console.log('Successfully executed! ' + res.status);
-        Swal.fire(
-            'Login Successfully',
-            'You clicked the button!',
-            'success'
-        ).then((res) => {
-            window.location.replace("../");
-        })
+        if(!(isRegis)){
+            Swal.fire(
+                'Login Successfully',
+                'You clicked the button!',
+                'success'
+            ).then((res) => {
+                window.location.replace("/");
+            })
+        }else{
+            window.location.replace("/");
+        }
         return 200;
     }else if(res.status == 401){
         Swal.fire(
-            'Password Wrong',
+            "Email didn't matching",
             'Please Try again',
             'error'
         )
     }else if(res.status == 404){
         Swal.fire(
-            'ไม่มีเมล',
+            "Email didn't match",
             'Please Try again',
             'warning'
         )

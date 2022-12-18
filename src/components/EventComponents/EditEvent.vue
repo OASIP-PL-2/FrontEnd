@@ -1,19 +1,20 @@
 <script setup>
 import { ref, computed, onUpdated, onBeforeMount } from "vue";
 import { editEventDetail } from "../../Fetch/fetch_event";
+import { downloadFile } from '../../Fetch/fetch_file.js'
 
 // Import all Vue FilePond
 import vueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
-  FilePondPluginImagePreview,
+  // FilePondPluginImagePreview
   FilePondPluginFileValidateSize
 );
 
@@ -86,7 +87,15 @@ const eventStartTime = ref(props.event.eventStartTime);
 const eventNote = ref(props.event.eventNote);
 const showEditForm = ref(props.showEditForm);
 const fileName = ref(props.fileName)
-const file = ref({name: fileName.value})
+const file = ref({ name: fileName.value })
+
+onBeforeMount(async () => {
+  if(fileName.value != undefined) {
+    const fileUrl = await downloadFile(props.event.id, fileName.value);
+    file.value = new File([fileUrl], fileName.value);
+    console.log(file.value);
+  }
+});
 
 const showInputDate = ref(false);
 const openInputDate = () => {
@@ -106,6 +115,7 @@ const RemoveFile = () => {
 
 const onFileChanged = e => {
   file.value = e.target.files[0];
+  console.log(file.value.size);
   console.log(file.value);
 };
 
@@ -197,27 +207,134 @@ const editingEvent = async () => {
     });
   } else if (file.value.size > 10000000) {
     return 0
-  }else{
+  } else {
 
-  const data = new FormData();
-  eventToEdit.value = {
-    eventCategoryId: props.event.eventCategoryId.id,
-    eventNote: eventNote.value,
-    eventStartTime: changeFormat(eventStartTime.value),
-    eventDuration: props.event.eventDuration
+    const data = new FormData();
+    eventToEdit.value = {
+      eventCategoryId: props.event.eventCategoryId.id,
+      eventNote: eventNote.value,
+      eventStartTime: changeFormat(eventStartTime.value),
+      eventDuration: props.event.eventDuration
+    };
+    data.append("event", JSON.stringify(eventToEdit.value));
+    if (file.value.length != 0) {
+      data.append("file", file.value);
+    }
+    console.log(eventToEdit.value);
+    console.log(file.value);
+    editEventDetail(props.event.id, data)
   };
-  data.append("event", JSON.stringify(eventToEdit.value));
-  if (file.value.length != 0) {
-    data.append("file", file.value);
-  }
-  console.log(data);
-  editEventDetail(props.event.id, data)
-};
 }
+
+const closePopup = e => {
+  if (e.target.className == 'overlay') {
+    emit('closeEditEvent')
+  }
+}
+
 </script>
 
 <template>
-  <main class="my-8">
+  <div id="popup1" class="overlay" @click="closePopup($event)">
+    <div class="popup">
+      <div class="content">
+        <div style="border-style: none;margin-bottom: -8px;text-align: right;padding: 5px;">
+          <button type="button" class="btn-close" aria-label="Close" @click="$emit('closeEditEvent')"></button>
+        </div>
+        <div class="modal-body text-center"
+          style="margin-top: 6px;margin-bottom: 0px;text-align: center;padding-left: 38px;padding-right: 22px;">
+          <div class="row">
+            <div class="col" style="margin-bottom: 9px;border-color: var(--bs-orange);">
+              <p
+                style="text-align: left;font-weight: bold;font-size: 20px;margin-bottom: 4px;border-left: 0px solid #f5bb0e;padding-left: 0px;">
+                EDIT EVENT</p>
+              <hr
+                style="background: #f5bb0e;opacity: 0.60;margin-top: 0px;width: 50px;border-width: 4px;border-color: #633a11;" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" style="text-align: left;margin-bottom: 10px;"><span class="fw-semibold"
+                style="font-size: 14px;font-weight: bold;margin-right: 6px;">Booking Name : </span><span
+                style="font-size: 14px;">{{ event.bookingName }}</span></div>
+          </div>
+          <div class="row">
+            <div class="col" style="text-align: left;margin-bottom: 10px;"><span class="fw-semibold"
+                style="font-size: 14px;font-weight: bold;margin-right: 6px;">Booking Email : </span><span
+                style="font-size: 14px;">{{ event.bookingEmail }}</span></div>
+          </div>
+          <div class="row">
+            <div class="col" style="text-align: left;margin-bottom: 15px;"><span class="fw-semibold"
+                style="font-size: 14px;font-weight: bold;margin-right: 6px;">Clinic : </span>
+              <span style="font-size: 14px; margin-right: 10px;">{{ event.eventCategoryId.eventCategoryName }}</span>
+              <span class="badge text-bg-warning fw-semibold">{{ event.eventDuration }} mins.</span>
+            </div>
+          </div>
+          <div
+            style="padding: 8px;width: 95%;padding-left: 18px;border-radius: 10px;background: #e6e2ee;border: 2px none var(--bs-purple);padding-top: 14px;margin-bottom: 8px;">
+            <div class="row">
+              <div class="col" style="text-align: left;margin-bottom: 15px;">
+                <p style="margin-bottom: 7px;font-size: 13px;padding-left: 5px;">Start Date&amp;Time </p>
+                <input class="form-control-sm" type="datetime-local" :class="{ 'empty-field': ErrorStartTime }"
+                  :min="`${minDatetimeLocal}`" v-model="eventStartTime" @change="validateEventStartTime"
+                  style="border-width: 1px;border-style: solid;border-radius: 100px;font-size: 13px;padding-left: 14px;padding-right: 14px;padding-top: 6px;padding-bottom: 6px;" />
+                <span class="error-message" v-if="ErrorStartTime"> {{ ErrorStartTime_message }} </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col" style="text-align: left;margin-bottom: 15px;">
+                <p style="margin-bottom: 6px;font-size: 13px;padding-left: 5px;">Note</p>
+                <textarea maxlength="500" v-model="eventNote"
+                  style="width: 90%;border-style: solid;border-radius: 8px;margin-left: 0px;padding-left: 14px;font-size: 13px;padding-top: 6px;"
+                  placeholder="clinic descrition..."></textarea>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 0px;">
+              <div class="col" style="text-align: left;margin-bottom: 8px;">
+                <p style="margin-bottom: 6px;font-size: 13px;padding-left: 5px;">Attachment File</p>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6" style="padding-left: 1px;padding-right: 0px;width: 55%;"
+                      v-if="fileName != undefined">
+                      <p
+                        style="font-size: 13px;padding-left: 14px;padding-bottom: 7px;padding-top: 6px;padding-right: 14px;border-radius: 100px;background: #ffffff;margin-bottom: 0px;color: #605e4f;border: 1px solid #605e4f;width: 90%;">
+                        {{ fileName }}
+                      </p>
+                    </div>
+                    <div class="col-md-6 align-self-center mb-3" style="width: 45%;padding-left: 0px;"
+                      v-if="fileName != undefined">
+                      <button class="btn btn-outline-danger btn-sm" type="button" @click="RemoveFile" 
+                        style="font-size: 12px;margin-right: 4px;margin-top: 3px;">
+                        Remove
+                      </button>
+                      <button @click="openInputFile" class="btn btn-dark btn-sm" type="button"
+                        style="font-size: 12px;margin-top: 3px;">
+                        Change File
+                      </button>
+                    </div>
+                    <FilePond class="" style="margin-left: -8px;" v-if="showInputFile" ref="pond" maxFileSize="10MB"
+                      @change="onFileChanged($event)"
+                      label-idle="Drop files here or <span class='filepond--label-action'>Browse</span>" />
+                    <!-- <div class="col"><input type="file" style="margin-top: 8px;" /></div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" style="  text-align: right;margin-bottom: 2px;padding-left: 6px;padding-right: 30px;">
+              <button class="btn btn-danger btn-sm fw-normal" type="button" @click="$emit('closeEditEvent')"
+                style="font-size: 12px;margin-left: 5px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 6px;padding-top: 6px;width: 101.775px;height: 37px;margin-top: 10px;border-radius: 100px;border-width: 1.6px;">CANCEL</button>
+              <button class="btn btn-warning btn-sm fw-normal" type="button" @click="editingEvent"
+                style="font-size: 12px; margin-left: 5px;padding: 8px;padding-right: 15px;padding-left: 15px;padding-bottom: 6px;padding-top: 6px;width: 101.775px;height: 37px;margin-top: 10px;border-radius: 100px;border-width: 1.6px;color: var(--bs-modal-bg);">
+                SAVE
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <main class="my-8">
     <div id="edit-container" class="edit-container" v-show="showEditForm == 1">
       <div
         class="{`col-12 overflow-auto h-5/6 top-24 bottom-40 rounded-lg fixed ${visible ? 'visible' : 'invisible'}`}">
@@ -317,10 +434,54 @@ const editingEvent = async () => {
         </div>
       </div>
     </div>
-  </main>
+  </main> -->
 </template>
 
 <style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.8s ease;
+  z-index: 10;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 40%;
+  position: relative;
+  animation-delay: 2s;
+  /* transition: all 5s ease-in-out; */
+}
+
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px) {
+  .box {
+    width: 70%;
+  }
+
+  .popup {
+    width: 70%;
+  }
+}
+
 #edit-container {
   position: absolute;
   left: 15%;
@@ -345,31 +506,15 @@ const editingEvent = async () => {
   display: inline;
 }
 
-.img {
-  width: 3%;
-  margin-right: 2%;
-  display: inline;
-}
-
-textarea {
-  background-color: #b9d0f0;
-}
-
-input {
-  margin-left: 3%;
-  background-color: #b9d0f0;
-  border-radius: 7px;
-  width: 37%;
-  height: 45px;
-  font-size: 100%;
-}
-
-input:focus {
-  background-color: rgb(216 180 254);
-}
-
 .empty-field {
   border: #dd2828 2px solid;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+  margin-left: 15px;
 }
 
 .filepond--panel-root {
