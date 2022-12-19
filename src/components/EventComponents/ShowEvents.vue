@@ -166,12 +166,12 @@ let btnFuture = ref(nonSelectType.value)
 <template>
   <main class="mx-10 -mt-4">
     <h1 class="fw-semibold" style="font-family: 'Alegreya SC', serif;color: #302608;margin-top:30px;">Events</h1>
-
-    <div class="container" style="width: 80%;margin-bottom: 12px;">
+    <hr style="width:80%; margin-right:auto;margin-left: auto; color:#282821" />
+    <div class="container" style="width: 80%;margin-bottom: 12px;" v-if="isLogin">
       <div class="row">
         <div class="col-md-6">
           <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex align-items-md-center"
-            style="background: rgba(255,255,255,0.5);box-shadow: 2px 2px var(--bs-light);padding-right: 9px;padding-top: 14px;padding-bottom: 2px;margin-bottom: 5px;padding-left: 0px;border-style: none;border-color: #ffd24a;border-right-color: #ffd24a;border-bottom-style: none;border-bottom-color: #afaaa3;">
+            >
             <div class="btn-group" role="group">
               <button class="btn" type="button" :style="btnAll" @click="filterAll">All </button>
               <button class="btn" type="button" :style="btnPast" @click="filterPast">Past</button>
