@@ -23,7 +23,7 @@ const getEvents = async () => {
 };
 
 const getBlindEvents = async () =>{
-  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/blindEvent`, {
+  const res = await fetch(`${import.meta.env.VITE_BACK_URL}/events/blindEvents`, {
     headers: {
     },
   });
