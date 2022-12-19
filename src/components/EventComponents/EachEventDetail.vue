@@ -71,8 +71,7 @@ const closePopup = e => {
         <div style="border-style: none;margin-bottom: -8px;text-align: right;padding: 5px">
           <button type="button" class="btn-close" aria-label="Close" @click="$emit('closeEventDetail')"></button>
         </div>
-        <div class="modal-body text-center "
-          style="padding: 8px;">
+        <div class="modal-body text-center " style="padding: 8px;">
           <div class="row" style="height: 100%;margin-bottom: 10px;margin-top: 6px;">
             <div class="col" style="margin-top: 0px;margin-bottom: 1px;">
               <div class="detail-cover" style=""> </div>
@@ -81,7 +80,8 @@ const closePopup = e => {
           <div class="row">
             <div class="col" style="margin-bottom: 1px;margin-top: 11px;">
               <p class="text-uppercase fs-5"
-                style="font-weight: bold;font-size: 30px;color: #3d3028;margin-bottom: 4px;">{{ event.bookingName }} </p>
+                style="font-weight: bold;font-size: 30px;color: #3d3028;margin-bottom: 4px;">{{ event.bookingName }} 
+              </p>
               <p class="fw-normal" style="font-size: 16px;color: #66594c;padding-bottom: 0px;margin-bottom: 6px;">
                 {{ event.eventCategoryId.eventCategoryName }}</p>
               <div class="text-center d-flex d-md-flex justify-content-center justify-content-md-center"
@@ -120,21 +120,46 @@ const closePopup = e => {
               </div>
             </div>
             <div class="row" style="margin-bottom: 8px;">
-              <div class="col-2 col-sm-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
-                  class="far fa-sticky-note fs-5 text-white justify-content-end"></i></div>
+              <div class="col-2 col-sm-2" style="width: 10%;padding-right: 0px;padding-left: 0px;">
+                <i class="far fa-sticky-note fs-5 text-white justify-content-end"></i>
+              </div>
               <div class="col-10" style="padding-left: 6px;">
                 <p class="text-start" style="font-size: 12px;color: var(--bs-modal-bg);">
                   Note : <span v-if="event.eventNote">{{ event.eventNote }}</span> <span v-else> - </span>
                 </p>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-left: 1px;" v-if="fileName != undefined">
+              <p
+                style="color: var(--bs-modal-bg);font-size: 13px;text-align: left;width: 100%;margin-bottom: 5px;padding-left: 0px;margin-left: 11px;">
+                Attachment File</p>
+              <div class="row"
+                style="padding-top: 8px;padding-bottom: 8px;margin-left: 0px;width: 90%;border: 2px solid rgb(255,255,255);border-radius: 10px;padding-left: 10px;margin-right: -2px;padding-right: 10px;">
+                <div class="col-10 d-md-flex align-items-md-center" style="padding-left: 6px;">
+                  <p class="text-start d-md-flex"
+                    style="font-size: 12px;color: var(--bs-modal-bg);border-width: 9px;border-style: none;margin-top: auto;margin-bottom: auto;">
+                    {{ fileName }}
+                  </p>
+                </div>
+                <div class="col-2" style="padding-right: 0px;padding-left: 0px;">
+                  <a :href="fileUrl" :download="fileName">
+                    <i class="fas fa-cloud-download-alt"
+                    style="padding: 7px;border-width: 2px;border-style: solid;border-radius: 100%;font-size: 15px;padding-top: 8px;padding-bottom: 8px;">
+                    </i>
+                  </a>
+                  
+                    <!-- <a :href="fileUrl" :download="fileName"><box-icon name='cloud-download' size='md' border='circle' animation='tada-hover' class="" ></box-icon></a> -->
+                
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
               <div class="col-2" style="width: 10%;padding-right: 0px;padding-left: 0px;"><i
                   class="far fa-file-alt fs-5 text-white justify-content-end"></i></div>
               <div class="col-10" style="padding-left: 6px;">
                 <p class="text-start" style="font-size: 12px;color: var(--bs-modal-bg);">Attachment File : {{ fileName }}</p>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -217,6 +242,14 @@ const closePopup = e => {
 </template>
 
 <style scoped>
+
+a {
+  color: #fff;
+}
+
+a:hover {
+  color: rgb(211, 211, 211);
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -234,7 +267,7 @@ const closePopup = e => {
 }
 
 .popup {
-  margin: 3% auto;
+  margin: 2% auto;
   /* margin-top: auto;
   margin-bottom: auto; */
   padding: 20px;
@@ -295,5 +328,4 @@ const closePopup = e => {
   margin-bottom: 12px;
 
 }
-
 </style>

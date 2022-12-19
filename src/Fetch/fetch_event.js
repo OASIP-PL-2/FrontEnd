@@ -201,8 +201,8 @@ const editEventDetail = async (id, data) => {
   if (res.status === 200) {
     console.log("Successfully executed! " + res.status);
     Swal.fire(
-      "Successfully booking!",
-      "Your booking has been successful !",
+      "Edit Successfully!",
+      "You clicked the button!",
       "success"
     ).then((res) => {
       window.location=document.referrer

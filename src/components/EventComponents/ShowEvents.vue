@@ -267,8 +267,7 @@ let btnFuture = ref(nonSelectType.value)
           NO SCHEDULE</p>
       </div>
       <router-link :to="{ name: 'Appointment' }">
-      <div class="no-event container "
-        style="">
+      <div class="no-event container" style="" v-if="!isLecturer">
         <div class="text-center">
           <span style="color:black;font-size: 42px;border-radius: 113px;background: var(--bs-gray-600);padding-right: 24px;padding-left: 24px;padding-top: 0px;padding-bottom: 2px;">
             +

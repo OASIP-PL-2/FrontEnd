@@ -111,7 +111,7 @@ const isLecturer = computed(() => {
               <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"
                 style="text-transform: uppercase">{{ user.name }}</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Profile</a>
+                <!-- <a class="dropdown-item" href="#">Profile</a> -->
                 <a class="dropdown-item" href="#" @click="logout">Sign Out</a>
               </div>
             </li>
