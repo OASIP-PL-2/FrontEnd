@@ -2,7 +2,7 @@
 import { ref, onBeforeMount, computed, onUpdated } from "vue";
 import { useRouter } from "vue-router";
 import { getCategories } from "../../Fetch/fetch_category.js";
-import { addNewEvent, getEvents } from "../../Fetch/fetch_event.js";
+import { addNewEvent, getEvents, getBlindEvents } from "../../Fetch/fetch_event.js";
 
 // Import all Vue FilePond
 import vueFilePond from "vue-filepond";
@@ -35,7 +35,7 @@ const categories = ref([]);
 const events = ref([]);
 const isLogin = localStorage.getItem("accessToken") != null;
 onBeforeMount(async () => {
-  events.value = await getEvents();
+  events.value = await getBlindEvents();
   categories.value = await getCategories();
   console.log(categories.value);
   if (isLogin) {

@@ -165,8 +165,8 @@ let btnFuture = ref(nonSelectType.value)
 
 <template>
   <main class="mx-10 -mt-4">
-    <h1 class="fw-semibold" style="font-family: 'Alegreya SC', serif;color: #302608;margin-top:30px;">Events</h1>
-    <hr style="width:80%; margin-right:auto;margin-left: auto; color:#282821" />
+    <h1 class="fw-semibold" style="font-family: 'Alegreya SC', serif;color: #302608;margin-top:30px;margin-bottom: 30px;">Events</h1>
+    <hr v-if="!isLogin" style="width:80%; margin-right:auto;margin-left: auto; color:#282821" />
     <div class="container" style="width: 80%;margin-bottom: 12px;" v-if="isLogin">
       <div class="row">
         <div class="col-md-6">
