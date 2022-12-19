@@ -88,7 +88,7 @@ const isAdmin = computed(() =>{
                   <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/database.png" width="416" height="200" v-if="category.id==3"/>
                   <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/devOps.jpg" width="416" height="200" v-if="category.id==2"/>
                   <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/project_management.jpg" width="416" height="200" v-if="category.id==1"/>
-                    <div class="py-4" >
+                    <div class="py-4" style="text-align: left;" >
                         <p class="float-end" style="margin-bottom: 2px;">{{ category.eventDuration}} mins</p>
                         <h4>{{ category.eventCategoryName }}</h4>
                         <p>{{ category.eventCategoryDescription }}</p>

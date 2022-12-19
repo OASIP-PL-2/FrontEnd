@@ -356,34 +356,4 @@ input:focus {
   border: white 2px solid;
 }
 
-/* .detail-container {
-  position: absolute;
-  left: 30%;
-  line-height: 10px;
-}
-#closeDetail {
-  width: 3%;
-  margin-right: 5%;
-  float: right;
-  display: inline;
-}
-textarea {
-  background-color: #b9d0f0;
-}
-
-input {
-  margin-left: 3%;
-  background-color: #b9d0f0;
-  border-radius: 7px;
-  width: 70%;
-  height: 40px;
-  font-size: 100%;
-}
-input:focus {
-  background-color: rgb(216 180 254);
-}
-.empty-field {
-  border: red 2px solid;
-}
-*/
 </style> 

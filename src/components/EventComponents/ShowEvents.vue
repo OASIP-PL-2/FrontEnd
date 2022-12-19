@@ -165,7 +165,7 @@ let btnFuture = ref(nonSelectType.value)
 
 <template>
   <main class="mx-10 -mt-4">
-    <h1 class="fw-semibold" style="font-family: 'Alegreya SC', serif;color: #302608;margin-top:90px;">Events</h1>
+    <h1 class="fw-semibold" style="font-family: 'Alegreya SC', serif;color: #302608;margin-top:30px;">Events</h1>
 
     <div class="container" style="width: 80%;margin-bottom: 12px;">
       <div class="row">
@@ -175,7 +175,7 @@ let btnFuture = ref(nonSelectType.value)
             <div class="btn-group" role="group">
               <button class="btn" type="button" :style="btnAll" @click="filterAll">All </button>
               <button class="btn" type="button" :style="btnPast" @click="filterPast">Past</button>
-              <button class="btn" type="button" :style="btnFuture" @click="filterUpcoming">Upcomming
+              <button class="btn" type="button" :style="btnFuture" @click="filterUpcoming">Upcoming
               </button>
             </div>
           </div>
@@ -196,7 +196,7 @@ let btnFuture = ref(nonSelectType.value)
     </div>
 
     <div class="container" style="width: 80%;" v-if="filterEvent.length !== 0">
-      <h6 v-if="!(isAdmin) && !(isLecturer)">Owner Events</h6>
+      <h6 v-if="isLogin && !(isAdmin) && !(isLecturer)">Owner Events</h6>
       <h6 v-if="isLecturer">Owner Events your category</h6>
       <div class="row">
         <div v-for="event in filterEvent" :key="event.id" class="col-sm-12 col-md-6 col-lg-4"
@@ -278,7 +278,7 @@ let btnFuture = ref(nonSelectType.value)
     </router-link>
     </div>
 
-    <hr v-show="isLogin && !(isAdmin) && !(isLecturer)" />
+    <hr v-show="isLogin && !(isAdmin) && !(isLecturer)" style="width:80%; margin-right:auto;margin-left: auto;" />
     <!-- BlindEvents event -->
     <div class="container" style="width: 80%;" v-if="blindEvents.length !== 0 && !(isAdmin) && !(isLecturer)">
       <h6> Blind Events</h6>
