@@ -112,7 +112,7 @@ const closeEditForm = () => {
                 </thead>
                 <tbody v-for="(user, index) in users" :key="index">
                     <tr style="background: #eff3f7;" v-if="index%2==0">
-                        <td><img class="rounded-circle" :src="'/src/assets/profile/'+(index+1)%20+'.png'" width="55" height="55" style="border-style: none;"></td>
+                        <td><img class="rounded-circle" :src="`../src/assets/profile/${(index+1)%20}.png`" width="55" height="55" style="border-style: none;"></td>
                         <td class="text-uppercase fw-bold text-start" style="color: var(--bs-black);padding-top: 24px;">{{user.name}}</td>
                         <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
                         <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
@@ -122,7 +122,7 @@ const closeEditForm = () => {
                           <button @click="$emit('deleteUsers' , user.id)" class="btn btn-primary" type="button" style="background: var(--bs-red);border-color: var(--bs-red);padding: 3px 8px;height: 30px;padding-top: 1px;">Delete</button></td>
                     </tr>
                     <tr v-if="index%2!=0">
-                        <td><img class="rounded-circle" :src="'/src/assets/profile/'+(index+1)%20+'.png'" width="55" height="55" style="border-style: none;"></td>
+                        <td><img class="rounded-circle" :src="`../src/assets/profile/${(index+1)%20}.png`" width="55" height="55" style="border-style: none;"></td>
                         <td class="text-uppercase fw-bold text-start" style="color: var(--bs-black);padding-top: 24px;">{{user.name}}</td>
                         <td class="text-start" style="padding-top: 24px;">{{user.email}}</td>
                         <td class="text-uppercase" style="color: var(--bs-primary);padding-top: 24px;">{{user.role}}</td>
