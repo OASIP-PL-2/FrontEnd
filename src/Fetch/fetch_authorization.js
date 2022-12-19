@@ -53,10 +53,10 @@ const Login = async (user , isRegis = false) => {
                 'You clicked the button!',
                 'success'
             ).then((res) => {
-                window.location.replace("./");
+                window.location.replace("https://intproj21.sit.kmutt.ac.th/pl2/");
             })
         }else{
-            window.location.replace("./");
+            window.location.replace("https://intproj21.sit.kmutt.ac.th/pl2/");
         }
         return 200;
     }else if(res.status == 401){

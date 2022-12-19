@@ -4,9 +4,10 @@ import { getCategories } from "./Fetch/fetch_category";
 import Login from "./views/Users/Login.vue";
 import Register from "./views/Users/Register.vue";
 import { signOut } from "./login_MS/authRedirect.js";
+import { useRouter, useRoute } from "vue-router";
 
 console.clear;
-
+const router = useRoute;
 const reloadPage = () => {
   window.location.reload();
 };
@@ -35,7 +36,8 @@ const logout = () => {
       // localStorage.removeItem('refreshToken')
       // localStorage.removeItem('userDetail')
       localStorage.clear();
-      window.location.replace("./");
+      // router.push({ name: 'Home'})
+      window.location.replace("https://intproj21.sit.kmutt.ac.th/pl2/");
     }
   });
 };
