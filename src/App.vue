@@ -35,7 +35,7 @@ const logout = () => {
       // localStorage.removeItem('refreshToken')
       // localStorage.removeItem('userDetail')
       localStorage.clear();
-      window.location.replace("/");
+      window.location.replace("./");
     }
   });
 };

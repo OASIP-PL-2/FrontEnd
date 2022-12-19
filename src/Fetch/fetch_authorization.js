@@ -53,10 +53,10 @@ const Login = async (user , isRegis = false) => {
                 'You clicked the button!',
                 'success'
             ).then((res) => {
-                window.location.replace("/");
+                window.location.replace("./");
             })
         }else{
-            window.location.replace("/");
+            window.location.replace("./");
         }
         return 200;
     }else if(res.status == 401){
