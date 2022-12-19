@@ -1,7 +1,7 @@
 import { refreshToken } from "./fetch_authorization";
 
 const getFileName = async (eventId) => {
-  console.log("In progress (Get UserDetail)");
+  console.log("In progress (Get FileName)");
   const res = await fetch(`${import.meta.env.VITE_BACK_URL}/files/${eventId}`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -23,7 +23,7 @@ const getFileName = async (eventId) => {
 };
 
 const downloadFile = async (eventId, filName) => {
-  console.log("In progress (Get UserDetail)");
+  console.log("In progress (Get Download File)");
   const res = await fetch(
     `${import.meta.env.VITE_BACK_URL}/files/${eventId}/${filName}`,
     {

@@ -23,4 +23,4 @@ const checkOwner = async (userId) => {
 };
 
 
-export { checkOwner};
+export { checkOwner };

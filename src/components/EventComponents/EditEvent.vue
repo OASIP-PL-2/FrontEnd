@@ -90,6 +90,7 @@ const fileName = ref(props.fileName)
 const file = ref({ name: fileName.value })
 const allEvents = ref([])
 props.events.forEach((e)=>{
+  if(e.id != props.event.id)
   allEvents.value.push(e)
 })
 
@@ -150,8 +151,8 @@ const validatePast = () => {
 const overlapTime = () => {
   const overlap = ref(false);
   console.log(allEvents.value);
-  allEvents.value.splice(allEvents.value.findIndex(event => event.id == props.event.id),1);
-  console.log(allEvents.value);
+  // allEvents.value.splice(allEvents.value.findIndex(event => event.id == props.event.id),1);
+  // console.log(allEvents.value);
   const newStartTime = new Date(eventStartTime.value);
   const newEndTime = getEndTime(
     eventStartTime.value,
@@ -173,35 +174,6 @@ const overlapTime = () => {
   }
   return overlap.value;
 };
-
-// const overlapTime = () => {
-//   const overlap = ref(false);
-//   props.events.splice(
-//     props.events.findIndex(event => event.id == props.event.id),
-//     1
-//   );
-//   const newStartTime = new Date(eventStartTime.value);
-//   const newEndTime = getEndTime(
-//     eventStartTime.value,
-//     props.event.eventDuration
-//   );
-
-//   for (const event of props.events) {
-//     if (event.eventCategoryId.id == props.event.eventCategoryId.id) {
-//       const eventStartTime = new Date(event.eventStartTime);
-//       const eventEndTime = getEndTime(
-//         event.eventStartTime,
-//         event.eventDuration
-//       );
-//       overlap.value =
-//         eventStartTime < newEndTime && eventEndTime > newStartTime;
-//       if (overlap.value == true) {
-//         break;
-//       }
-//     }
-//   }
-//   return overlap.value;
-// };
 
 const getEndTime = (eventStartTime, eventDuration) => {
   const startTime = new Date(eventStartTime);
