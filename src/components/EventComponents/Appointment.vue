@@ -174,7 +174,6 @@ const changeFormatOverlap = (eventStartTime) => {
 };
 
 const overlap = ref(false);
-
 const overlapTime = (() => {
   console.log(eventStartTime.value);
   const newStartTime = changeFormatOverlap(eventStartTime.value);
