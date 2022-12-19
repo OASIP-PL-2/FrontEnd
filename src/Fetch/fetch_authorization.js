@@ -61,13 +61,13 @@ const Login = async (user , isRegis = false) => {
         return 200;
     }else if(res.status == 401){
         Swal.fire(
-            "Email didn't matching",
+            "Password Wrong!",
             'Please Try again',
             'error'
         )
     }else if(res.status == 404){
         Swal.fire(
-            "Email didn't match",
+            "Email dosen't not exit",
             'Please Try again',
             'warning'
         )

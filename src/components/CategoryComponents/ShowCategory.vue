@@ -83,11 +83,11 @@ const isAdmin = computed(() =>{
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3" v-if="categories.length !== 0">
             <div class="col" v-for="(category, index) in categories" :key="index">
-                <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/backend.png" width="416" height="200" v-if="index==0" />
-                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/frontend.png" width="416" height="200" v-if="index==1" />
-                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/database.png" width="416" height="200" v-if="index==2"/>
-                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/devOps.jpg" width="416" height="200" v-if="index==3"/>
-                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/project management.jpg" width="416" height="200" v-if="index==4"/>
+                <div><img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/backend.png" width="416" height="200" v-if="category.id==5" />
+                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/frontend.png" width="416" height="200" v-if="category.id==4" />
+                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/database.png" width="416" height="200" v-if="category.id==3"/>
+                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/devOps.jpg" width="416" height="200" v-if="category.id==2"/>
+                  <img class="rounded img-fluid d-block w-100 fit-cover" style="height: 200px;" src="../../assets/category_img/project_management.jpg" width="416" height="200" v-if="category.id==1"/>
                     <div class="py-4" >
                         <p class="float-end" style="margin-bottom: 2px;">{{ category.eventDuration}} mins</p>
                         <h4>{{ category.eventCategoryName }}</h4>
